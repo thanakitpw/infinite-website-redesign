@@ -22,6 +22,31 @@ body{margin:0;background:#eef1ec;font-family:'IBM Plex Sans Thai',system-ui,sans
 html,body{overflow-x:hidden}
 img,iframe{max-width:100%;height:auto}
 div[style*="width:1440px"]{width:100%!important}
+
+/* Sections stay full-bleed; their side gutters grow on wide viewports so the
+   content column settles at --content-max. 1200px matches the max-width the
+   design already uses for its own inner bands, so every row shares one column. */
+:root{--content-max:1200px}
+@media (min-width:721px){
+  /* every top-level section gutters at 56px — except about's stats strip, which
+     has no padding of its own */
+  div[style*="width:1440px"]>div[style*="56px"],
+  div[style*="width:1440px"]>div[style*="grid-template-columns:repeat(4,1fr)"]{
+    padding-left:max(56px,calc((100% - var(--content-max))/2))!important;
+    padding-right:max(56px,calc((100% - var(--content-max))/2))!important;
+  }
+}
+/* The hero can't take gutters — its slides are inset:0, so padding would drag
+   the images and gradients inward. Align the copy and dots to the column
+   instead. Only past 1345px, where the gutter first exceeds the built-in 72px
+   and content-box sizing still fits. */
+@media (min-width:1345px){
+  [style*="padding:0 72px"]{
+    box-sizing:content-box!important;
+    padding-left:calc((100% - var(--content-max))/2)!important;
+  }
+  [style*="left:72px"]{left:calc((100% - var(--content-max))/2)!important}
+}
 /* cards: flex column so they fill equal grid height & buttons align bottom */
 [style*="border-radius:14px"][style*="overflow:hidden"]{display:flex!important;flex-direction:column}
 [style*="border-radius:14px"][style*="overflow:hidden"] [style*="padding:18px"],[style*="border-radius:14px"][style*="overflow:hidden"] [style*="padding:20px"],[style*="border-radius:14px"][style*="overflow:hidden"] [style*="padding:24px"]{flex:1 1 auto;display:flex;flex-direction:column}
