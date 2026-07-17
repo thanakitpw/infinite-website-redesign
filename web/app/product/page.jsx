@@ -3,7 +3,7 @@ import path from "node:path";
 
 export const metadata = {
   title: "สีกันไฟ Neocoat Intumescent Paint สูตรน้ำ/น้ำมัน | ราคาโรงงาน",
-  description: "รายละเอียดสีกันไฟ Neocoat Intumescent Paint ทนไฟ 1–3 ชม. มาตรฐาน ISO 834 · ASTM E119 พร้อมสเปกและปริมาณการใช้งาน",
+  description: "รายละเอียดสีกันไฟ Neocoat Intumescent Paint ทนไฟ 1–2 ชม. มาตรฐาน ISO 834 · ASTM E119 พร้อมสเปกและปริมาณการใช้งาน",
 };
 
 export default function Page() {
