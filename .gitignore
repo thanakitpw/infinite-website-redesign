@@ -14,3 +14,7 @@ Infinite Material Tech Redesign.zip
 
 # Source PDFs (catalog + full test reports) — only extracted pages ship in web/public/docs
 pdf/
+
+# Working notes / content source (design briefs, article drafts + large source images)
+PROMPT*.MD
+บทความ*/

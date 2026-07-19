@@ -43,7 +43,7 @@ function linkifyButtons() {
     else if (t.startsWith("ดูสินค้าทั้งหมด") || t.startsWith("ดูทั้งหมด")) url = "/products";
     else if (t.startsWith("ดูรายละเอียด")) url = "/product";
     else if (t.startsWith("ดาวน์โหลด")) { url = TDS; opt.download = true; }
-    else if (t.startsWith("อ่านต่อ") || t.startsWith("อ่านบทความ")) url = "/articles";
+    else if (t.startsWith("อ่านต่อ") || t.startsWith("อ่านบทความ")) { if (el.closest("a[href]")) return; url = "/articles"; }
     else if (t === "หน้าแรก") url = "/";
     if (url) { bindNav(el, url, opt); el.dataset.enhb = "1"; }
   });

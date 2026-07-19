@@ -1,0 +1,29 @@
+<figure style="margin:0 0 30px"><div style="height:300px;border-radius:16px;background:#fff;background-image:url('/images/neocoat-paint-s.png');background-size:contain;background-position:center;background-repeat:no-repeat;border:1px solid #e7eae4"></div><figcaption style="margin-top:10px;font-size:13px;color:#8a978d;font-family:'IBM Plex Mono',monospace">คำนวณจำนวนถังจากพื้นที่ผิวเหล็กและความหนาฟิล์มที่ต้องการ</figcaption></figure>
+
+<p style="margin:0 0 22px;font-size:18px;line-height:1.9;color:#2b382f;font-weight:500">การประเมินราคาสีกันไฟที่แม่นต้องเริ่มจาก “พื้นที่ผิวเหล็กจริง” และ “ความหนาฟิล์มแห้ง (DFT)” ที่มาตรฐานกำหนด ไม่ใช่คิดจากพื้นที่อาคารตารางเมตรลอยๆ บทความนี้สรุปสูตรให้ประเมินเบื้องต้นได้เอง</p>
+
+<h2 style="font-size:23px;font-weight:700;margin:36px 0 14px;color:#0e1a14;letter-spacing:-.2px">ตัวแปรที่ต้องรู้ 3 ตัว</h2>
+<ul style="margin:2px 0 20px;padding-left:20px;color:#3a4a41;font-size:16px;line-height:2">
+  <li><b>พื้นที่ผิวเหล็ก (A)</b> — ตร.ม. คิดจากเส้นรอบรูปหน้าตัด × ความยาวชิ้นงาน</li>
+  <li><b>ความหนาฟิล์มแห้ง (DFT)</b> — ไมครอน (µm) เปิดจากตารางตามชั่วโมงทนไฟและค่า Hp/A</li>
+  <li><b>ค่าครอบคลุมของสี (Coverage)</b> — โดยทั่วไปคิดเป็น “ลิตรต่อ ตร.ม. ต่อความหนา”</li>
+</ul>
+
+<h2 style="font-size:23px;font-weight:700;margin:36px 0 14px;color:#0e1a14;letter-spacing:-.2px">สูตรคำนวณปริมาณสี</h2>
+<div style="background:#06351f;color:#eafaf0;border-radius:14px;padding:22px 24px;margin:0 0 22px;font-family:'IBM Plex Mono',monospace;font-size:15px;line-height:1.9">ปริมาณสีเปียก (ลิตร) = A (ตร.ม.) × DFT (µm) ÷ (%ของแข็งโดยปริมาตร × 10)<br><span style="color:#8fe8b3">จำนวนถัง = ปริมาณสี ÷ ความจุต่อถัง × (1 + %การสูญเสีย)</span></div>
+<p style="margin:0 0 18px;font-size:16.5px;line-height:1.95;color:#3a4a41">โดยทั่วไปเผื่อการสูญเสียจากการพ่น (overspray/เศษเหลือ) ประมาณ 10–20% ตามลักษณะหน้างานและวิธีการทา</p>
+
+<h2 style="font-size:23px;font-weight:700;margin:36px 0 14px;color:#0e1a14;letter-spacing:-.2px">ตัวอย่างประเมินคร่าวๆ</h2>
+<div style="overflow:hidden;border:1px solid #e7eae4;border-radius:12px;margin:0 0 18px">
+  <table style="width:100%;border-collapse:collapse;font-size:15px">
+    <tbody style="color:#3a4a41">
+      <tr style="border-top:1px solid #e7eae4;background:#f7faf8"><td style="padding:12px 18px">พื้นที่ผิวเหล็ก</td><td style="padding:12px 18px;font-weight:600;text-align:right">500 ตร.ม.</td></tr>
+      <tr style="border-top:1px solid #e7eae4"><td style="padding:12px 18px">ความหนาที่ต้องการ (2 ชม.)</td><td style="padding:12px 18px;font-weight:600;text-align:right">700 µm</td></tr>
+      <tr style="border-top:1px solid #e7eae4;background:#f7faf8"><td style="padding:12px 18px">เผื่อการสูญเสีย</td><td style="padding:12px 18px;font-weight:600;text-align:right">15%</td></tr>
+    </tbody>
+  </table>
+</div>
+<div style="background:#fff7ed;border-left:4px solid #d9822b;padding:16px 20px;border-radius:0 12px 12px 0;margin:24px 0;font-size:15px;line-height:1.85;color:#7a4e1d">ตัวเลข %ของแข็งและ Coverage ต่างกันในแต่ละสูตร/ยี่ห้อ ตัวอย่างนี้ใช้เพื่ออธิบายวิธีคิดเท่านั้น — เลขจริงต้องอิงเอกสาร TDS ของสีรุ่นที่ใช้</div>
+
+<h2 style="font-size:23px;font-weight:700;margin:36px 0 14px;color:#0e1a14;letter-spacing:-.2px">แล้ว “ราคาต่อตารางเมตร” ล่ะ</h2>
+<p style="margin:0 0 6px;font-size:16.5px;line-height:1.95;color:#3a4a41">ราคาต่อ ตร.ม. = (ค่าสี + ค่าแรงพ่น + สีรองพื้น/ทับหน้า) ÷ พื้นที่ผิว ยิ่งชั่วโมงทนไฟมากและเหล็กหน้าตัดเล็ก ราคาต่อ ตร.ม. จะสูงขึ้นเพราะต้องทาหนาขึ้น วิธีที่แม่นที่สุดคือส่ง BOQ หรือแบบเหล็กมาให้วิศวกรถอดพื้นที่ผิวและเปิดตารางความหนาให้ แล้วจะได้ราคาที่ใช้ยื่นงานได้จริง</p>
