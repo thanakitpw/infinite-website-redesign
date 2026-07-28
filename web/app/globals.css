@@ -50,7 +50,6 @@ div[style*="width:1440px"]{width:100%!important}
 /* cards: flex column so they fill equal grid height & buttons align bottom */
 [style*="border-radius:14px"][style*="overflow:hidden"]{display:flex!important;flex-direction:column}
 [style*="border-radius:14px"][style*="overflow:hidden"] [style*="padding:18px"],[style*="border-radius:14px"][style*="overflow:hidden"] [style*="padding:20px"],[style*="border-radius:14px"][style*="overflow:hidden"] [style*="padding:24px"]{flex:1 1 auto;display:flex;flex-direction:column}
-[style*="border:1px solid #e7eae4;border-radius:14px;padding:22px"]{display:flex!important;flex-direction:column;height:100%}
 [style*="border:1px solid #018438"][style*="text-align:center"][style*="padding:11px"]{margin-top:auto}
 /* product image boxes: taller, white background, don't shrink */
 [style*="height:180px"][style*="repeating-linear-gradient(135deg,#eef2ee"]{height:240px!important;flex:none!important;background-color:#fff!important}
@@ -112,4 +111,213 @@ div[style*="width:1440px"]{width:100%!important}
   [style*="margin:-52px auto 0"]{margin:-28px auto 0!important}
   [style*="display:flex"][style*="gap:40px"]{flex-wrap:wrap!important}
   [style*="display:flex"][style*="gap:12px"]{flex-wrap:wrap!important}
+}
+
+/* ── HERO หน้าแรก: ความสูงตามขนาดจอ ───────────────────────────────────────
+   inline เขียน height:474px ตายตัว บนจอกว้าง (1900px+) สัดส่วนจะออกมาราว 4:1
+   ภาพโครงสร้างเหล็กเลยดูเตี้ยและเล็กเกินไป ให้สเกลตามความกว้างจอแทน แต่คุม
+   เพดาน 700px ไว้ ไม่ให้สูงจนการ์ด SOLUTION ที่เกยขึ้นมาหลุดพ้นหน้าจอแรก
+
+   แก้ที่นี่ ไม่แก้ค่า inline เพราะ selector [style*="height:474px"] คือตัวที่
+   override มือถือด้านบนใช้อยู่ ถ้าไปเปลี่ยนเลขใน HTML rule นั้นจะหลุดทันที */
+@media (min-width:721px){
+  [style*="height:474px"]{height:clamp(474px,42vw,700px)!important}
+}
+
+/* ── ANIMATION ────────────────────────────────────────────────────────────
+   คลาสในบล็อกนี้ถูกเติมโดย enhance.jsx เท่านั้น ไม่มีใน HTML — ถ้า JS พัง
+   หรือผู้ใช้ปิด animation ไว้ เนื้อหาจะแสดงเต็มทันที ไม่มีอะไรค้างที่ opacity:0 */
+:root{--ease-out:cubic-bezier(.22,.61,.36,1)}
+
+/* เลื่อนมาถึงแล้วค่อยโผล่ */
+.rv{opacity:0;transform:translateY(20px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out)}
+.rv.rv-in{opacity:1;transform:none}
+
+/* หน่วงแบบทยอย — ต้องเป็นคลาส ไม่ใช่ inline style
+   เพราะ enhance.jsx และ responsive rule ทั้งไฟล์นี้ค้นหา element ด้วย
+   [style*="..."] การเขียน el.style.* จะทำให้ attribute ถูก serialize ใหม่
+   แล้ว selector เหล่านั้นหาไม่เจอทันที */
+.rv-d1{transition-delay:.07s}
+.rv-d2{transition-delay:.14s}
+.rv-d3{transition-delay:.21s}
+.rv-d4{transition-delay:.28s}
+.rv-d5{transition-delay:.35s}
+.rv-d6{transition-delay:.42s}
+.rv-d7{transition-delay:.49s}
+
+/* hero: เลเยอร์ภาพแยกไว้ซูมช้าๆ (Ken Burns) — ตัวหนังสือไม่ถูกซูมไปด้วย */
+.hero-kb{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;background-repeat:no-repeat;transform:scale(1.005);transition:transform 0s}
+.hero-on .hero-kb{transform:scale(1.085);transition:transform 7.5s linear}
+/* ตัวหนังสือใน hero ทยอยขึ้นทีละบรรทัด (หน่วงด้วยคลาส .rv-d* ชุดเดียวกัน) */
+[data-hero-copy]{opacity:0;transform:translateY(16px);transition:opacity .65s var(--ease-out),transform .65s var(--ease-out)}
+.hero-on [data-hero-copy]{opacity:1;transform:none}
+
+/* hover: การ์ดสินค้า/บทความ ยกตัวขึ้นเล็กน้อย */
+[style*="border-radius:14px"][style*="overflow:hidden"],
+a[style*="border-radius:16px"][style*="overflow:hidden"]{
+  transition:transform .28s var(--ease-out),box-shadow .28s var(--ease-out),border-color .28s;
+}
+[style*="border-radius:14px"][style*="overflow:hidden"]:hover,
+a[style*="border-radius:16px"][style*="overflow:hidden"]:hover{
+  transform:translateY(-5px);box-shadow:0 16px 34px rgba(6,53,31,.11);border-color:#cddccf;
+}
+/* ปุ่มที่ enhance.jsx ผูกลิงก์ให้แล้ว (มี data-enhb) — ยกตัว + เงา */
+[data-enhb]{transition:transform .2s var(--ease-out),box-shadow .2s var(--ease-out),filter .2s}
+[data-enhb]:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(1,132,56,.22);filter:brightness(1.05)}
+[data-enhb]:active{transform:translateY(0)}
+/* การ์ดหมวดหมู่หน้าแรก */
+[style*="flex:1;text-align:center;padding:16px 10px;border-radius:12px"]{transition:background .25s,transform .25s var(--ease-out)}
+[style*="flex:1;text-align:center;padding:16px 10px;border-radius:12px"]:hover{background:#f0f7f2;transform:translateY(-3px)}
+
+@media (prefers-reduced-motion:reduce){
+  .rv,[data-hero-copy]{opacity:1!important;transform:none!important;transition:none!important}
+  .hero-on .hero-kb{transition:none;transform:scale(1)}
+}
+
+/* ── NAV DROPDOWN — เมนูสินค้า ─────────────────────────────────────────────
+   ลิงก์แต่ละหมวดชี้ไป /products?cat=<ชื่อหมวด> แล้ว productFilter() ใน
+   enhance.jsx อ่านค่านั้นมากดฟิลเตอร์ให้เอง — ค่า cat ต้องตรงกับข้อความใน
+   แถบหมวดหมู่ของหน้า /products เป๊ะๆ (หลังตัด "□ " และ " (n)" ออก) */
+.nav-dd{position:relative}
+.nav-dd > a{display:inline-flex;align-items:center;gap:5px}
+.nav-dd-caret{width:11px;height:11px;flex:none;transition:transform .25s var(--ease-out)}
+.nav-dd:hover .nav-dd-caret,.nav-dd.nav-open .nav-dd-caret{transform:rotate(180deg)}
+
+/* padding-top คือ "สะพาน" ให้เมาส์ลากจากตัวเมนูลงมาถึงการ์ดได้โดยไม่หลุด hover
+   ถ้าใช้ margin-top จะมีช่องว่างที่ไม่รับ hover แล้วเมนูจะปิดกลางทาง */
+.nav-dd-panel{
+  position:absolute;top:100%;left:50%;z-index:999;padding-top:15px;
+  opacity:0;visibility:hidden;pointer-events:none;
+  transform:translateX(-50%) translateY(8px);
+  transition:opacity .22s var(--ease-out),transform .22s var(--ease-out),visibility .22s;
+}
+.nav-dd:hover .nav-dd-panel,
+.nav-dd:focus-within .nav-dd-panel,
+.nav-dd.nav-open .nav-dd-panel{
+  opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%) translateY(0);
+}
+.nav-dd-card{
+  width:370px;max-width:calc(100vw - 32px);padding:10px;
+  background:#fff;border:1px solid #e7eae4;border-radius:14px;
+  box-shadow:0 18px 44px rgba(6,53,31,.14);
+}
+.nav-dd-item{display:block;padding:10px 12px;border-radius:10px;text-decoration:none;transition:background .18s}
+.nav-dd-item:hover{background:#f0f7f2}
+.nav-dd-t{display:block;font-size:14.5px;font-weight:600;color:#0e1a14;line-height:1.35}
+.nav-dd-item:hover .nav-dd-t{color:#018438}
+.nav-dd-s{display:block;font-size:12px;color:#5c6b62;margin-top:2px;line-height:1.45}
+.nav-dd-all{
+  display:block;margin-top:6px;padding:11px 12px;border-top:1px solid #eef1ec;
+  font-size:13.5px;font-weight:600;color:#018438;text-decoration:none;
+}
+.nav-dd-all:hover{color:#026b2e}
+
+/* มือถือ: header ห่อบรรทัดอยู่แล้ว ถ้าลอยทับจะอ่านไม่ได้ ให้ดันเนื้อหาลงแทน */
+@media (max-width:720px){
+  .nav-dd-panel{position:static;transform:none;padding-top:8px;width:100%}
+  .nav-dd.nav-open .nav-dd-panel{transform:none}
+  .nav-dd-card{width:100%}
+  .nav-dd{width:100%}
+}
+
+/* ── VIDEO SECTION — กรอบ 16:9 รอใส่วิดีโอ ────────────────────────────────
+   ใส่วิดีโอจริงโดยแทน <div class="vid-ph">…</div> ด้วยอันใดอันหนึ่ง:
+     YouTube : <iframe src="https://www.youtube.com/embed/<ID>" title="…"
+                 allow="accelerometer;autoplay;clipboard-write;encrypted-media;
+                 gyroscope;picture-in-picture" allowfullscreen></iframe>
+     ไฟล์เอง : <video controls playsinline poster="/images/video-cover.jpg">
+                 <source src="/videos/intro.mp4" type="video/mp4"></video>
+   ไม่ต้องแก้ CSS — .vid-frame บังคับให้ลูกเต็มกรอบ 16:9 พอดีทั้งสองแบบ */
+.vid-head{
+  text-align:center;margin-bottom:34px;
+  padding-left:max(56px,calc((100% - var(--content-max))/2));
+  padding-right:max(56px,calc((100% - var(--content-max))/2));
+}
+.vid-wrap{
+  padding-left:max(56px,calc((100% - var(--content-max))/2));
+  padding-right:max(56px,calc((100% - var(--content-max))/2));
+}
+.vid-frame{
+  position:relative;width:100%;max-width:1000px;margin:0 auto;
+  aspect-ratio:16/9;                       /* จองพื้นที่ล่วงหน้า หน้าไม่กระตุกตอนวิดีโอโหลด */
+  border-radius:18px;overflow:hidden;
+  background:#0a2417;border:1px solid rgba(255,255,255,.09);
+  box-shadow:0 28px 60px rgba(0,0,0,.30);
+}
+/* วิดีโอที่ใส่เข้ามาต้องเต็มกรอบ — iframe ถูก `img,iframe{height:auto}` ด้านบน
+   ของไฟล์นี้กดความสูงไว้ ต้อง !important ทับ ไม่งั้นกรอบจะแบนเป็นเส้น */
+.vid-frame > iframe,.vid-frame > video{
+  position:absolute;inset:0;width:100%;height:100%!important;
+  border:0;display:block;object-fit:cover;
+}
+/* สถานะยังไม่มีวิดีโอ */
+.vid-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:radial-gradient(circle at 50% 42%,#10402a 0%,#0a2417 70%)}
+.vid-play{
+  width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:rgba(18,180,89,.16);border:1.5px solid rgba(94,224,143,.45);
+  transition:transform .3s var(--ease-out),background .3s,border-color .3s;
+}
+.vid-play svg{width:26px;height:26px;margin-left:4px;fill:#8fe8b3}
+.vid-frame:hover .vid-play{transform:scale(1.07);background:rgba(18,180,89,.27);border-color:rgba(94,224,143,.75)}
+.vid-note{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:2.2px;color:#6f8d7c}
+
+@media (max-width:720px){
+  .vid-head,.vid-wrap{padding-left:16px;padding-right:16px}
+  .vid-frame{border-radius:13px}
+  .vid-play{width:58px;height:58px}
+  .vid-play svg{width:20px;height:20px}
+}
+
+/* ── OUR CLIENTS — infinite logo marquee ──────────────────────────────────
+   Two rows scroll in opposite directions. Each track holds the same logo set
+   twice, so animating it to -50% lands exactly on the duplicate and loops
+   with no visible seam.
+
+   Spacing lives on the tiles as margin-right, NOT as gap on the track: with
+   gap, 2N tiles have 2N-1 gaps, so -50% overshoots by half a gap each cycle
+   and the strip visibly drifts. margin keeps every step uniform.
+
+   max-width:none is required — the `*{max-width:100%}` retrofit near the top
+   of this file would otherwise clamp the track to the row and kill the loop. */
+.clients-head{
+  text-align:center;margin-bottom:32px;
+  padding-left:max(56px,calc((100% - var(--content-max))/2));
+  padding-right:max(56px,calc((100% - var(--content-max))/2));
+}
+.clients-row{position:relative;overflow:hidden;padding:5px 0}
+.clients-row + .clients-row{margin-top:18px}
+/* edge fades — colour must match the section background */
+.clients-row::before,.clients-row::after{content:"";position:absolute;top:0;bottom:0;width:130px;z-index:2;pointer-events:none}
+.clients-row::before{left:0;background:linear-gradient(90deg,#f6f7f3 20%,rgba(246,247,243,0))}
+.clients-row::after{right:0;background:linear-gradient(270deg,#f6f7f3 20%,rgba(246,247,243,0))}
+.clients-track{display:flex;width:max-content;max-width:none;will-change:transform}
+.clients-track--l{animation:clients-marquee-l 44s linear infinite}
+.clients-track--r{animation:clients-marquee-r 54s linear infinite}
+.clients-row:hover .clients-track{animation-play-state:paused}
+.clients-logo{
+  flex:none;width:196px;height:94px;margin-right:18px;padding:16px;
+  display:flex;align-items:center;justify-content:center;
+  background:#fff;border:1px solid #e7eae4;border-radius:14px;
+  transition:border-color .25s,box-shadow .25s,transform .25s;
+}
+.clients-logo img{max-height:56px;width:auto;opacity:.6;filter:grayscale(1);transition:opacity .25s,filter .25s}
+.clients-logo:hover{border-color:#c9dbcf;box-shadow:0 10px 24px rgba(6,53,31,.09);transform:translateY(-2px)}
+.clients-logo:hover img{opacity:1;filter:grayscale(0)}
+@keyframes clients-marquee-l{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes clients-marquee-r{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+
+@media (max-width:720px){
+  .clients-head{padding-left:16px;padding-right:16px}
+  .clients-row::before,.clients-row::after{width:44px}
+  .clients-logo{width:152px;height:78px;margin-right:12px;padding:12px}
+  .clients-logo img{max-height:44px}
+  .clients-track--l{animation-duration:32s}
+  .clients-track--r{animation-duration:38s}
+}
+/* no auto-motion: fall back to a manually swipeable strip */
+@media (prefers-reduced-motion:reduce){
+  .clients-track{animation:none!important}
+  .clients-row{overflow-x:auto;scrollbar-width:none}
+  .clients-row::-webkit-scrollbar{display:none}
+  .clients-row::before,.clients-row::after{display:none}
 }

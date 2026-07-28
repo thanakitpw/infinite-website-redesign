@@ -10,6 +10,17 @@ const TDS = "/docs/neocoat-tds.pdf";
 const timers = [];
 function clearTimers() { while (timers.length) clearInterval(timers.pop()); }
 
+const observers = [];
+function clearObservers() { while (observers.length) observers.pop().disconnect(); }
+
+// listener ที่ผูกไว้กับ document ต้องถอนเองตอน unmount ไม่งั้นสะสมทุกครั้งที่เปลี่ยนหน้า
+const disposers = [];
+function clearDisposers() { while (disposers.length) disposers.pop()(); }
+function onDoc(type, fn) {
+  document.addEventListener(type, fn);
+  disposers.push(() => document.removeEventListener(type, fn));
+}
+
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 const leaves = () => $$("div,span,a,button").filter((el) => el.children.length === 0);
 const txt = (el) => (el.textContent || "").trim();
@@ -79,7 +90,13 @@ function slider() {
   let idx = 0;
   const show = (i) => {
     idx = (i + slides.length) % slides.length;
-    slides.forEach((s, k) => { s.style.opacity = k === idx ? "1" : "0"; s.style.zIndex = k === idx ? "2" : "1"; });
+    slides.forEach((s, k) => {
+      const on = k === idx;
+      s.style.opacity = on ? "1" : "0";
+      s.style.zIndex = on ? "2" : "1";
+      // ถอดคลาสออกจากสไลด์ที่ไม่ active เพื่อรีเซ็ตซูม/ตัวหนังสือให้เริ่มใหม่รอบหน้า
+      s.classList.toggle("hero-on", on);
+    });
     dots.forEach((d, k) => { d.style.width = k === idx ? "30px" : "10px"; d.style.background = k === idx ? "#12b459" : "rgba(255,255,255,.4)"; d.style.cursor = "pointer"; });
   };
   show(0);
@@ -113,16 +130,25 @@ function nameFromLabel(l) {
   if (l.includes("เบอร์โทร")) return "phone";
   if (l.includes("LINE") || l.includes("อีเมล")) return "contact";
   if (l.includes("ประเภทงาน")) return "jobType";
-  if (l.includes("พื้นที่")) return "area";
+  // "รายละเอียด" ต้องมาก่อน "พื้นที่" — ฟอร์มหน้าแรกใช้ข้อความเดียวว่า
+  // "รายละเอียดงาน (พื้นที่ ตร.ม. / ชั่วโมงกันไฟ)" ซึ่งมีทั้งสองคำ ถ้าเช็ค
+  // พื้นที่ก่อน ช่องรายละเอียดจะถูกตั้งชื่อเป็น area แล้วข้อมูลไม่ถูกส่ง
   if (l.includes("รายละเอียด")) return "detail";
+  if (l.includes("พื้นที่")) return "area";
   return "field";
 }
 function form() {
   const fields = $$('div[style*="#d9e0da"]').filter((d) => d.children.length === 0);
+  // ช่องกรอกเองก็เข้าเงื่อนไข #d9e0da — ต้องแยกว่า element ก่อนหน้าเป็น "label"
+  // จริง หรือเป็นอีกช่องกรอกที่วางติดกัน (ฟอร์มหน้าแรกไม่มี label เลย ช่องเรียง
+  // ต่อกันเฉยๆ ถ้าเหมาว่าเป็น label ชื่อฟิลด์จะเลื่อนผิดกันหมดทั้งฟอร์ม)
+  const isFieldBox = (n) => !!n && /#d9e0da/.test(n.getAttribute("style") || "");
   fields.forEach((el) => {
     const ph = txt(el);
-    const label = el.previousElementSibling ? txt(el.previousElementSibling) : "";
-    const nm = nameFromLabel(label);
+    const prev = el.previousElementSibling;
+    const label = prev && !isFieldBox(prev) ? txt(prev) : "";
+    // ไม่มี label ก็ใช้ข้อความ placeholder ในช่องนั้นเป็นตัวบอกชนิดฟิลด์
+    const nm = label ? nameFromLabel(label) : nameFromLabel(ph);
     const boxStyle = (el.getAttribute("style") || "")
       .replace(/color:#9aa79c/g, "color:#0e1a14")
       .replace(/color:#4a584f/g, "color:#0e1a14") + ";width:100%;background:#fff;outline:none;font-family:inherit";
@@ -228,6 +254,15 @@ function productFilter() {
       if (countEl) countEl.textContent = "แสดง " + shown + " รายการ";
     });
   });
+  // มาจาก dropdown เมนูสินค้า (/products?cat=<หมวด>) → กดฟิลเตอร์ให้เลย
+  // ค่า cat ต้องตรงกับข้อความในแถบหมวดหมู่เป๊ะ หลังตัด "□ " และ " (n)" ออก
+  const wanted = new URLSearchParams(location.search).get("cat");
+  if (wanted) {
+    const label = (el) => txt(el).replace(/^[■□]\s*/, "").replace(/\s*\(\d+\)$/, "");
+    const target = items.find((it) => label(it) === wanted);
+    if (target) target.click();
+  }
+
   // sort dropdown
   const sortEl = leaves().find((e) => txt(e).startsWith("เรียงตาม"));
   if (sortEl && !sortEl.dataset.enh) {
@@ -276,6 +311,220 @@ function articleFilter() {
   if (two && two.parentElement) two.parentElement.style.display = "none";
 }
 
+/* ฟอร์มหน้า /landing — เดิมปุ่ม "ส่งข้อมูลขอใบเสนอราคา" เป็น <button
+   type="button"> ที่ไม่มี handler อยู่ที่ไหนเลยในโปรเจค กดแล้วไม่เกิดอะไรขึ้น
+   ทั้งที่หน้านี้เป็นปลายทางของโฆษณา จึงรับ lead ไม่ได้แม้ใบเดียว */
+const SUCCESS_HTML =
+  '<div style="text-align:center;padding:34px 20px">' +
+  '<div style="width:66px;height:66px;border-radius:50%;background:#eafaf0;display:flex;align-items:center;justify-content:center;margin:0 auto 18px">' +
+  '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#018438" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>' +
+  '<div style="font-size:20px;font-weight:700;margin-bottom:9px;color:#0e1a14">ส่งคำขอเรียบร้อยแล้ว</div>' +
+  '<div style="font-size:14.5px;color:#5c6b62;line-height:1.65">ทีมวิศวกรจะติดต่อกลับพร้อมใบเสนอราคาภายใน 24 ชั่วโมง<br>' +
+  'ต้องการด่วน โทร <a href="tel:020410119" style="color:#018438;font-weight:600">02-041-0119</a></div></div>';
+
+function landingForm() {
+  const card = document.querySelector(".hero-card");
+  if (!card || card.dataset.enh) return;
+  // ปุ่มมี <svg> ข้างใน จับด้วยข้อความไม่ได้ ต้องจับด้วย selector
+  const btn = card.querySelector("button.btn-primary, button.btn");
+  if (!btn) return;
+  card.dataset.enh = "1";
+
+  const val = (id) => {
+    const el = document.getElementById(id);
+    return el ? el.value.trim() : "";
+  };
+  const flash = (msg) => {
+    let box = card.querySelector("[data-lp-err]");
+    if (!box) {
+      box = document.createElement("div");
+      box.setAttribute("data-lp-err", "1");
+      box.setAttribute("role", "alert");
+      box.style.cssText = "margin-top:10px;padding:10px 13px;border-radius:9px;background:#fdecea;color:#a3271b;font-size:13.5px;line-height:1.55";
+      btn.insertAdjacentElement("afterend", box);
+    }
+    box.textContent = msg;
+  };
+
+  const orig = btn.innerHTML;
+  btn.addEventListener("click", async () => {
+    if (btn.disabled) return;
+    const payload = {
+      name: val("lp-name"),
+      phone: val("lp-phone"),
+      jobType: val("lp-interest"),
+      detail: val("lp-msg"),
+      source: "landing",
+    };
+    if (!payload.name || !payload.phone) {
+      flash("กรุณากรอกชื่อและเบอร์โทรศัพท์ เพื่อให้ทีมงานติดต่อกลับได้");
+      (document.getElementById(payload.name ? "lp-phone" : "lp-name") || {}).focus?.();
+      return;
+    }
+    const err = card.querySelector("[data-lp-err]");
+    if (err) err.remove();
+    btn.disabled = true;
+    btn.textContent = "กำลังส่ง…";
+    try {
+      const r = await fetch("/api/quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok && j.ok) {
+        card.innerHTML = SUCCESS_HTML;
+        return;
+      }
+      // 503 = บันทึกไม่สำเร็จจริง ต้องบอกลูกค้า ไม่ใช่แกล้งว่าสำเร็จ
+      flash(j.error || "ส่งไม่สำเร็จ กรุณาลองใหม่ หรือโทร 02-041-0119");
+    } catch {
+      flash("เชื่อมต่อไม่ได้ กรุณาตรวจอินเทอร์เน็ตแล้วลองใหม่ หรือโทร 02-041-0119");
+    }
+    btn.disabled = false;
+    btn.innerHTML = orig;
+  });
+}
+
+/* เมนูสินค้าแบบ dropdown — เปิดด้วย hover/โฟกัสคีย์บอร์ดจาก CSS อยู่แล้ว
+   ที่ต้องพึ่ง JS คือจอสัมผัส เพราะไม่มี hover ถ้าไม่ทำอะไร แตะแล้วจะเด้งไป
+   /products ทันทีโดยไม่เห็นเมนูเลย */
+function navDropdown() {
+  const dd = document.querySelector(".nav-dd");
+  if (!dd || dd.dataset.enh) return;
+  dd.dataset.enh = "1";
+
+  const trigger = dd.querySelector(":scope > a");
+  const touch = typeof matchMedia === "function" && matchMedia("(hover: none)").matches;
+  if (touch && trigger) {
+    trigger.addEventListener("click", (e) => {
+      // แตะแรก = เปิดเมนู, แตะซ้ำที่ "สินค้า" = ไปหน้ารวมสินค้าตามปกติ
+      if (!dd.classList.contains("nav-open")) {
+        e.preventDefault();
+        dd.classList.add("nav-open");
+      }
+    });
+  }
+  onDoc("click", (e) => { if (!dd.contains(e.target)) dd.classList.remove("nav-open"); });
+  onDoc("keydown", (e) => { if (e.key === "Escape") dd.classList.remove("nav-open"); });
+}
+
+/* ── ANIMATION ────────────────────────────────────────────────────────────
+   คลาสทั้งหมดถูกเติมจาก JS ไม่ได้อยู่ใน HTML — ถ้า JS ไม่ทำงานหรือผู้ใช้ตั้ง
+   prefers-reduced-motion ไว้ เนื้อหาจะแสดงปกติทันที ไม่มีทางที่ opacity:0
+   จะค้างจนอ่านอะไรไม่ได้ */
+const reduceMotion = () =>
+  typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* หน่วงเวลาแบบทยอย ต้องทำผ่านคลาสเท่านั้น ห้ามใช้ el.style.transitionDelay
+   เหตุผล: การเขียน el.style.* ทำให้เบราว์เซอร์ serialize attribute style ใหม่
+   (border-radius:14px → border-radius: 14px) แล้ว selector แบบ [style*="..."]
+   จะหาไม่เจอ — ทั้ง globals.css และฟังก์ชันอื่นในไฟล์นี้พึ่ง selector ชนิดนั้น
+   ทั้งหมด ถ้าแตะ inline style เข้าไป layout การ์ด ฟิลเตอร์สินค้า และขนาดฟอนต์
+   บนมือถือจะพังพร้อมกัน */
+const DELAY_STEPS = 7;
+const delayClass = (i) => `rv-d${Math.min(i, DELAY_STEPS)}`;
+
+/* hero: แยกภาพพื้นหลังออกมาเป็นเลเยอร์ของตัวเอง เพื่อซูมด้วย transform ได้
+   (ถ้าซูมที่ตัวสไลด์ ตัวหนังสือจะถูกซูมไปด้วย และการขยับ background-size
+   ทำให้เบราว์เซอร์ repaint ทุกเฟรม — transform ใช้ GPU ลื่นกว่ามาก) */
+function heroMotion() {
+  // ใช้ selector ชุดเดียวกับ slider() เพราะ motion() รันก่อน — data-slide ยังไม่ถูกใส่
+  let slides = $$("[data-slide]");
+  if (slides.length < 2) slides = $$('[style*="animation:imgcycle"]');
+  if (slides.length < 2) return;
+
+  slides.forEach((s, i) => {
+    if (s.dataset.mo) return;
+    s.dataset.mo = "1";
+    // ปักหมุด data-slide ตรงนี้เลย: ด้านล่างเราแตะ .style ซึ่งทำให้เบราว์เซอร์
+    // เขียน attribute style ใหม่ (animation:imgcycle → animation: imgcycle)
+    // ทำให้ selector สำรองของ slider() หาไม่เจอ ถ้าไม่มี data-slide ไว้ก่อน
+    // สไลด์ hero จะตายทั้งหมด
+    s.dataset.slide = String(i);
+    const img = getComputedStyle(s).backgroundImage;
+    if (img && img !== "none") {
+      const layer = document.createElement("div");
+      layer.className = "hero-kb";
+      layer.style.backgroundImage = img;
+      s.style.backgroundImage = "none";
+      s.insertBefore(layer, s.firstChild);
+    }
+    // ทยอยโผล่: ป้าย → หัวเรื่อง → คำโปรย → ปุ่ม
+    // หน่วงเวลาใช้ "คลาส" ไม่ใช่ el.style.transitionDelay — ดูเหตุผลที่ delayClass ด้านบน
+    const copy = Array.from(s.children).find((c) => c.querySelector("h1,p"));
+    if (copy) {
+      Array.from(copy.children).forEach((el, i) => {
+        el.dataset.heroCopy = "1";
+        el.classList.add(delayClass(i + 1));
+      });
+    }
+  });
+}
+
+/* เลื่อนมาถึงแล้วค่อยโผล่ — section ทั้งก้อนขึ้นมาก่อน แล้วการ์ดในกริดทยอยตามทีละใบ */
+function revealOnScroll() {
+  if (!("IntersectionObserver" in window)) return;
+  // หน้าปกติห่อด้วย div 1440px, หน้า landing ห่อด้วย .lp
+  const root = document.querySelector('[style*="width:1440px"]') || document.querySelector(".lp");
+  if (!root) return;
+
+  const fold = window.innerHeight * 0.85;
+  const skip = (el) => {
+    if (!(el instanceof HTMLElement)) return true;            // <style>/<script>/text node
+    if (/^(STYLE|SCRIPT|LINK)$/.test(el.tagName)) return true;
+    // position:fixed/sticky — ถ้า ancestor มี transform ตำแหน่งจะเพี้ยน (ปุ่มลอย/แถบ CTA ล่าง)
+    const pos = getComputedStyle(el).position;
+    if (pos === "fixed" || pos === "sticky") return true;
+    // อยู่ในจอตอนโหลดอยู่แล้ว (แถบติดต่อ, เมนู, hero) — ต้องเห็นทันที
+    // ถ้า fade เข้า จะกิน LCP ฟรีๆ ทั้งที่ผู้ใช้ยังไม่ได้เลื่อนหน้าเลย
+    return el.getBoundingClientRect().top < fold;
+  };
+  const sections = Array.from(root.children).filter((el) => !skip(el));
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        e.target.classList.add("rv-in");
+        io.unobserve(e.target); // โผล่แล้วจบ ไม่ต้องเฝ้าอีก
+      });
+    },
+    { rootMargin: "0px 0px -8% 0px", threshold: 0.06 }
+  );
+  observers.push(io);
+
+  const tag = (el, step) => {
+    if (el.dataset.rv) return;
+    el.dataset.rv = "1";
+    el.classList.add("rv");
+    if (step) el.classList.add(delayClass(step));
+    io.observe(el);
+  };
+
+  sections.forEach((sec) => {
+    if (sec.querySelector("[data-slide]")) return;      // hero มี animation ของตัวเองแล้ว
+    if (sec.querySelector(".clients-track")) return;    // carousel เลื่อนอยู่ตลอดแล้ว
+
+    // กริดการ์ดที่เป็นลูกตรงของ section → ทยอยทีละใบ ส่วนที่เหลือขึ้นมาทั้งก้อน
+    const grids = Array.from(sec.children).filter(
+      (c) => /display:grid/.test(c.getAttribute("style") || "") && c.children.length > 1
+    );
+    if (grids.length) {
+      Array.from(sec.children).forEach((c) => { if (!grids.includes(c)) tag(c, 0); });
+      grids.forEach((g) => Array.from(g.children).forEach((k, i) => tag(k, i)));
+    } else {
+      tag(sec, 0);
+    }
+  });
+}
+
+function motion() {
+  if (reduceMotion()) return;
+  heroMotion();
+  revealOnScroll();
+}
+
 export default function Enhance() {
   const pathname = usePathname();
   useEffect(() => {
@@ -284,14 +533,19 @@ export default function Enhance() {
       const safe = (f) => { try { f(); } catch (e) { console.warn("[enhance]", f.name, e); } };
       safe(linkifyButtons);
       safe(linkifyContacts);
+      safe(navDropdown);
+      safe(motion);   // ต้องมาก่อน slider() เพราะ slider จะสั่งเล่น animation ของสไลด์
       safe(slider);
       safe(solutionIcons);
-      if (pathname === "/contact") safe(form);
+      // หน้าแรกก็มีฟอร์มขอใบเสนอราคาใน QUOTE BAND — เดิม form() รันแค่ /contact
+      // ทำให้ฟอร์มหน้าแรกกดส่งไม่ได้เลย
+      if (pathname === "/contact" || pathname === "/") safe(form);
+      if (pathname === "/landing") safe(landingForm);
       if (pathname === "/products") safe(productFilter);
       if (pathname === "/articles") safe(articleFilter);
     };
     const t = setTimeout(run, 30);
-    return () => { clearTimeout(t); clearTimers(); };
+    return () => { clearTimeout(t); clearTimers(); clearObservers(); clearDisposers(); };
   }, [pathname]);
   return null;
 }
