@@ -93,13 +93,10 @@
     </a>
   </div>
 
-  <!-- PAGINATION -->
-  <div style="display:flex;justify-content:center;gap:8px;padding:20px 0 50px;font-size:14px;font-weight:600">
-    <span style="width:38px;height:38px;border-radius:9px;background:#018438;color:#fff;display:flex;align-items:center;justify-content:center">1</span>
-    <span style="width:38px;height:38px;border-radius:9px;border:1px solid #d9e0da;color:#4a584f;display:flex;align-items:center;justify-content:center">2</span>
-    <span style="width:38px;height:38px;border-radius:9px;border:1px solid #d9e0da;color:#4a584f;display:flex;align-items:center;justify-content:center">3</span>
-    <span style="width:38px;height:38px;border-radius:9px;border:1px solid #d9e0da;color:#4a584f;display:flex;align-items:center;justify-content:center">→</span>
-  </div>
+  <!-- ไม่มี pagination — บทความมี 7 ชิ้น แสดงครบในหน้าเดียว
+       เดิมมีแถบเลข 1/2/3/→ เป็นของหลอก กดไม่ได้สักปุ่ม (แล้วยังบอกใบ้ว่ามี
+       บทความอีก 2 หน้าที่ไม่มีอยู่จริง) enhance.jsx ต้องคอยซ่อนทิ้งตอน runtime
+       ถ้าบทความเยอะขึ้นจนต้องแบ่งหน้า ค่อยทำของจริงที่ต่อกับจำนวนบทความ -->
 
   <!-- FOOTER -->
   <div style="background:#0e1a14;color:#c3cfc7;padding:56px 56px 30px">

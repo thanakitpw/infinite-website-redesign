@@ -6,6 +6,7 @@ const LINE_MAIN = "https://lin.ee/N3VgCj5";
 const LINE = { imat999: "https://line.me/ti/p/~imat999", blue999: "https://line.me/ti/p/~blue999" };
 const FB = "https://www.facebook.com/yootimc";
 const TDS = "/docs/neocoat-tds.pdf";
+const NEOCOAT_S = "/product/neocoat-intumescent-paint-s";
 
 const timers = [];
 function clearTimers() { while (timers.length) clearInterval(timers.pop()); }
@@ -44,7 +45,13 @@ function bindNav(el, url, opt = {}) {
 
 function linkifyButtons() {
   leaves().forEach((el) => {
-    if (el.dataset.enhb || (el.tagName === "A" && el.getAttribute("href"))) return;
+    /* อยู่ใน <a href> อยู่แล้วห้ามผูกทับเด็ดขาด — bindNav เรียก stopPropagation()
+       ลิงก์จริงของ ancestor จะตายทันที เคสจริงคือปุ่ม "ดูรายละเอียด" ในการ์ด
+       สินค้าหน้า /products ทั้ง 11 ใบ การ์ดชี้ /product/<slug> ของตัวเอง แต่ถูก
+       กติกา startsWith("ดูรายละเอียด") ลากไป /product หมด กดสินค้าใดก็ได้
+       Neocoat-S ตัวเดียว (เดิมเช็คแค่ el เป็น <a> เอง ซึ่งไม่พอ เพราะปุ่มเป็น
+       <div> ที่ "อยู่ข้างใน" <a> อีกที) */
+    if (el.dataset.enhb || el.closest("a[href]")) return;
     const t = txt(el);
     let url = null, opt = {};
     if (["ขอใบเสนอราคา", "ขอใบเสนอราคาฟรี", "ขอใบเสนอราคาโครงการ", "ปรึกษาวิศวกร", "ขอคำนวณ & ใบเสนอราคา"].includes(t)) url = "/contact";
@@ -52,9 +59,10 @@ function linkifyButtons() {
     else if (t === "LINE: imat999") { url = LINE.imat999; opt.external = true; }
     else if (t === "LINE: blue999") { url = LINE.blue999; opt.external = true; }
     else if (t.startsWith("ดูสินค้าทั้งหมด") || t.startsWith("ดูทั้งหมด")) url = "/products";
-    else if (t.startsWith("ดูรายละเอียด")) url = "/product";
+    // ชี้ slug ตรงๆ ไม่ผ่าน /product ที่เป็น redirect จะได้ไม่เสียจังหวะโหลดฟรีหนึ่งรอบ
+    else if (t.startsWith("ดูรายละเอียด")) url = NEOCOAT_S;
     else if (t.startsWith("ดาวน์โหลด")) { url = TDS; opt.download = true; }
-    else if (t.startsWith("อ่านต่อ") || t.startsWith("อ่านบทความ")) { if (el.closest("a[href]")) return; url = "/articles"; }
+    else if (t.startsWith("อ่านต่อ") || t.startsWith("อ่านบทความ")) url = "/articles";
     else if (t === "หน้าแรก") url = "/";
     if (url) { bindNav(el, url, opt); el.dataset.enhb = "1"; }
   });
@@ -306,9 +314,7 @@ function articleFilter() {
       cards.forEach((c) => { c.style.display = (label === "ทั้งหมด" || articleCat(c.textContent) === label) ? "" : "none"; });
     });
   });
-  // remove the non-functional numeric pagination
-  const two = leaves().find((e) => txt(e) === "2" && (e.getAttribute("style") || "").includes("border-radius"));
-  if (two && two.parentElement) two.parentElement.style.display = "none";
+  // แถบ pagination ปลอมถูกลบออกจาก articles.html แล้ว ไม่ต้องมาซ่อนตอน runtime
 }
 
 /* ฟอร์มหน้า /landing — เดิมปุ่ม "ส่งข้อมูลขอใบเสนอราคา" เป็น <button
