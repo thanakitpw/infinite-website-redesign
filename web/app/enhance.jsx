@@ -317,82 +317,6 @@ function articleFilter() {
   // แถบ pagination ปลอมถูกลบออกจาก articles.html แล้ว ไม่ต้องมาซ่อนตอน runtime
 }
 
-/* ฟอร์มหน้า /neocoat — เดิมปุ่ม "ส่งข้อมูลขอใบเสนอราคา" เป็น <button
-   type="button"> ที่ไม่มี handler อยู่ที่ไหนเลยในโปรเจค กดแล้วไม่เกิดอะไรขึ้น
-   ทั้งที่หน้านี้เป็นปลายทางของโฆษณา จึงรับ lead ไม่ได้แม้ใบเดียว */
-const SUCCESS_HTML =
-  '<div style="text-align:center;padding:34px 20px">' +
-  '<div style="width:66px;height:66px;border-radius:50%;background:#eafaf0;display:flex;align-items:center;justify-content:center;margin:0 auto 18px">' +
-  '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#018438" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>' +
-  '<div style="font-size:20px;font-weight:700;margin-bottom:9px;color:#0e1a14">ส่งคำขอเรียบร้อยแล้ว</div>' +
-  '<div style="font-size:14.5px;color:#5c6b62;line-height:1.65">ทีมวิศวกรจะติดต่อกลับพร้อมใบเสนอราคาภายใน 24 ชั่วโมง<br>' +
-  'ต้องการด่วน โทร <a href="tel:020410119" style="color:#018438;font-weight:600">02-041-0119</a></div></div>';
-
-function landingForm() {
-  const card = document.querySelector(".hero-card");
-  if (!card || card.dataset.enh) return;
-  // ปุ่มมี <svg> ข้างใน จับด้วยข้อความไม่ได้ ต้องจับด้วย selector
-  const btn = card.querySelector("button.btn-primary, button.btn");
-  if (!btn) return;
-  card.dataset.enh = "1";
-
-  const val = (id) => {
-    const el = document.getElementById(id);
-    return el ? el.value.trim() : "";
-  };
-  const flash = (msg) => {
-    let box = card.querySelector("[data-lp-err]");
-    if (!box) {
-      box = document.createElement("div");
-      box.setAttribute("data-lp-err", "1");
-      box.setAttribute("role", "alert");
-      box.style.cssText = "margin-top:10px;padding:10px 13px;border-radius:9px;background:#fdecea;color:#a3271b;font-size:13.5px;line-height:1.55";
-      btn.insertAdjacentElement("afterend", box);
-    }
-    box.textContent = msg;
-  };
-
-  const orig = btn.innerHTML;
-  btn.addEventListener("click", async () => {
-    if (btn.disabled) return;
-    const payload = {
-      name: val("lp-name"),
-      phone: val("lp-phone"),
-      jobType: val("lp-interest"),
-      detail: val("lp-msg"),
-      // ระบุว่า lead มาจาก landing page ตัวไหน เผื่อมีหน้าที่สองในอนาคตจะได้แยกออก
-      source: "neocoat-lp",
-    };
-    if (!payload.name || !payload.phone) {
-      flash("กรุณากรอกชื่อและเบอร์โทรศัพท์ เพื่อให้ทีมงานติดต่อกลับได้");
-      (document.getElementById(payload.name ? "lp-phone" : "lp-name") || {}).focus?.();
-      return;
-    }
-    const err = card.querySelector("[data-lp-err]");
-    if (err) err.remove();
-    btn.disabled = true;
-    btn.textContent = "กำลังส่ง…";
-    try {
-      const r = await fetch("/api/quote", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const j = await r.json().catch(() => ({}));
-      if (r.ok && j.ok) {
-        card.innerHTML = SUCCESS_HTML;
-        return;
-      }
-      // 503 = บันทึกไม่สำเร็จจริง ต้องบอกลูกค้า ไม่ใช่แกล้งว่าสำเร็จ
-      flash(j.error || "ส่งไม่สำเร็จ กรุณาลองใหม่ หรือโทร 02-041-0119");
-    } catch {
-      flash("เชื่อมต่อไม่ได้ กรุณาตรวจอินเทอร์เน็ตแล้วลองใหม่ หรือโทร 02-041-0119");
-    }
-    btn.disabled = false;
-    btn.innerHTML = orig;
-  });
-}
-
 /* เมนูสินค้าแบบ dropdown — เปิดด้วย hover/โฟกัสคีย์บอร์ดจาก CSS อยู่แล้ว
    ที่ต้องพึ่ง JS คือจอสัมผัส เพราะไม่มี hover ถ้าไม่ทำอะไร แตะแล้วจะเด้งไป
    /products ทันทีโดยไม่เห็นเมนูเลย */
@@ -547,7 +471,6 @@ export default function Enhance() {
       // หน้าแรกก็มีฟอร์มขอใบเสนอราคาใน QUOTE BAND — เดิม form() รันแค่ /contact
       // ทำให้ฟอร์มหน้าแรกกดส่งไม่ได้เลย
       if (pathname === "/contact" || pathname === "/") safe(form);
-      if (pathname === "/neocoat") safe(landingForm);
       if (pathname === "/products") safe(productFilter);
       if (pathname === "/articles") safe(articleFilter);
     };
