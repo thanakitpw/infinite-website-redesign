@@ -95,11 +95,14 @@
   .lp .hero-trust-k{font-size:19px;font-weight:700;color:var(--green-light);line-height:1.2}
   .lp .hero-trust-v{font-size:12.5px;color:var(--green-mute)}
 
-  /* ── Hero Figure (แทนที่ฟอร์มเดิม) ── */
-  .lp .hero-figure{position:relative;background:var(--white);border-radius:var(--radius-lg);padding:14px;box-shadow:var(--shadow-xl)}
-  .lp .hero-figure img{width:100%;border-radius:12px;aspect-ratio:3/2;object-fit:cover;display:block}
-  .lp .hero-figure-flag{position:absolute;top:-13px;left:26px;background:var(--accent);color:var(--white);font-size:12px;font-weight:600;padding:5px 14px;border-radius:7px;letter-spacing:.2px;z-index:1}
-  .lp .hero-figure figcaption{padding:13px 8px 5px;font-size:12.5px;color:var(--text-muted);text-align:center;line-height:1.6}
+  /* ── Hero Figure ──
+     รูปเป็น PNG/WebP ที่ตัดพื้นหลังออกแล้ว (โปร่งใส) จึงไม่ต้องมีกรอบการ์ด
+     ห้ามใส่ object-fit:cover หรือ aspect-ratio ตายตัว เพราะจะครอปถังซ้าย-ขวาหาย
+     ปล่อยให้สูงตามสัดส่วนจริงของไฟล์ */
+  .lp .hero-figure{position:relative;text-align:center}
+  .lp .hero-figure img{width:100%;height:auto;display:block;filter:drop-shadow(0 20px 34px rgba(0,0,0,.45))}
+  .lp .hero-figure-flag{display:inline-flex;align-items:center;background:var(--accent);color:var(--white);font-size:12px;font-weight:600;padding:6px 15px;border-radius:7px;letter-spacing:.2px;margin-bottom:16px}
+  .lp .hero-figure figcaption{padding-top:16px;font-size:13px;color:var(--green-mute);text-align:center;line-height:1.65}
   /* ── Lab strip ── */
   .lp .labs{background:var(--white);border-bottom:1px solid var(--border);padding:26px 0}
   .lp .labs-inner{display:flex;align-items:center;justify-content:center;gap:14px 44px;flex-wrap:wrap}
@@ -353,7 +356,7 @@
            ไม่ใส่ loading="lazy" เพราะอยู่ในจอแรก เป็นตัวชิง LCP กับ hero พอดี -->
       <figure class="hero-figure">
         <span class="hero-figure-flag">ของแท้จากโรงงาน · พร้อมส่ง</span>
-        <img src="/images/neocoat-lineup-hero.webp" alt="ถังสีกันไฟ Neocoat Intumescent Paint สูตรน้ำมันและสูตรน้ำ แบรนด์ uniQue products" width="1400" height="933" fetchpriority="high">
+        <img src="/images/neocoat-lineup-cutout.webp" alt="ถังสีกันไฟ Neocoat Intumescent Paint สูตรน้ำมันและสูตรน้ำ แบรนด์ uniQue products" width="1200" height="814" fetchpriority="high">
         <figcaption>Neocoat Intumescent Paint สูตรน้ำมัน (S) และสูตรน้ำ (W) · แบรนด์ uniQue products</figcaption>
       </figure>
     </div>
