@@ -44,7 +44,7 @@
           <div style="position:relative;background:#06351f;padding-bottom:64px">
             <div style="position:relative;height:474px;overflow:hidden">
               <!-- slide 1 -->
-              <div style="position:absolute;inset:0;opacity:1;animation:imgcycle 18s infinite;background:repeating-linear-gradient(135deg,#123f28 0 16px,#154a30 16px 32px);background-image:url('/images/work-spray-steel.png');background-size:cover;background-position:center;background-repeat:no-repeat">
+              <div style="position:absolute;inset:0;opacity:1;animation:imgcycle 18s infinite;background:#06351f;background-image:url('/images/hero-warehouse-materials.webp');background-size:cover;background-position:center;background-repeat:no-repeat">
                 <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(4,20,12,.92) 0%,rgba(4,20,12,.55) 48%,rgba(4,20,12,.1) 100%)"></div>
                 
                 <div style="position:relative;height:100%;display:flex;flex-direction:column;justify-content:center;padding:0 72px;max-width:760px">
@@ -54,27 +54,19 @@
                   <div style="display:flex;gap:12px"><div style="background:#018438;color:#fff;padding:15px 26px;border-radius:11px;font-weight:600;font-size:15.5px">ขอใบเสนอราคาฟรี</div><div style="background:#06c755;color:#fff;padding:15px 24px;border-radius:11px;font-weight:600;font-size:15.5px">ปรึกษาผ่าน LINE</div></div>
                 </div>
               </div>
-              <!-- slide 2 -->
-              <div style="position:absolute;inset:0;opacity:0;animation:imgcycle 18s infinite 6s;background:repeating-linear-gradient(135deg,#0f3a4a 0 16px,#134557 16px 32px);background-image:url('/images/steel-frame-1.jpg');background-size:cover;background-position:center;background-repeat:no-repeat">
-                <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(4,16,20,.92) 0%,rgba(4,16,20,.55) 48%,rgba(4,16,20,.1) 100%)"></div>
-                
-                <div style="position:relative;height:100%;display:flex;flex-direction:column;justify-content:center;padding:0 72px;max-width:760px">
-                  <div style="display:inline-flex;align-self:flex-start;align-items:center;gap:9px;padding:7px 14px;border:1px solid rgba(94,224,143,.4);border-radius:999px;background:rgba(18,180,89,.14);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.4px;color:#8fe8b3;margin-bottom:22px"><span style="width:7px;height:7px;border-radius:50%;background:#12b459;display:inline-block"></span>สินค้าครบไลน์ · พร้อมส่ง</div>
-                  <div style="margin:0 0 18px;font-size:52px;line-height:1.08;font-weight:700;color:#fff;letter-spacing:-.5px">วัสดุกันไฟครบวงจร<br><span style="color:#5ee08f">สี · ซีเมนต์ · ผ้ากันไฟ</span></div>
-                  <p style="margin:0 0 28px;font-size:17px;line-height:1.65;color:#c9ddd0;max-width:480px">ตั้งแต่สีกันไฟ สีรองพื้น ทินเนอร์ ซีเมนต์กันไฟ Fendolite ไปจนถึงผ้ากันไฟ Fiberglass ราคาโรงงานจากผู้ผลิตโดยตรง</p>
-                  <div style="display:flex;gap:12px"><div style="background:#018438;color:#fff;padding:15px 26px;border-radius:11px;font-weight:600;font-size:15.5px">ดูสินค้าทั้งหมด</div><div style="border:1px solid rgba(255,255,255,.35);color:#fff;padding:15px 24px;border-radius:11px;font-weight:600;font-size:15.5px">ดาวน์โหลด Spec</div></div>
-                </div>
+              <!-- slide 2 — เป็นไฟล์ banner สำเร็จ มีโลโก้และข้อความฝังมาในรูปแล้ว
+                   จึงไม่วาง gradient หรือข้อความ hero ทับ (จะซ้อนกันจนอ่านไม่ออกทั้งคู่)
+                   ให้ทั้งใบคลิกได้แทน เพื่อไม่ให้เสียปุ่ม CTA ของสไลด์นี้ไป
+                   รูปเป็น 8:3 เท่ากับกล่อง hero (37.5vw ใน globals.css) จึงไม่ถูกครอป -->
+              <div style="position:absolute;inset:0;opacity:0;animation:imgcycle 18s infinite 6s;background:#06351f;background-image:url('/images/hero-neocoat-lineup.webp');background-size:cover;background-position:center;background-repeat:no-repeat">
+                <a href="/products" aria-label="ดูสินค้าสีกันไฟ Neocoat ทั้งหมด" style="position:absolute;inset:0;z-index:1"></a>
               </div>
-              <!-- slide 3 -->
-              <div style="position:absolute;inset:0;opacity:0;animation:imgcycle 18s infinite 12s;background:repeating-linear-gradient(135deg,#123f28 0 16px,#0f3823 16px 32px);background-image:url('/images/engineer.jpg');background-size:cover;background-position:center;background-repeat:no-repeat">
-                <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(4,20,12,.92) 0%,rgba(4,20,12,.55) 48%,rgba(4,20,12,.1) 100%)"></div>
-                
-                <div style="position:relative;height:100%;display:flex;flex-direction:column;justify-content:center;padding:0 72px;max-width:760px">
-                  <div style="display:inline-flex;align-self:flex-start;align-items:center;gap:9px;padding:7px 14px;border:1px solid rgba(94,224,143,.4);border-radius:999px;background:rgba(18,180,89,.14);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.4px;color:#8fe8b3;margin-bottom:22px"><span style="width:7px;height:7px;border-radius:50%;background:#12b459;display:inline-block"></span>รับรองโดยวุฒิวิศวกรโยธา</div>
-                  <div style="margin:0 0 18px;font-size:52px;line-height:1.08;font-weight:700;color:#fff;letter-spacing:-.5px">บริการวิศวกรรม<br><span style="color:#5ee08f">ตรวจสอบ–รับรองอาคาร/โรงงาน</span></div>
-                  <p style="margin:0 0 28px;font-size:17px;line-height:1.65;color:#c9ddd0;max-width:480px">ทีมวิศวกรโยธาออกแบบ ตรวจสอบ และออกเอกสารรับรองระบบกันไฟให้ถูกต้องตามกฎกระทรวง</p>
-                  <div style="display:flex;gap:12px"><div style="background:#018438;color:#fff;padding:15px 26px;border-radius:11px;font-weight:600;font-size:15.5px">ปรึกษาวิศวกร</div><div style="background:#06c755;color:#fff;padding:15px 24px;border-radius:11px;font-weight:600;font-size:15.5px">ปรึกษาผ่าน LINE</div></div>
-                </div>
+              <!-- slide 3 — เป็นไฟล์ banner สำเร็จ มีโลโก้และข้อความฝังมาในรูปแล้ว
+                   จึงไม่วาง gradient หรือข้อความ hero ทับ (จะซ้อนกันจนอ่านไม่ออกทั้งคู่)
+                   ให้ทั้งใบคลิกได้แทน เพื่อไม่ให้เสียปุ่ม CTA ของสไลด์นี้ไป
+                   รูปเป็น 8:3 เท่ากับกล่อง hero (37.5vw ใน globals.css) จึงไม่ถูกครอป -->
+              <div style="position:absolute;inset:0;opacity:0;animation:imgcycle 18s infinite 12s;background:#06351f;background-image:url('/images/hero-fire-protection.webp');background-size:cover;background-position:center;background-repeat:no-repeat">
+                <a href="/products" aria-label="ดูวัสดุกันไฟครบวงจรทั้งหมด" style="position:absolute;inset:0;z-index:1"></a>
               </div>
               <div style="position:absolute;left:24px;top:44%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px">‹</div>
               <div style="position:absolute;right:24px;top:44%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px">›</div>
