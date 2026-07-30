@@ -11,7 +11,7 @@ export const metadata = {
 
 export default function LandingPage() {
   const html = fs.readFileSync(
-    path.join(process.cwd(), "app", "_content", "landing.html"),
+    path.join(process.cwd(), "app", "_content", "neocoat.html"),
     "utf8"
   );
   return <div dangerouslySetInnerHTML={{ __html: html }} />;

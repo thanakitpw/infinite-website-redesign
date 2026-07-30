@@ -317,7 +317,7 @@ function articleFilter() {
   // แถบ pagination ปลอมถูกลบออกจาก articles.html แล้ว ไม่ต้องมาซ่อนตอน runtime
 }
 
-/* ฟอร์มหน้า /landing — เดิมปุ่ม "ส่งข้อมูลขอใบเสนอราคา" เป็น <button
+/* ฟอร์มหน้า /neocoat — เดิมปุ่ม "ส่งข้อมูลขอใบเสนอราคา" เป็น <button
    type="button"> ที่ไม่มี handler อยู่ที่ไหนเลยในโปรเจค กดแล้วไม่เกิดอะไรขึ้น
    ทั้งที่หน้านี้เป็นปลายทางของโฆษณา จึงรับ lead ไม่ได้แม้ใบเดียว */
 const SUCCESS_HTML =
@@ -360,7 +360,8 @@ function landingForm() {
       phone: val("lp-phone"),
       jobType: val("lp-interest"),
       detail: val("lp-msg"),
-      source: "landing",
+      // ระบุว่า lead มาจาก landing page ตัวไหน เผื่อมีหน้าที่สองในอนาคตจะได้แยกออก
+      source: "neocoat-lp",
     };
     if (!payload.name || !payload.phone) {
       flash("กรุณากรอกชื่อและเบอร์โทรศัพท์ เพื่อให้ทีมงานติดต่อกลับได้");
@@ -546,7 +547,7 @@ export default function Enhance() {
       // หน้าแรกก็มีฟอร์มขอใบเสนอราคาใน QUOTE BAND — เดิม form() รันแค่ /contact
       // ทำให้ฟอร์มหน้าแรกกดส่งไม่ได้เลย
       if (pathname === "/contact" || pathname === "/") safe(form);
-      if (pathname === "/landing") safe(landingForm);
+      if (pathname === "/neocoat") safe(landingForm);
       if (pathname === "/products") safe(productFilter);
       if (pathname === "/articles") safe(articleFilter);
     };
