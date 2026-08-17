@@ -1,5 +1,6 @@
 import "./globals.css";
 import Enhance from "./enhance";
+import LineFab from "./line-fab";
 
 export const metadata = {
   title: "Infinite Material & Technology",
@@ -20,6 +21,7 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         {children}
+        <LineFab />
         <Enhance />
       </body>
     </html>

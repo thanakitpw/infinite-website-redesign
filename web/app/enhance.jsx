@@ -66,11 +66,9 @@ function linkifyButtons() {
     else if (t === "หน้าแรก") url = "/";
     if (url) { bindNav(el, url, opt); el.dataset.enhb = "1"; }
   });
-  // home category tiles (01..06) -> products
-  leaves().filter((e) => /^0[1-6]$/.test(txt(e))).forEach((e) => {
-    const card = e.parentElement;
-    if (card && !card.dataset.enhb) { card.dataset.enhb = "1"; bindNav(card, "/products"); }
-  });
+  /* เดิมมีบล็อกจับตัวเลข 01–06 ของแถบหมวดหมู่หน้าแรกมาผูกลิงก์ /products ให้
+     ตอนนี้แถบนั้นเปลี่ยนเป็นไอคอน และแต่ละใบเป็น <a href="/products?cat=…">
+     ใน home.html แล้ว จึงไม่ต้องผูกจาก JS อีก */
 }
 
 function linkifyContacts() {
@@ -81,6 +79,10 @@ function linkifyContacts() {
     let changed = false;
     h = h.replace(/([\w.\-]+@[\w.\-]+\.\w{2,})/g, (m) => { changed = true; return `<a href="mailto:${m}" style="color:inherit;text-decoration:none">${m}</a>`; });
     h = h.replace(/(0\d{1,2}-\d{3}-\d{4})/g, (m) => { changed = true; return `<a href="tel:${m.replace(/-/g, "")}" style="color:inherit;text-decoration:none">${m}</a>`; });
+    /* @imat คือ LINE OA ชี้ไปลิงก์ lin.ee ตัวเดียวกับปุ่ม "ปรึกษาผ่าน LINE"
+       ต้องมาก่อน imat999 และห้ามใส่ \b หน้า @ (space→@ ไม่ใช่ขอบเขตคำ จะไม่แมตช์)
+       ส่วน \b ท้ายกัน "@imat999" ถูกตัดครึ่งเป็น @imat */
+    h = h.replace(/@imat\b/g, () => { changed = true; return `<a href="${LINE_MAIN}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">@imat</a>`; });
     h = h.replace(/\bimat999\b/g, () => { changed = true; return `<a href="${LINE.imat999}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">imat999</a>`; });
     h = h.replace(/\bblue999\b/g, () => { changed = true; return `<a href="${LINE.blue999}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">blue999</a>`; });
     if (changed) { el.innerHTML = h; el.dataset.enhc = "1"; }
@@ -182,24 +184,6 @@ function form() {
     el.replaceWith(ctrl);
   });
 
-  // fire-hour chips -> single choice
-  const chipLabels = ["1 ชม.", "2 ชม.", "3 ชม.", "ยังไม่แน่ใจ"];
-  const chips = leaves().filter((e) => chipLabels.includes(txt(e)));
-  let hours = "1 ชม.";
-  const paint = (sel) => chips.forEach((x) => {
-    const on = x === sel;
-    x.style.background = on ? "#eafaf0" : "#fff";
-    x.style.borderColor = on ? "#018438" : "#d9e0da";
-    x.style.color = on ? "#018438" : "#4a584f";
-    x.style.fontWeight = on ? "600" : "500";
-  });
-  chips.forEach((c) => {
-    if (c.dataset.enh) return; c.dataset.enh = "1";
-    c.style.cursor = "pointer";
-    c.addEventListener("click", () => { hours = txt(c); paint(c); });
-  });
-  if (chips[0]) paint(chips[0]);
-
   // submit
   const btn = leaves().find((e) => txt(e) === "ส่งขอใบเสนอราคา");
   if (btn && !btn.dataset.enh) {
@@ -208,7 +192,7 @@ function form() {
     const orig = btn.textContent;
     btn.addEventListener("click", async () => {
       const get = (n) => { const el = document.querySelector(`[name="${n}"]`); return el ? el.value.trim() : ""; };
-      const payload = { name: get("name"), phone: get("phone"), company: get("company"), contact: get("contact"), jobType: get("jobType"), area: get("area"), hours, detail: get("detail") };
+      const payload = { name: get("name"), phone: get("phone"), company: get("company"), contact: get("contact"), jobType: get("jobType"), area: get("area"), detail: get("detail") };
       if (!payload.name || !payload.phone) { alert("กรุณากรอกชื่อและเบอร์โทรติดต่อกลับ"); return; }
       btn.textContent = "กำลังส่ง…";
       try {
@@ -240,7 +224,11 @@ function productCat(t) {
   return "";
 }
 function productFilter() {
-  const cards = $$('a[style*="border-radius:14px"][style*="overflow:hidden"]').filter((c) => c.textContent.includes("฿"));
+  /* เดิมคัดการ์ดสินค้าด้วย "ในกล่องมีเครื่องหมาย ฿ ไหม" พอเอาราคาออกทั้งเว็บ
+     เงื่อนไขนั้นไม่เหลืออะไรให้จับ ฟิลเตอร์หมวดหมู่เลยตายทั้งหน้า — ใช้ปลายทาง
+     ของลิงก์แทน ซึ่งเป็นสิ่งที่การ์ดสินค้าต่างจากการ์ดอื่นจริงๆ */
+  const cards = $$('a[style*="border-radius:14px"][style*="overflow:hidden"]')
+    .filter((c) => (c.getAttribute("href") || "").startsWith("/product/"));
   if (!cards.length) return;
   const grid = cards[0].parentElement;
   const items = $$('[style*="line-height:2.2"] > div');
@@ -271,23 +259,83 @@ function productFilter() {
     if (target) target.click();
   }
 
-  // sort dropdown
-  const sortEl = leaves().find((e) => txt(e).startsWith("เรียงตาม"));
-  if (sortEl && !sortEl.dataset.enh) {
-    sortEl.dataset.enh = "1";
-    const sel = document.createElement("select");
-    sel.setAttribute("style", (sortEl.getAttribute("style") || "") + ";cursor:pointer;background:#fff;font-family:inherit");
-    [["pop", "ขายดี"], ["low", "ราคาต่ำ–สูง"], ["high", "ราคาสูง–ต่ำ"]].forEach(([v, l]) => { const o = document.createElement("option"); o.value = v; o.textContent = "เรียงตาม: " + l; sel.appendChild(o); });
-    sortEl.replaceWith(sel);
-    const orig = cards.slice();
-    const price = (c) => { const m = c.textContent.match(/([\d,]+)฿/g); if (!m) return 0; return Math.min(...m.map((x) => +x.replace(/[^\d]/g, ""))); };
-    sel.addEventListener("change", () => {
-      let arr = orig.slice();
-      if (sel.value === "low") arr.sort((a, b) => price(a) - price(b));
-      else if (sel.value === "high") arr.sort((a, b) => price(b) - price(a));
-      arr.forEach((c) => grid.appendChild(c));
+  /* เดิมมี dropdown "เรียงตาม" ที่เรียงได้แค่ตามราคา (ต่ำ–สูง / สูง–ต่ำ) พอเอา
+     ราคาออกก็ไม่เหลือเกณฑ์ให้เรียง เหลือแต่ "ขายดี" ซึ่งเป็นลำดับตั้งต้นอยู่แล้ว
+     จึงถอดทั้งตัวควบคุมใน products.html และโค้ดส่วนนี้ออกพร้อมกัน */
+}
+
+/* ── หน้าสินค้า: แกลเลอรีรูป ───────────────────────────────────────────────
+   กดรูปย่อยแล้วเปลี่ยนรูปหลักจริง — เดิมเป็นภาพนิ่ง กดไม่ได้
+   ต้องก๊อป background-size ไปด้วย เพราะรูปย่อยบางใบใช้ cover (แบนเนอร์) บางใบ
+   ใช้ contain (รูปสินค้า/ใบเซอร์) ถ้าไม่ก๊อปรูปแบนเนอร์จะถูกยืดผิดสัดส่วน */
+function productGallery() {
+  const main = document.querySelector("[data-gal-main]");
+  const thumbs = $$("[data-gal-thumb]");
+  if (!main || thumbs.length < 2) return;
+
+  thumbs.forEach((t) => {
+    if (t.dataset.enh) return; t.dataset.enh = "1";
+    t.addEventListener("click", () => {
+      const cs = getComputedStyle(t);
+      main.style.backgroundImage = cs.backgroundImage;
+      main.style.backgroundSize = cs.backgroundSize;
+      thumbs.forEach((x) => x.classList.toggle("on", x === t));
     });
-  }
+  });
+}
+
+/* ── หน้าสินค้า: แท็บหัวข้อ ────────────────────────────────────────────────
+   แท็บชี้ไปที่หัวข้อในเนื้อหาด้านล่าง กดแล้วเลื่อนไปหา + ไฮไลต์ตามตำแหน่งที่อ่านอยู่
+   จำนวนแท็บไม่เท่ากันในแต่ละหน้า (2–5 อัน) จึงจับคู่จากข้อความ ไม่ใช่ลิสต์ตายตัว */
+const TAB_OFFSET = 110;   // เผื่อความสูง header ที่ตรึงอยู่ด้านบน
+
+function productTabs() {
+  const tabs = $$(".ptab");
+  if (!tabs.length) return;
+  const bar = tabs[0].parentElement;
+  const after = (el) =>
+    bar.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING;
+
+  const heads = $$("h3").filter(after);
+  const leafAfter = leaves().filter(after);
+
+  const pairs = tabs.map((tab, i) => {
+    const label = txt(tab);
+    // แท็บแรก ("รายละเอียด") ไม่ตรงกับหัวข้อไหน — ให้ชี้หัวข้อแรกของโซนเนื้อหา
+    // ที่เหลือจับจากหัวข้อที่ขึ้นต้นด้วยชื่อแท็บ ครอบเคส "การติดตั้ง (Installation)"
+    let target = i === 0 ? heads[0] : heads.find((h) => txt(h).startsWith(label));
+    // บางแท็บ (เช่น "คำถามที่พบบ่อย") หัวข้อเป็น div ในคอลัมน์ขวา ไม่ใช่ h3
+    if (!target) target = leafAfter.find((e) => txt(e) === label);
+    return { tab, target };
+  }).filter((p) => p.target);
+
+  if (!pairs.length) return;
+
+  pairs.forEach(({ tab, target }) => {
+    if (tab.dataset.enh) return; tab.dataset.enh = "1";
+    tab.addEventListener("click", () => {
+      const y = target.getBoundingClientRect().top + window.scrollY - TAB_OFFSET;
+      window.scrollTo({ top: y, behavior: reduceMotion() ? "auto" : "smooth" });
+    });
+  });
+
+  // ไฮไลต์แท็บตามหัวข้อที่เลื่อนผ่านล่าสุด
+  const sync = () => {
+    let active = pairs[0];
+    for (const p of pairs) {
+      if (p.target.getBoundingClientRect().top <= TAB_OFFSET + 4) active = p;
+    }
+    pairs.forEach((p) => p.tab.classList.toggle("on", p === active));
+  };
+  let queued = false;
+  const onScroll = () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => { queued = false; sync(); });
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  disposers.push(() => window.removeEventListener("scroll", onScroll));
+  sync();
 }
 
 function articleCat(t) {
@@ -456,6 +504,44 @@ function motion() {
   revealOnScroll();
 }
 
+/* ── STICKY HEADER — ย่อลงตอนเลื่อนหน้าลง ──────────────────────────────────
+   ตัว sticky/ขนาดที่ย่อ/ช่วง transition อยู่ใน globals.css ทั้งหมด ตรงนี้ทำแค่
+   ติด–ถอดคลาส .hdr-min ตามตำแหน่ง scroll
+
+   ห้ามแตะ el.style ของ header เด็ดขาด — ทั้ง rule ใน globals.css และฟังก์ชัน
+   อื่นในไฟล์นี้เกาะ element ด้วย [style*="..."] ถ้าเขียน el.style.* attribute
+   จะถูก serialize ใหม่แล้ว selector หลุดหมดทั้งชุด (เหตุผลเดียวกับที่ .rv-d*
+   ต้องเป็นคลาส) */
+const HEADER_SEL =
+  'div[style*="width:1440px"] > div[style*="padding:16px 56px"][style*="border-bottom:1px solid #e7eae4"]';
+
+function stickyHeader() {
+  const hd = document.querySelector(HEADER_SEL);
+  if (!hd) return;   // /neocoat ใช้ .lp .header ของตัวเอง ไม่เข้าเงื่อนไขนี้
+
+  // ใช้สองเส้น (ย่อที่ 90 / คลายที่ 40) กันคลาสกระพริบตอน scroll ค้างพอดีที่เส้นแบ่ง
+  const ON = 90, OFF = 40;
+  let min = false;
+  const sync = () => {
+    const y = window.scrollY || 0;
+    if (!min && y > ON) { min = true; hd.classList.add("hdr-min"); }
+    else if (min && y < OFF) { min = false; hd.classList.remove("hdr-min"); }
+  };
+
+  // scroll ยิงถี่มาก — รวบให้เหลือเฟรมละครั้ง
+  let queued = false;
+  const onScroll = () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => { queued = false; sync(); });
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  disposers.push(() => window.removeEventListener("scroll", onScroll));
+
+  // เปิดหน้ามาแล้วเบราว์เซอร์กู้ตำแหน่ง scroll เดิมไว้กลางหน้า ต้องเข้าโหมดย่อทันที
+  sync();
+}
+
 export default function Enhance() {
   const pathname = usePathname();
   useEffect(() => {
@@ -465,6 +551,7 @@ export default function Enhance() {
       safe(linkifyButtons);
       safe(linkifyContacts);
       safe(navDropdown);
+      safe(stickyHeader);
       safe(motion);   // ต้องมาก่อน slider() เพราะ slider จะสั่งเล่น animation ของสไลด์
       safe(slider);
       safe(solutionIcons);
@@ -472,6 +559,11 @@ export default function Enhance() {
       // ทำให้ฟอร์มหน้าแรกกดส่งไม่ได้เลย
       if (pathname === "/contact" || pathname === "/") safe(form);
       if (pathname === "/products") safe(productFilter);
+      // เช็คแบบนี้เพราะ "/products" ก็ startsWith("/product") เหมือนกัน
+      if (pathname === "/product" || pathname.startsWith("/product/")) {
+        safe(productGallery);
+        safe(productTabs);
+      }
       if (pathname === "/articles") safe(articleFilter);
     };
     const t = setTimeout(run, 30);
