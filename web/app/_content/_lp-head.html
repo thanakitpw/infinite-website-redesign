@@ -76,6 +76,11 @@
   .lp .hero-grid{position:relative;display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
   .lp .hero-badge{display:inline-flex;align-items:center;gap:9px;padding:7px 15px;border:1px solid rgba(94,224,143,.4);border-radius:999px;background:rgba(18,180,89,.15);font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.6px;color:var(--green-pale);margin-bottom:22px}
   .lp .hero-badge i{width:7px;height:7px;border-radius:50%;background:var(--green-bright);display:inline-block;font-style:normal}
+  /* /neocoat ขอให้ป้ายมาตรฐานใหญ่ขึ้นเล็กน้อย แต่ยังต้องเล็กกว่า h1 (46px) ชัดเจน
+     แยกเป็นคลาสเสริมแทนการแก้ .hero-badge ตรงๆ เพราะ landing page อีก 5 หน้า
+     ใช้คลาสเดียวกันอยู่ ยังไม่ได้สั่งให้เปลี่ยนตาม */
+  .lp .hero-badge-lg{font-size:13.5px;letter-spacing:.7px;padding:9px 18px;gap:10px}
+  .lp .hero-badge-lg i{width:8px;height:8px}
   .lp .hero h1{font-size:46px;line-height:1.14;font-weight:700;color:var(--white);letter-spacing:-.7px;margin-bottom:20px}
   .lp .hero h1 em{font-style:normal;color:var(--green-light)}
   .lp .hero-lead{font-size:17.5px;line-height:1.75;color:#c9ddd0;margin-bottom:26px;max-width:540px}
@@ -117,6 +122,7 @@
 
   /* ── Product compare ── */
   .lp .prod-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+  .lp .prod-grid-3{grid-template-columns:repeat(3,1fr);gap:22px}
   .lp .prod{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;background:var(--white);display:flex;flex-direction:column;transition:box-shadow .2s,transform .2s}
   .lp .prod:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
   .lp .prod-top{position:relative;height:210px;background:var(--white) url('/images/neocoat-paint-s.png') center/contain no-repeat;border-bottom:1px solid var(--border)}
@@ -132,6 +138,19 @@
   .lp .prod-spec span:last-child{font-weight:600;text-align:right}
   .lp .prod-unit{font-size:12.5px;color:var(--text-muted);margin-bottom:18px}
   .lp .prod-cta{margin-top:auto;display:grid;gap:9px}
+
+  /* ── ตารางสเปกเทียบ ──
+     การ์ดสินค้าเก็บแค่ข้อมูลย่อ สเปกเต็มมาอยู่ที่ตารางนี้ หน้ายิงแอดจึงไม่ต้อง
+     ส่งคนออกไปหน้าสินค้าเพื่อดูสเปก ซึ่งเท่ากับปล่อยให้หลุดจากกรวยไป
+     ตารางกว้างเกินจอมือถือแน่นอน จึงให้เลื่อนแนวนอนในกล่องตัวเอง ไม่ดันทั้งหน้า */
+  .lp .spec-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--white);-webkit-overflow-scrolling:touch}
+  .lp .spec-table{width:100%;min-width:780px;border-collapse:collapse;font-size:14.5px}
+  .lp .spec-table th,.lp .spec-table td{padding:14px 18px;text-align:left;vertical-align:top;line-height:1.65;border-bottom:1px solid var(--border)}
+  .lp .spec-table thead th{background:var(--bg-alt);font-size:14px;font-weight:700;color:var(--text)}
+  .lp .spec-table tbody th{width:150px;font-weight:600;color:var(--text-muted);white-space:nowrap}
+  .lp .spec-table tbody td{color:var(--text)}
+  .lp .spec-table tbody tr:last-child th,.lp .spec-table tbody tr:last-child td{border-bottom:0}
+  .lp .spec-na{color:var(--text-light)}
 
   /* ── ระบบ 3 ชั้น ── */
   .lp .layers{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
@@ -177,6 +196,34 @@
   .lp .figure{margin-top:26px}
   .lp .figure img{width:100%;border-radius:var(--radius);border:1px solid var(--border);object-fit:cover}
   .lp .figure figcaption{margin-top:10px;font-size:13px;color:var(--text-muted);line-height:1.6}
+
+  /* ── Carousel รูปหน้างาน ──
+     ตัว track เป็น scroll-snap ล้วน ปัดด้วยนิ้ว/เทรกแพดได้ตั้งแต่ยังไม่มี JS
+     ปุ่มลูกศรกับจุดบอกตำแหน่งถูกเติมทีหลังโดย lpCarousel() ใน enhance.jsx
+     ถ้า JS ไม่ทำงานก็ยังเป็นแถบรูปเลื่อนได้ ไม่กลายเป็นกล่องเปล่า
+     คำบรรยายอยู่ในสไลด์แต่ละใบ จะได้เลื่อนตามรูปโดยไม่ต้องพึ่ง JS */
+  .lp .car{position:relative}
+  .lp .car-stage{position:relative}
+  .lp .car-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .lp .car-track::-webkit-scrollbar{display:none}
+  .lp .car-item{flex:0 0 100%;min-width:0;scroll-snap-align:start;margin:0}
+  .lp .car-item img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border-radius:var(--radius);border:1px solid rgba(255,255,255,.16)}
+  .lp .car-item figcaption{margin-top:12px;min-height:36px;padding:0 46px;font-size:13px;line-height:1.6;color:var(--green-mute);text-align:center}
+  .lp .car-btn{position:absolute;top:calc(50% - 18px);transform:translateY(-50%);width:40px;height:40px;padding:0;border:0;border-radius:50%;background:rgba(4,20,12,.55);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s,opacity .2s}
+  .lp .car-btn:hover{background:rgba(4,20,12,.85)}
+  .lp .car-btn:disabled{opacity:.25;cursor:default}
+  .lp .car-btn:focus-visible{outline:2px solid var(--green-bright);outline-offset:2px}
+  .lp .car-btn svg{width:18px;height:18px}
+  .lp .car-prev{left:12px}
+  .lp .car-next{right:12px}
+  .lp .car-dots{display:flex;justify-content:center;gap:8px;margin-top:4px}
+  .lp .car-dot{width:8px;height:8px;padding:0;border:0;border-radius:99px;background:rgba(255,255,255,.28);cursor:pointer;transition:width .25s,background .25s}
+  .lp .car-dot.is-on{width:22px;background:var(--green-bright)}
+  .lp .car-dot:focus-visible{outline:2px solid var(--green-bright);outline-offset:3px}
+  @media (prefers-reduced-motion:reduce){
+    .lp .car-track{scroll-behavior:auto}
+    .lp .car-dot{transition:none}
+  }
 
   /* ── Gallery ──
      รูปมีทั้งแนวตั้งและแนวนอนปนกัน บังคับ aspect-ratio + object-fit:cover
@@ -234,6 +281,7 @@
 
   /* ── Responsive ── */
   @media (max-width:1024px){
+    .lp .prod-grid-3{grid-template-columns:repeat(2,1fr)}
     .lp .hero-grid{grid-template-columns:1fr;gap:38px}
     .lp .hero::before{inset:0 0 55% 0;mask-image:linear-gradient(to top,rgba(0,0,0,.6),transparent);-webkit-mask-image:linear-gradient(to top,rgba(0,0,0,.6),transparent)}
     .lp .how-grid,.lp .thick-grid{grid-template-columns:1fr;gap:34px}

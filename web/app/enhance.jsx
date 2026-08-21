@@ -617,6 +617,79 @@ function revealOnScroll() {
   });
 }
 
+/* Carousel รูปหน้างานใน landing page — ตัว .car-track เลื่อนได้เองด้วย CSS
+   scroll-snap อยู่แล้ว ฟังก์ชันนี้เติมแค่ปุ่มลูกศรกับจุดบอกตำแหน่งให้คนใช้เมาส์
+   จับจาก [data-carousel] ไม่ผูกกับ pathname เพราะ landing page มีหลายหน้าและ
+   จะเพิ่มอีก ถ้าหน้าไหนไม่มี carousel ฟังก์ชันนี้ก็ไม่ทำอะไร */
+function lpCarousel() {
+  document.querySelectorAll("[data-carousel]").forEach((car) => {
+    if (car.dataset.carOn) return;
+    const stage = car.querySelector(".car-stage");
+    const track = car.querySelector(".car-track");
+    if (!stage || !track) return;
+    const items = Array.from(track.children);
+    if (items.length < 2) return;   // รูปเดียวไม่ต้องมีปุ่ม
+    car.dataset.carOn = "1";
+
+    const path = (d) => (d < 0 ? "M15 6l-6 6 6 6" : "M9 6l6 6-6 6");
+    const btn = (cls, label, d) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = cls;
+      b.setAttribute("aria-label", label);
+      b.innerHTML =
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" ' +
+        'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + path(d) + '"/></svg>';
+      return b;
+    };
+
+    // อ่านตำแหน่งจาก scrollLeft จริง ไม่เก็บ index ไว้เอง เพราะผู้ใช้ปัดนิ้วเองได้
+    const cur = () => Math.round(track.scrollLeft / (track.clientWidth || 1));
+    const go = (i) => {
+      const k = Math.max(0, Math.min(items.length - 1, i));
+      track.scrollTo({ left: items[k].offsetLeft - items[0].offsetLeft, behavior: reduceMotion() ? "auto" : "smooth" });
+    };
+
+    const prev = btn("car-btn car-prev", "รูปก่อนหน้า", -1);
+    const next = btn("car-btn car-next", "รูปถัดไป", 1);
+    prev.addEventListener("click", () => go(cur() - 1));
+    next.addEventListener("click", () => go(cur() + 1));
+
+    const dots = document.createElement("div");
+    dots.className = "car-dots";
+    const dotEls = items.map((_, i) => {
+      const d = document.createElement("button");
+      d.type = "button";
+      d.className = "car-dot";
+      d.setAttribute("aria-label", "ไปที่รูปที่ " + (i + 1));
+      d.addEventListener("click", () => go(i));
+      dots.appendChild(d);
+      return d;
+    });
+
+    let raf = 0;
+    const sync = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const i = cur();
+        dotEls.forEach((d, k) => d.classList.toggle("is-on", k === i));
+        prev.disabled = i <= 0;
+        next.disabled = i >= items.length - 1;
+      });
+    };
+    track.addEventListener("scroll", sync, { passive: true });
+    disposers.push(() => {
+      track.removeEventListener("scroll", sync);
+      cancelAnimationFrame(raf);
+    });
+
+    stage.appendChild(prev);
+    stage.appendChild(next);
+    car.appendChild(dots);
+    sync();
+  });
+}
+
 function motion() {
   if (reduceMotion()) return;
   heroMotion();
@@ -674,6 +747,7 @@ export default function Enhance() {
       safe(motion);   // ต้องมาก่อน slider() เพราะ slider จะสั่งเล่น animation ของสไลด์
       safe(slider);
       safe(solutionIcons);
+      safe(lpCarousel);   // no-op ถ้าหน้านั้นไม่มี [data-carousel]
       // หน้าแรกก็มีฟอร์มขอใบเสนอราคาใน QUOTE BAND — เดิม form() รันแค่ /contact
       // ทำให้ฟอร์มหน้าแรกกดส่งไม่ได้เลย
       if (pathname === "/contact" || pathname === "/") safe(form);
