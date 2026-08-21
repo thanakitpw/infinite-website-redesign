@@ -266,8 +266,12 @@ function productFilter() {
 
 /* ── หน้าสินค้า: แกลเลอรีรูป ───────────────────────────────────────────────
    กดรูปย่อยแล้วเปลี่ยนรูปหลักจริง — เดิมเป็นภาพนิ่ง กดไม่ได้
-   ต้องก๊อป background-size ไปด้วย เพราะรูปย่อยบางใบใช้ cover (แบนเนอร์) บางใบ
-   ใช้ contain (รูปสินค้า/ใบเซอร์) ถ้าไม่ก๊อปรูปแบนเนอร์จะถูกยืดผิดสัดส่วน */
+   ต้องก๊อป background-size ไปด้วย เพราะรูปย่อยบางใบใช้ cover บางใบใช้ contain
+   ถ้าไม่ก๊อป รูปจะถูกยืดผิดสัดส่วน
+
+   เกณฑ์เลือก: cover = รูปถ่ายจริง (steel-frame/steel-truss) ครอบไม่เสียความหมาย
+   contain = รูปสินค้า/ใบเซอร์/แบนเนอร์ที่มีตัวหนังสือ — กรอบหลักสูง 420px แต่กว้าง
+   กว่านั้น ถ้าใส่ cover กับแบนเนอร์จัตุรัสจะโดนตัดหัวท้ายจนอ่านไม่ครบ */
 function productGallery() {
   const main = document.querySelector("[data-gal-main]");
   const thumbs = $$("[data-gal-thumb]");
@@ -386,6 +390,121 @@ function navDropdown() {
   }
   onDoc("click", (e) => { if (!dd.contains(e.target)) dd.classList.remove("nav-open"); });
   onDoc("keydown", (e) => { if (e.key === "Escape") dd.classList.remove("nav-open"); });
+}
+
+/* ── หน้า /standards: การ์ดมาตรฐาน → popup ────────────────────────────────
+   การ์ดโชว์แค่รูปใหญ่ + หัวข้อ ส่วนคำอธิบายเต็มยังอยู่ใน [data-std-body] ใน DOM
+   ตลอดเวลา (ดีต่อ SEO และคนที่ปิด JS) — ซ่อนด้วย CSS ก็ต่อเมื่อฟังก์ชันนี้ติด
+   คลาส .std-js ให้กริดสำเร็จแล้วเท่านั้น ถ้า JS ไม่ทำงาน คลาสไม่ถูกติด =
+   คำอธิบายแสดงเต็มเหมือนเดิม ไม่มีทางเจอการ์ดที่กดไม่ได้และอ่านอะไรไม่ได้
+
+   ปุ่ม "ดูรายละเอียด" ก็เติมจากที่นี่ด้วยเหตุผลเดียวกัน — ถ้าใส่ไว้ใน HTML
+   แล้ว JS ตาย มันจะกลายเป็นปุ่มหลอกที่กดแล้วไม่มีอะไรเกิดขึ้น */
+function standardsModal() {
+  const cards = $$("[data-std]");
+  if (!cards.length) return;
+  const grid = cards[0].parentElement;
+  if (!grid || grid.dataset.stdJs) return;
+  grid.dataset.stdJs = "1";
+  grid.classList.add("std-js");
+
+  const modal = document.createElement("div");
+  modal.className = "std-modal";
+  modal.setAttribute("role", "dialog");
+  modal.setAttribute("aria-modal", "true");
+  modal.hidden = true;
+  modal.innerHTML =
+    '<div class="std-modal-back"></div>' +
+    '<div class="std-modal-panel">' +
+      '<button type="button" class="std-modal-x" aria-label="ปิด">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>' +
+      '</button>' +
+      '<div class="std-modal-cover"></div>' +
+      '<div class="std-modal-text"></div>' +
+    '</div>';
+  document.body.appendChild(modal);
+
+  const panel = modal.querySelector(".std-modal-panel");
+  const cover = modal.querySelector(".std-modal-cover");
+  const text = modal.querySelector(".std-modal-text");
+  const closeBtn = modal.querySelector(".std-modal-x");
+  let opener = null;
+
+  const close = () => {
+    if (modal.hidden) return;
+    modal.classList.remove("std-modal-on");
+    document.documentElement.style.overflow = "";
+    // รอ transition จบก่อนค่อย hidden ไม่งั้นจะหายวับไม่มี fade ออก
+    const done = () => { modal.hidden = true; text.innerHTML = ""; };
+    if (reduceMotion()) done();
+    else setTimeout(done, 220);
+    if (opener) { opener.focus(); opener = null; }
+  };
+
+  const open = (card) => {
+    const pad = card.querySelector('[style*="padding:24px 22px"]') || card;
+    const body = card.querySelector("[data-std-body]");
+    const head = pad.querySelector("h2");
+    const eyebrow = pad.querySelector('[style*="IBM Plex Mono"]');
+    const src = card.querySelector(".std-cover");
+    if (!body) return;
+
+    opener = card;
+    // ปกเอกสาร: ก๊อป background ทั้งชุดมา ไม่ใช่แค่ image เพราะบางใบเป็นแผ่น
+    // ตัวอักษร (ยังไม่มีปกจริง) ที่ใช้ flex + ตัวหนังสือข้างในแทนรูป
+    cover.innerHTML = src ? src.innerHTML : "";
+    const cs = src ? getComputedStyle(src) : null;
+    cover.style.backgroundImage = cs ? cs.backgroundImage : "none";
+    cover.style.backgroundColor = cs ? cs.backgroundColor : "";
+    cover.style.backgroundSize = cs ? cs.backgroundSize : "";
+    cover.style.backgroundPosition = "center";
+    cover.style.backgroundRepeat = "no-repeat";
+
+    // ปุ่มดาวน์โหลดสร้างจาก data-std-doc ที่ปักไว้ใน HTML — ถ้าใบไหนยังไม่มีไฟล์
+    // ก็ไม่ขึ้นปุ่ม ไม่ต้องแก้ JS
+    const href = card.dataset.stdDoc;
+    const dl = href
+      ? '<a class="std-modal-dl" href="' + href + '" target="_blank" rel="noopener">' +
+        "↓ ดาวน์โหลดเอกสาร<span>" + (card.dataset.stdDocLabel || "") + "</span></a>"
+      : "";
+
+    text.innerHTML =
+      (eyebrow ? '<div class="std-modal-eyebrow">' + eyebrow.textContent + "</div>" : "") +
+      (head ? "<h3>" + head.textContent + "</h3>" : "") +
+      body.innerHTML + dl;
+    modal.setAttribute("aria-label", head ? txt(head) : "รายละเอียดมาตรฐาน");
+
+    modal.hidden = false;
+    document.documentElement.style.overflow = "hidden";
+    // บังคับให้เบราว์เซอร์คิด layout รอบนึงก่อน ไม่งั้นติดคลาสในเฟรมเดียวกับ
+    // ที่เพิ่งเอา hidden ออก transition จะไม่ทำงาน
+    void panel.offsetWidth;
+    modal.classList.add("std-modal-on");
+    closeBtn.focus();
+  };
+
+  cards.forEach((card) => {
+    card.setAttribute("role", "button");
+    card.setAttribute("tabindex", "0");
+
+    const more = document.createElement("span");
+    more.className = "std-more";
+    more.textContent = card.dataset.stdDoc ? "ดูรายละเอียด · ดาวน์โหลดเอกสาร →" : "ดูรายละเอียด →";
+    const pad = card.querySelector('[style*="padding:24px 22px"]');
+    (pad || card).appendChild(more);
+
+    card.addEventListener("click", () => open(card));
+    card.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      e.preventDefault();          // Space ไม่งั้นหน้าเลื่อนลงไปด้วย
+      open(card);
+    });
+  });
+
+  closeBtn.addEventListener("click", close);
+  modal.querySelector(".std-modal-back").addEventListener("click", close);
+  onDoc("keydown", (e) => { if (e.key === "Escape") close(); });
+  disposers.push(() => { modal.remove(); document.documentElement.style.overflow = ""; });
 }
 
 /* ── ANIMATION ────────────────────────────────────────────────────────────
@@ -565,6 +684,7 @@ export default function Enhance() {
         safe(productTabs);
       }
       if (pathname === "/articles") safe(articleFilter);
+      if (pathname === "/standards") safe(standardsModal);
     };
     const t = setTimeout(run, 30);
     return () => { clearTimeout(t); clearTimers(); clearObservers(); clearDisposers(); };

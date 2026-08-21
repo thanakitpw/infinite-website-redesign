@@ -129,6 +129,38 @@ export const PRODUCTS = [
     description:
       "ผ้ากันไฟ Fiberglass Cloth เนื้อสีทอง หนา 1 มม. ทอแบบซาติน ผ่านการอบ 2 ครั้ง (Double Heat Treatment) ทนความร้อน 550°C และ 1000°C ตัดเย็บตามขนาด มีบริการเจาะรูตาไก่",
   },
+  /* สามตัวล่างเป็นสินค้ากลุ่ม Four Plus ของ Unique Products — ไม่มีในเว็บเดิม
+     จึงไม่มี oldId ข้อมูลสเปกคัดจาก uniqueproducts.co.th/product/<slug> */
+  {
+    slug: "four-plus-pro-masonry-sealer",
+    name: "สีรองพื้นปูน Four Plus Pro Masonry Sealer",
+    short: "สีรองพื้นปูนใหม่ อะคริลิก 100% ทนด่างสูง ขนาด 18.925 ลิตร ทาได้ 150 ตร.ม./เที่ยว",
+    cat: "สีน้ำพลาสติก",
+    image: "/images/four-plus-masonry-sealer.webp",
+    title: "สีรองพื้นปูน Four Plus Pro Masonry Sealer 18.925 ลิตร | ราคาโรงงาน",
+    description:
+      "สีรองพื้นปูนใหม่ Four Plus Pro Masonry Sealer อะคริลิกอิมัลชั่น 100% ทนด่างจากผนังปูนใหม่ เพิ่มการยึดเกาะให้สีทับหน้า ขนาด 18.925 ลิตร ทาได้ 150 ตร.ม. ต่อเที่ยว",
+  },
+  {
+    slug: "four-plus-exterior",
+    name: "สีน้ำพลาสติกทาภายนอก Four Plus Exterior",
+    short: "อะคริลิก 100% ผิวด้าน ทนแดดทนฝน กันเชื้อราและตะไคร่น้ำ 18.925 ลิตร",
+    cat: "สีน้ำพลาสติก",
+    image: "/images/four-plus-exterior.webp",
+    title: "สีน้ำพลาสติกทาภายนอก Four Plus Exterior 18.925 ลิตร | ราคาโรงงาน",
+    description:
+      "สีน้ำพลาสติกทาภายนอก Four Plus Exterior อะคริลิกอิมัลชั่น 100% ผิวด้าน ทนแดดจัด กันเชื้อราและตะไคร่น้ำ ทนด่าง ขนาด 18.925 ลิตร ทาได้ 150 ตร.ม. ต่อเที่ยว",
+  },
+  {
+    slug: "four-plus-pro-interior",
+    name: "สีน้ำพลาสติกทาภายใน Four Plus Pro Interior",
+    short: "อะคริลิก 100% ผิวด้าน กันเชื้อรา ทนด่าง เฉดสีตามการ์ดสี 18.925 ลิตร",
+    cat: "สีน้ำพลาสติก",
+    image: "/images/four-plus-pro-interior.webp",
+    title: "สีน้ำพลาสติกทาภายใน Four Plus Pro Interior 18.925 ลิตร | ราคาโรงงาน",
+    description:
+      "สีน้ำพลาสติกทาภายใน Four Plus Pro Interior อะคริลิกอิมัลชั่น 100% ผิวด้าน กันเชื้อรา ทนด่างจากผนังปูน เม็ดสีทนแสง ขนาด 18.925 ลิตร ทาได้ 150 ตร.ม. ต่อเที่ยว",
+  },
 ];
 
 export const bySlug = (slug) => PRODUCTS.find((p) => p.slug === slug);
