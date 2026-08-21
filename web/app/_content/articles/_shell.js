@@ -30,20 +30,25 @@ const FOOTER = `<div style="background:#0e1a14;color:#c3cfc7;padding:56px 56px 3
 
 // Article catalogue — single source of truth for detail pages + related lists.
 export const ARTICLES = [
-  { slug: "what-is-fireproof-paint", title: "สีกันไฟคืออะไร ทำงานอย่างไร แบบเข้าใจง่าย", cat: "ความรู้พื้นฐาน", date: "10 ก.ค. 2026", read: "5 นาที", image: "/images/articles/what-is-fireproof-paint.jpg", fit: "cover", excerpt: "ทำความรู้จักหลักการ “พองตัวเป็นฉนวน” (intumescent) ที่ช่วยหน่วงเวลาการวิบัติของโครงสร้างเหล็กเมื่อเกิดเพลิงไหม้", related: ["iso834-astm-e119", "cement-vs-fireproof-paint", "fire-rating-hours"] },
-  { slug: "fire-rating-hours", title: "สีกันไฟทนไฟได้กี่ชั่วโมง เลือกอย่างไรให้ผ่านกฎหมาย", cat: "มาตรฐาน & กฎหมาย", date: "3 ก.ค. 2026", read: "6 นาที", image: "/images/articles/fire-rating-hours.jpg", fit: "cover", excerpt: "แนวทางเลือกชั่วโมงทนไฟให้ตรงกับกฎกระทรวงและประเภทอาคาร", related: ["iso834-astm-e119", "calculate-fireproof-paint", "what-is-fireproof-paint"] },
-  { slug: "water-vs-solvent-based", title: "สีกันไฟสูตรน้ำ vs สูตรน้ำมัน ต่างกันอย่างไร", cat: "วิธีเลือก/คำนวณ", date: "26 มิ.ย. 2026", read: "5 นาที", image: "/images/articles/water-vs-solvent-based.jpg", fit: "cover", excerpt: "เปรียบเทียบข้อดี–ข้อจำกัด และงานที่เหมาะกับแต่ละสูตร", related: ["what-is-fireproof-paint", "fireproof-application-steps", "calculate-fireproof-paint"] },
-  { slug: "calculate-fireproof-paint", title: "วิธีคำนวณปริมาณสีกันไฟ / ราคาต่อตารางเมตร", cat: "วิธีเลือก/คำนวณ", date: "19 มิ.ย. 2026", read: "7 นาที", image: "/images/articles/calculate-fireproof-paint.jpg", fit: "cover", excerpt: "สูตรคำนวณจำนวนถังจากพื้นที่ผิวเหล็กและความหนาที่ต้องการ", related: ["fire-rating-hours", "water-vs-solvent-based", "fireproof-application-steps"] },
-  { slug: "iso834-astm-e119", title: "มาตรฐาน ISO 834 และ ASTM E119 อธิบายง่ายๆ", cat: "มาตรฐาน & กฎหมาย", date: "12 มิ.ย. 2026", read: "6 นาที", image: "/images/articles/iso834-astm-e119.jpg", fit: "cover", excerpt: "ทั้งสองมาตรฐานทดสอบอะไร ต่างกันตรงไหน และอ่านผลอย่างไร", related: ["fire-rating-hours", "what-is-fireproof-paint", "cement-vs-fireproof-paint"] },
-  { slug: "fireproof-application-steps", title: "ขั้นตอนการทา/พ่นสีกันไฟโครงสร้างเหล็กที่ถูกต้อง", cat: "ขั้นตอนงานติดตั้ง", date: "5 มิ.ย. 2026", read: "7 นาที", image: "/images/articles/fireproof-application-steps.jpg", fit: "cover", excerpt: "ตั้งแต่เตรียมผิว รองพื้น จนถึงคุมความหนาฟิล์มให้ได้มาตรฐาน", related: ["calculate-fireproof-paint", "water-vs-solvent-based", "what-is-fireproof-paint"] },
-  { slug: "cement-vs-fireproof-paint", title: "ซีเมนต์กันไฟ vs สีกันไฟ เลือกแบบไหนดี", cat: "ความรู้พื้นฐาน", date: "29 พ.ค. 2026", read: "5 นาที", image: "/images/articles/cement-vs-fireproof-paint.jpg", fit: "cover", excerpt: "เทียบการใช้งาน ต้นทุน และความเหมาะสมกับแต่ละประเภทงาน", related: ["what-is-fireproof-paint", "fire-rating-hours", "iso834-astm-e119"] },
+  { slug: "what-is-fireproof-paint", title: "สีกันไฟคืออะไร ทำงานอย่างไร แบบเข้าใจง่าย", cat: "ความรู้พื้นฐาน", date: "10 ก.ค. 2026", read: "5 นาที", image: "/images/articles/what-is-fireproof-paint.jpg", fit: "cover", w: 1600, h: 1000, excerpt: "ทำความรู้จักหลักการ “พองตัวเป็นฉนวน” (intumescent) ที่ช่วยหน่วงเวลาการวิบัติของโครงสร้างเหล็กเมื่อเกิดเพลิงไหม้", related: ["iso834-astm-e119", "cement-vs-fireproof-paint", "fire-rating-hours"] },
+  { slug: "fire-rating-hours", title: "สีกันไฟทนไฟได้กี่ชั่วโมง เลือกอย่างไรให้ผ่านกฎหมาย", cat: "มาตรฐาน & กฎหมาย", date: "3 ก.ค. 2026", read: "6 นาที", image: "/images/articles/fire-rating-hours.jpg", fit: "cover", w: 1600, h: 840, excerpt: "แนวทางเลือกชั่วโมงทนไฟให้ตรงกับกฎกระทรวงและประเภทอาคาร", related: ["iso834-astm-e119", "calculate-fireproof-paint", "what-is-fireproof-paint"] },
+  { slug: "water-vs-solvent-based", title: "สีกันไฟสูตรน้ำ vs สูตรน้ำมัน ต่างกันอย่างไร", cat: "วิธีเลือก/คำนวณ", date: "26 มิ.ย. 2026", read: "5 นาที", image: "/images/articles/water-vs-solvent-based.jpg", fit: "cover", w: 1600, h: 840, excerpt: "เปรียบเทียบข้อดี–ข้อจำกัด และงานที่เหมาะกับแต่ละสูตร", related: ["what-is-fireproof-paint", "fireproof-application-steps", "calculate-fireproof-paint"] },
+  { slug: "calculate-fireproof-paint", title: "วิธีคำนวณปริมาณสีกันไฟ / ราคาต่อตารางเมตร", cat: "วิธีเลือก/คำนวณ", date: "19 มิ.ย. 2026", read: "7 นาที", image: "/images/articles/calculate-fireproof-paint.jpg", fit: "cover", w: 1600, h: 840, excerpt: "สูตรคำนวณจำนวนถังจากพื้นที่ผิวเหล็กและความหนาที่ต้องการ", related: ["fire-rating-hours", "water-vs-solvent-based", "fireproof-application-steps"] },
+  { slug: "iso834-astm-e119", title: "มาตรฐาน ISO 834 และ ASTM E119 อธิบายง่ายๆ", cat: "มาตรฐาน & กฎหมาย", date: "12 มิ.ย. 2026", read: "6 นาที", image: "/images/articles/iso834-astm-e119.jpg", fit: "cover", w: 1600, h: 840, excerpt: "ทั้งสองมาตรฐานทดสอบอะไร ต่างกันตรงไหน และอ่านผลอย่างไร", related: ["fire-rating-hours", "what-is-fireproof-paint", "cement-vs-fireproof-paint"] },
+  { slug: "fireproof-application-steps", title: "ขั้นตอนการทา/พ่นสีกันไฟโครงสร้างเหล็กที่ถูกต้อง", cat: "ขั้นตอนงานติดตั้ง", date: "5 มิ.ย. 2026", read: "7 นาที", image: "/images/articles/fireproof-application-steps.jpg", fit: "cover", w: 1600, h: 840, excerpt: "ตั้งแต่เตรียมผิว รองพื้น จนถึงคุมความหนาฟิล์มให้ได้มาตรฐาน", related: ["calculate-fireproof-paint", "water-vs-solvent-based", "what-is-fireproof-paint"] },
+  { slug: "cement-vs-fireproof-paint", title: "ซีเมนต์กันไฟ vs สีกันไฟ เลือกแบบไหนดี", cat: "ความรู้พื้นฐาน", date: "29 พ.ค. 2026", read: "5 นาที", image: "/images/articles/cement-vs-fireproof-paint.jpg", fit: "cover", w: 1600, h: 840, excerpt: "เทียบการใช้งาน ต้นทุน และความเหมาะสมกับแต่ละประเภทงาน", related: ["what-is-fireproof-paint", "fire-rating-hours", "iso834-astm-e119"] },
 ];
 
 const BY_SLUG = Object.fromEntries(ARTICLES.map((a) => [a.slug, a]));
 
 function imgBox(image, fit, h) {
   const bg = fit === "contain" ? "#ffffff" : "#eef4ef";
-  return `background:${bg};background-image:url('${image}');background-size:${fit || "cover"};background-position:center;background-repeat:no-repeat;height:${h}px`;
+  return `background:${bg};background-image:url('${image}');background-size:${fit || "cover"};background-position:center top;background-repeat:no-repeat;height:${h}px`;
+}
+
+function cover(a) {
+  if (!a.image) return "";
+  return `<img src="${a.image}" alt="${a.title}" width="${a.w || 1600}" height="${a.h || 840}" fetchpriority="high" style="display:block;width:100%;height:auto;margin:26px 0 0;border-radius:14px;background:#eef4ef">`;
 }
 
 function hero(a) {
@@ -52,6 +57,7 @@ function hero(a) {
     <span style="display:inline-block;background:#018438;color:#fff;font-size:12px;font-weight:600;padding:5px 14px;border-radius:999px;margin-bottom:18px">${a.cat}</span>
     <h1 style="margin:0 0 18px;font-size:33px;font-weight:700;line-height:1.4;letter-spacing:-.2px">${a.title}</h1>
     <div style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:#a9c6b5">${a.date} · อ่าน ${a.read} · โดยทีมวิศวกร Infinite</div>
+    ${cover(a)}
   </div></div>`;
 }
 

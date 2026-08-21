@@ -18,3 +18,9 @@ pdf/
 # Working notes / content source (design briefs, article drafts + large source images)
 PROMPT*.MD
 บทความ*/
+
+# วิดีโอต้นฉบับจากกล้อง/ตัดต่อ (HEVC ไฟล์ใหญ่) — ตัวที่เว็บใช้จริงคือไฟล์ที่
+# แปลงเป็น H.264 แล้วใน web/public/videos/ ต้นฉบับไม่ต้องเข้า git เพราะไฟล์
+# ใหญ่ระดับนี้ลบทีหลังก็ยังค้างใน history ตลอดไป
+/*.mp4
+/*.mov

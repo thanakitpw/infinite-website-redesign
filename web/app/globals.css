@@ -62,7 +62,7 @@ div[style*="width:1440px"]{width:100%!important}
 [style*="height:180px"][style*="repeating-linear-gradient(135deg,#eef2ee"]{height:240px!important;flex:none!important;background-color:#fff!important}
 [style*="height:150px"][style*="repeating-linear-gradient(135deg,#eef2ee"]{height:190px!important;flex:none!important;background-color:#fff!important}
 /* article thumbnails: uniform height + cover so all equal */
-[style*="height:170px"][style*="repeating-linear-gradient(135deg,#e5efe8"]{height:200px!important;flex:none!important;background-size:cover!important;background-position:center!important}
+[style*="height:170px"][style*="repeating-linear-gradient(135deg,#e5efe8"]{height:200px!important;flex:none!important;background-size:cover!important;background-position:center top!important}
 
 @media (max-width:1024px){
   [style*="grid-template-columns:repeat(4,1fr)"]{grid-template-columns:repeat(2,1fr)!important}
@@ -407,14 +407,9 @@ a[style*="border-radius:16px"][style*="overflow:hidden"]:hover{
   .nav-dd{width:100%}
 }
 
-/* ── VIDEO SECTION — กรอบ 16:9 รอใส่วิดีโอ ────────────────────────────────
-   ใส่วิดีโอจริงโดยแทน <div class="vid-ph">…</div> ด้วยอันใดอันหนึ่ง:
-     YouTube : <iframe src="https://www.youtube.com/embed/<ID>" title="…"
-                 allow="accelerometer;autoplay;clipboard-write;encrypted-media;
-                 gyroscope;picture-in-picture" allowfullscreen></iframe>
-     ไฟล์เอง : <video controls playsinline poster="/images/video-cover.jpg">
-                 <source src="/videos/intro.mp4" type="video/mp4"></video>
-   ไม่ต้องแก้ CSS — .vid-frame บังคับให้ลูกเต็มกรอบ 16:9 พอดีทั้งสองแบบ */
+/* ── VIDEO SECTION ────────────────────────────────────────────────────────
+   ตอนนี้ใส่ <video> ไฟล์ของเราเองอยู่ ถ้าจะสลับไปเป็น YouTube ก็แค่วาง
+   <iframe> ไว้ใน .vid-frame แทน — กฎด้านล่างรองรับทั้งสองแบบอยู่แล้ว */
 .vid-head{
   text-align:center;margin-bottom:34px;
   padding-left:max(56px,calc((100% - var(--content-max))/2));
@@ -437,22 +432,9 @@ a[style*="border-radius:16px"][style*="overflow:hidden"]:hover{
   position:absolute;inset:0;width:100%;height:100%!important;
   border:0;display:block;object-fit:cover;
 }
-/* สถานะยังไม่มีวิดีโอ */
-.vid-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:radial-gradient(circle at 50% 42%,#10402a 0%,#0a2417 70%)}
-.vid-play{
-  width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-  background:rgba(18,180,89,.16);border:1.5px solid rgba(94,224,143,.45);
-  transition:transform .3s var(--ease-out),background .3s,border-color .3s;
-}
-.vid-play svg{width:26px;height:26px;margin-left:4px;fill:#8fe8b3}
-.vid-frame:hover .vid-play{transform:scale(1.07);background:rgba(18,180,89,.27);border-color:rgba(94,224,143,.75)}
-.vid-note{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:2.2px;color:#6f8d7c}
-
 @media (max-width:720px){
   .vid-head,.vid-wrap{padding-left:16px;padding-right:16px}
   .vid-frame{border-radius:13px}
-  .vid-play{width:58px;height:58px}
-  .vid-play svg{width:20px;height:20px}
 }
 
 /* ── OUR CLIENTS — infinite logo marquee ──────────────────────────────────
@@ -550,10 +532,28 @@ a[style*="border-radius:16px"][style*="overflow:hidden"]:hover{
 .dl-cover,.std-cover{scale:1;transition:scale .5s var(--ease-out)}
 .dl-card:hover .dl-cover,.std-card:hover .std-cover{scale:1.05}
 
+/* การ์ดบทความหน้าแรก — ทั้งใบเป็น <a> ไปหน้าบทความจริง เดิมเป็น div เฉยๆ
+   ผู้ใช้เห็น "อ่านต่อ →" แล้วกดไม่ติด ใช้ translate/scale ด้วยเหตุผลเดียวกับ
+   .std-card ข้างบน (การ์ดโดน .rv ติด transform อยู่แล้ว) */
+.art-card{
+  translate:0 0;
+  transition:border-color .3s var(--ease-out),box-shadow .3s var(--ease-out),translate .3s var(--ease-out);
+}
+.art-card:hover{border-color:#b9d9c6;box-shadow:0 14px 32px rgba(6,53,31,.10);translate:0 -4px}
+.art-card:focus-visible{outline:2px solid #018438;outline-offset:3px}
+.art-img{scale:1;transition:scale .5s var(--ease-out)}
+.art-card:hover .art-img{scale:1.05}
+
+/* ช่องทางลัด 3 ช่องในการ์ด SOLUTION RECOMMEND หน้าแรก — เดิมเป็น div ทั้งใบ */
+.sol-tile{transition:background-color .25s var(--ease-out)}
+.sol-tile:hover{background:#f6f7f3}
+.sol-tile:hover [style*="font-weight:600"]{color:#018438}
+.sol-tile:focus-visible{outline:2px solid #018438;outline-offset:-2px}
+
 @media (prefers-reduced-motion:reduce){
-  .std-card,.std-card::before,.dl-card,.dl-cover,.std-cover{transition:none!important}
-  .std-card:hover,.dl-card:hover{translate:none}
-  .dl-card:hover .dl-cover,.std-card:hover .std-cover{scale:1}
+  .std-card,.std-card::before,.dl-card,.dl-cover,.std-cover,.art-card,.art-img,.sol-tile{transition:none!important}
+  .std-card:hover,.dl-card:hover,.art-card:hover{translate:none}
+  .dl-card:hover .dl-cover,.std-card:hover .std-cover,.art-card:hover .art-img{scale:1}
 }
 
 /* ── หน้า /standards: popup คำอธิบายมาตรฐาน ───────────────────────────────

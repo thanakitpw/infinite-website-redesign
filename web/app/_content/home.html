@@ -80,12 +80,12 @@
                   <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:2px;color:#8fe8b3;margin-bottom:12px">SOLUTION RECOMMEND</div>
                   <div style="font-size:23px;font-weight:700;line-height:1.3;margin-bottom:12px">เริ่มงานกันไฟ<br>อย่างไรดี?</div>
                   <p style="margin:0 0 18px;font-size:13.5px;line-height:1.6;color:#a9c6b5">ทีมวิศวกรช่วยเลือกสินค้า คำนวณปริมาณ และเสนอราคาให้ฟรี</p>
-                  <div style="display:inline-flex;align-items:center;gap:8px;background:#12b459;color:#04140c;padding:11px 18px;border-radius:9px;font-weight:600;font-size:14px">ดูทั้งหมด →</div>
+                  <a href="/products" style="display:inline-flex;align-items:center;gap:8px;background:#12b459;color:#04140c;padding:11px 18px;border-radius:9px;font-weight:600;font-size:14px;text-decoration:none">ดูทั้งหมด →</a>
                 </div>
                 <div style="display:grid;grid-template-columns:repeat(3,1fr);padding:24px">
-                  <div style="padding:12px 18px;text-align:center;border-right:1px solid #eef1ec"><div style="width:74px;height:74px;border-radius:50%;background:repeating-linear-gradient(135deg,#e9efe9 0 8px,#f2f5f2 8px 16px);margin:0 auto 14px"></div><div style="font-size:14.5px;font-weight:600;line-height:1.4">ขอใบเสนอราคาโครงการ</div><div style="font-size:12px;color:#8a978d;margin-top:5px">ตอบกลับใน 24 ชม.</div></div>
-                  <div style="padding:12px 18px;text-align:center;border-right:1px solid #eef1ec"><div style="width:74px;height:74px;border-radius:50%;background:repeating-linear-gradient(135deg,#e9efe9 0 8px,#f2f5f2 8px 16px);margin:0 auto 14px"></div><div style="font-size:14.5px;font-weight:600;line-height:1.4">วิธีเลือกสีกันไฟ</div><div style="font-size:12px;color:#8a978d;margin-top:5px">สูตรน้ำ vs สูตรน้ำมัน</div></div>
-                  <div style="padding:12px 18px;text-align:center"><div style="width:74px;height:74px;border-radius:50%;background:repeating-linear-gradient(135deg,#e9efe9 0 8px,#f2f5f2 8px 16px);margin:0 auto 14px"></div><div style="font-size:14.5px;font-weight:600;line-height:1.4">ดาวน์โหลด Spec/ใบรับรอง</div><div style="font-size:12px;color:#8a978d;margin-top:5px">TDS · ISO 834 · FSRG</div></div>
+                  <a class="sol-tile" href="/contact" style="padding:12px 18px;text-align:center;border-right:1px solid #eef1ec;display:block;color:inherit;text-decoration:none"><div style="width:74px;height:74px;border-radius:50%;background:repeating-linear-gradient(135deg,#e9efe9 0 8px,#f2f5f2 8px 16px);margin:0 auto 14px"></div><div style="font-size:14.5px;font-weight:600;line-height:1.4">ขอใบเสนอราคาโครงการ</div><div style="font-size:12px;color:#8a978d;margin-top:5px">ตอบกลับใน 24 ชม.</div></a>
+                  <a class="sol-tile" href="/articles/water-vs-solvent-based" style="padding:12px 18px;text-align:center;border-right:1px solid #eef1ec;display:block;color:inherit;text-decoration:none"><div style="width:74px;height:74px;border-radius:50%;background:repeating-linear-gradient(135deg,#e9efe9 0 8px,#f2f5f2 8px 16px);margin:0 auto 14px"></div><div style="font-size:14.5px;font-weight:600;line-height:1.4">วิธีเลือกสีกันไฟ</div><div style="font-size:12px;color:#8a978d;margin-top:5px">สูตรน้ำ vs สูตรน้ำมัน</div></a>
+                  <a class="sol-tile" href="/standards" style="padding:12px 18px;text-align:center;display:block;color:inherit;text-decoration:none"><div style="width:74px;height:74px;border-radius:50%;background:repeating-linear-gradient(135deg,#e9efe9 0 8px,#f2f5f2 8px 16px);margin:0 auto 14px"></div><div style="font-size:14.5px;font-weight:600;line-height:1.4">ดาวน์โหลด Spec/ใบรับรอง</div><div style="font-size:12px;color:#8a978d;margin-top:5px">TDS · ISO 834 · FSRG</div></a>
                 </div>
               </div>
             </div>
@@ -204,22 +204,7 @@
             </div>
           </div>
 
-          <!-- VIDEO · กรอบ 16:9 รอใส่วิดีโอ ────────────────────────────────
-               ใส่วิดีโอจริง: ลบ <div class="vid-ph">…</div> ทั้งก้อน แล้วใส่แทน
-
-               YouTube:
-                 <iframe src="https://www.youtube.com/embed/VIDEO_ID"
-                         title="วิดีโอแนะนำ Infinite Material"
-                         allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"
-                         allowfullscreen></iframe>
-
-               ไฟล์ mp4 ของตัวเอง (วางไฟล์ที่ /public/videos/):
-                 <video controls playsinline preload="metadata" poster="/images/video-cover.jpg">
-                   <source src="/videos/intro.mp4" type="video/mp4">
-                 </video>
-
-               ไม่ต้องแก้ CSS — .vid-frame บังคับให้ลูกเต็มกรอบ 16:9 พอดีทั้งสองแบบ
-               และพื้นที่ถูกจองด้วย aspect-ratio ไว้แล้ว หน้าจึงไม่กระตุกตอนวิดีโอโหลด -->
+          <!-- VIDEO -->
           <div style="background:#06351f;padding:72px 0">
             <div class="vid-head">
               <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:2.5px;color:#8fe8b3;margin-bottom:12px">VIDEO</div>
@@ -228,10 +213,10 @@
             </div>
             <div class="vid-wrap">
               <div class="vid-frame">
-                <div class="vid-ph">
-                  <div class="vid-play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></div>
-                  <div class="vid-note">16 : 9 · LANDSCAPE</div>
-                </div>
+                <video controls playsinline preload="metadata" poster="/images/video-cover.webp">
+                  <source src="/videos/infinite-fireproof-work.mp4" type="video/mp4">
+                  เบราว์เซอร์นี้เล่นวิดีโอไม่ได้ — <a href="/videos/infinite-fireproof-work.mp4">ดาวน์โหลดคลิป (MP4)</a>
+                </video>
               </div>
             </div>
           </div>
@@ -240,24 +225,24 @@
           <div style="background:#fff;padding:72px 56px">
             <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px">
               <div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:2.5px;color:#018438;margin-bottom:10px">ARTICLES & KNOWLEDGE</div><h2 style="margin:0 0 8px;font-size:38px;font-weight:700;letter-spacing:-.3px">บทความ / ความรู้เรื่องกันไฟ</h2><p style="margin:0;font-size:16px;color:#5c6b62">เข้าใจงานกันไฟให้ลึกขึ้น ก่อนเลือกสินค้าและทำโครงการ</p></div>
-              <div style="color:#018438;font-weight:600;font-size:15px">ดูบทความทั้งหมด →</div>
+              <a href="/articles" style="color:#018438;font-weight:600;font-size:15px;text-decoration:none">ดูบทความทั้งหมด →</a>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px">
               <!-- article 1 -->
-              <div style="border:1px solid #e7eae4;border-radius:16px;overflow:hidden">
-                <div style="position:relative;height:190px;background:repeating-linear-gradient(135deg,#e5efe8 0 12px,#eef4ef 12px 24px);display:flex;align-items:center;justify-content:center;background:#06351f;background-image:url('/images/articles/what-is-fireproof-paint.jpg');background-size:cover;background-position:center;background-repeat:no-repeat"><span style="position:absolute;top:14px;left:14px;background:#018438;color:#fff;font-size:11px;font-weight:600;padding:5px 11px;border-radius:6px">ความรู้พื้นฐาน</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#9aa79c"></span></div>
+              <a class="art-card" href="/articles/what-is-fireproof-paint" style="border:1px solid #e7eae4;border-radius:16px;overflow:hidden;display:block;color:inherit;text-decoration:none">
+                <div class="art-img" style="position:relative;height:190px;background:repeating-linear-gradient(135deg,#e5efe8 0 12px,#eef4ef 12px 24px);display:flex;align-items:center;justify-content:center;background:#06351f;background-image:url('/images/articles/what-is-fireproof-paint.jpg');background-size:cover;background-position:center top;background-repeat:no-repeat"><span style="position:absolute;top:14px;left:14px;background:#018438;color:#fff;font-size:11px;font-weight:600;padding:5px 11px;border-radius:6px">ความรู้พื้นฐาน</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#9aa79c"></span></div>
                 <div style="padding:20px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#8a978d;margin-bottom:9px">10 ก.ค. 2026 · อ่าน 5 นาที</div><div style="font-size:17px;font-weight:600;line-height:1.4;margin-bottom:9px">สีกันไฟคืออะไร ทำงานอย่างไร แบบเข้าใจง่าย</div><p style="margin:0 0 12px;font-size:13.5px;line-height:1.65;color:#5c6b62">ทำความรู้จักหลักการพองตัวเป็นฉนวน (intumescent) ที่ช่วยหน่วงเวลาการวิบัติของโครงสร้างเหล็กเมื่อเกิดเพลิงไหม้</p><div style="color:#018438;font-weight:600;font-size:13.5px">อ่านต่อ →</div></div>
-              </div>
+              </a>
               <!-- article 2 -->
-              <div style="border:1px solid #e7eae4;border-radius:16px;overflow:hidden">
-                <div style="height:190px;background:repeating-linear-gradient(135deg,#e5efe8 0 12px,#eef4ef 12px 24px);display:flex;align-items:center;justify-content:center;background:#06351f;background-image:url('/images/articles/fire-rating-hours.jpg');background-size:cover;background-position:center;background-repeat:no-repeat"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#9aa79c"></span></div>
+              <a class="art-card" href="/articles/fire-rating-hours" style="border:1px solid #e7eae4;border-radius:16px;overflow:hidden;display:block;color:inherit;text-decoration:none">
+                <div class="art-img" style="height:190px;background:repeating-linear-gradient(135deg,#e5efe8 0 12px,#eef4ef 12px 24px);display:flex;align-items:center;justify-content:center;background:#06351f;background-image:url('/images/articles/fire-rating-hours.jpg');background-size:cover;background-position:center top;background-repeat:no-repeat"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#9aa79c"></span></div>
                 <div style="padding:20px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#8a978d;margin-bottom:9px">3 ก.ค. 2026</div><div style="font-size:17px;font-weight:600;line-height:1.4;margin-bottom:9px">สีกันไฟทนไฟได้กี่ชั่วโมง เลือกอย่างไรให้ผ่านกฎหมาย</div><p style="margin:0 0 12px;font-size:13.5px;line-height:1.65;color:#5c6b62">แนวทางเลือกชั่วโมงทนไฟให้ตรงกับกฎกระทรวงและประเภทอาคาร</p><div style="color:#018438;font-weight:600;font-size:13.5px">อ่านต่อ →</div></div>
-              </div>
+              </a>
               <!-- article 3 -->
-              <div style="border:1px solid #e7eae4;border-radius:16px;overflow:hidden">
-                <div style="height:190px;background:repeating-linear-gradient(135deg,#e5efe8 0 12px,#eef4ef 12px 24px);display:flex;align-items:center;justify-content:center;background:#06351f;background-image:url('/images/articles/water-vs-solvent-based.jpg');background-size:cover;background-position:center;background-repeat:no-repeat"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#9aa79c"></span></div>
+              <a class="art-card" href="/articles/water-vs-solvent-based" style="border:1px solid #e7eae4;border-radius:16px;overflow:hidden;display:block;color:inherit;text-decoration:none">
+                <div class="art-img" style="height:190px;background:repeating-linear-gradient(135deg,#e5efe8 0 12px,#eef4ef 12px 24px);display:flex;align-items:center;justify-content:center;background:#06351f;background-image:url('/images/articles/water-vs-solvent-based.jpg');background-size:cover;background-position:center top;background-repeat:no-repeat"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#9aa79c"></span></div>
                 <div style="padding:20px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#8a978d;margin-bottom:9px">26 มิ.ย. 2026</div><div style="font-size:17px;font-weight:600;line-height:1.4;margin-bottom:9px">สีกันไฟสูตรน้ำ vs สูตรน้ำมัน ต่างกันอย่างไร</div><p style="margin:0 0 12px;font-size:13.5px;line-height:1.65;color:#5c6b62">เปรียบเทียบข้อดี–ข้อจำกัด และงานที่เหมาะกับแต่ละสูตร</p><div style="color:#018438;font-weight:600;font-size:13.5px">อ่านต่อ →</div></div>
-              </div>
+              </a>
             </div>
           </div>
 
