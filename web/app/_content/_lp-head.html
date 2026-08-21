@@ -99,6 +99,9 @@
      ปล่อยให้สูงตามสัดส่วนจริงของไฟล์ */
   .lp .hero-figure{position:relative;text-align:center}
   .lp .hero-figure img{width:100%;height:auto;display:block;filter:drop-shadow(0 20px 34px rgba(0,0,0,.45))}
+  /* หน้าที่รูป hero เป็นสินค้าชิ้นเดียวแนวตั้ง (เช่น /thinner) ถ้าปล่อยเต็ม 100%
+     ของคอลัมน์ รูปจะสูงกว่าคอลัมน์ข้อความไปมาก จำกัดความกว้างแล้วจัดกลางแทน */
+  .lp .hero-figure-sm img{max-width:330px;margin-left:auto;margin-right:auto}
   .lp .hero-figure-flag{display:inline-flex;align-items:center;background:var(--accent);color:var(--white);font-size:12px;font-weight:600;padding:6px 15px;border-radius:7px;letter-spacing:.2px;margin-bottom:16px}
   .lp .hero-figure figcaption{padding-top:16px;font-size:13px;color:var(--green-mute);text-align:center;line-height:1.65}
   /* ── Lab strip ── */
