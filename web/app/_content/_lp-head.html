@@ -191,9 +191,16 @@
   .lp .calc-t{font-size:21px;font-weight:700;margin-bottom:10px;line-height:1.4}
   .lp .calc-d{font-size:14.5px;color:var(--green-mute);line-height:1.75;margin-bottom:22px}
   .lp .calc-rows{display:grid;gap:12px;margin-bottom:24px}
-  .lp .calc-row{display:flex;justify-content:space-between;gap:14px;font-size:14px;padding-bottom:11px;border-bottom:1px solid rgba(255,255,255,.13)}
-  .lp .calc-row span:first-child{color:var(--green-mute)}
-  .lp .calc-row span:last-child{font-weight:600;text-align:right}
+  /* ค่าเริ่มต้นเป็นโทนพื้นสว่าง — /fire-blanket กับ /roof-shield เอาแถวสเปกนี้ไป
+     วางบน section พื้นอ่อนโดยไม่มีกล่อง .calc ครอบ ของเดิมตั้งสีไว้สำหรับพื้น
+     เขียวเข้มอย่างเดียว (#a9c6b5 บน #f6f7f3 = คอนทราสต์ ~1.9:1) เลยจางจนอ่านไม่ออก */
+  .lp .calc-row{display:flex;justify-content:space-between;gap:14px;font-size:14px;padding-bottom:11px;border-bottom:1px solid var(--border)}
+  .lp .calc-row span:first-child{color:var(--text-muted)}
+  .lp .calc-row span:last-child{font-weight:600;text-align:right;color:var(--text)}
+  /* ในกล่อง .calc พื้นเขียวเข้ม ต้องกลับเป็นโทนสว่างเหมือนเดิม */
+  .lp .calc .calc-row{border-bottom-color:rgba(255,255,255,.13)}
+  .lp .calc .calc-row span:first-child{color:var(--green-mute)}
+  .lp .calc .calc-row span:last-child{color:var(--white)}
 
   /* ── รูปประกอบในเนื้อหา ── */
   .lp .figure{margin-top:26px}
