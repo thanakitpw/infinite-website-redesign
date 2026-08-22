@@ -1,27 +1,45 @@
 @tailwind components;
+
+/* ── ชั้นรีเซ็ตของหลังบ้าน ──────────────────────────────────────────────────
+   preflight ของ Tailwind ถูกปิดทั้งโปรเจค (ถ้าเปิด reset จะไปรื้อ inline style
+   ของเว็บหน้าบ้านจนพัง) หลังบ้านจึงต้องรีเซ็ตเอง — แต่ต้องรีเซ็ตแบบ "ไม่มีน้ำหนัก"
+
+   ทุกกฎครอบด้วย :where() เพื่อให้ specificity เป็น 0
+   เดิมเขียน `.adm button {...}` ตรงๆ ซึ่งได้ (0,1,1) แล้วไปชนะ utility ของ
+   Tailwind ที่เป็น (0,1,0) ทุกตัว ผลคือ background:none ทับ bg-brand จนปุ่มเขียว
+   หายทั้งระบบ (ตัวหนังสือขาวบนพื้นขาว) และ color:inherit ทับ text-brand จน
+   ลิงก์ไม่มีสี — เป็นต้นเหตุที่ทำให้หน้าจอดู "เพี้ยนไปหมด" */
+:where(.adm) { font-family: "IBM Plex Sans Thai", system-ui, sans-serif; color: #0e1a14; -webkit-font-smoothing: antialiased; }
+:where(.adm button) { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; padding: 0; }
+:where(.adm input, .adm textarea, .adm select) { font: inherit; color: inherit; background: transparent; }
+:where(.adm textarea) { resize: vertical; }
+/* ตรงนี้ต้องมีน้ำหนักพอดีๆ: globals.css ของหน้าบ้านมี `a{color:#018438}` = (0,0,1)
+   ถ้าใช้ :where(.adm a) จะได้ (0,0,0) แพ้ ลิงก์ในหลังบ้านจะเขียวหมดทั้งจอ
+   เขียนเป็น :where(.adm) a ได้ (0,0,1) เท่ากันแล้วชนะด้วยลำดับไฟล์ ส่วน utility
+   อย่าง text-brand ที่เป็น (0,1,0) ยังชนะตัวนี้อยู่ตามที่ต้องการ */
+:where(.adm) a { color: inherit; text-decoration: none; }
+:where(.adm h1, .adm h2, .adm h3, .adm p, .adm ol, .adm ul) { margin: 0; }
+:where(.adm ol, .adm ul) { padding: 0; list-style: none; }
+:where(.adm table) { border-collapse: collapse; }
+:where(.adm) ::placeholder { color: #8b9990; }
+:where(.adm *:focus-visible) { outline: 2px solid #018438; outline-offset: 2px; border-radius: 4px; }
+
+/* ── ป้ายกำกับ ─────────────────────────────────────────────────────────────
+   ประกาศไว้ก่อน @tailwind utilities เพื่อให้ utility ที่เขียนกำกับใน JSX
+   (text-[26px], tracking-normal) ชนะได้ตามลำดับ source order */
+
+/* เชิงเทคนิค: URL ชื่อไฟล์ ตัวเลข — อักษรละตินเท่านั้น
+   IBM Plex Mono ไม่มีสระและวรรณยุกต์ไทย ใส่ข้อความไทยจะตกไปฟอนต์สำรอง
+   แล้วโดน letter-spacing ยืดจนอ่านยาก → ข้อความไทยให้ใช้ .meta */
+.mono { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11px; letter-spacing: .08em; }
+
+/* ข้อมูลประกอบภาษาไทย — เล็กเท่ากันแต่ยังเป็นฟอนต์ไทย ไม่ยืดตัวอักษร */
+.meta { font-size: 11.5px; letter-spacing: 0; line-height: 1.55; }
+
 @tailwind utilities;
 
-/* ── รีเซ็ตเฉพาะใต้ต้นไม้หลังบ้าน ────────────────────────────────────────────
-   preflight ของ Tailwind ถูกปิดทั้งโปรเจค (ไม่งั้นเว็บหน้าบ้านพัง) จึงต้องเก็บ
-   กวาดเฉพาะจุดที่ globals.css ของเว็บหน้าบ้านทิ้งไว้ ให้กับหน้าจอหลังบ้านเอง */
-.adm {
-  font-family: "IBM Plex Sans Thai", system-ui, sans-serif;
-  color: #0e1a14;
-  -webkit-font-smoothing: antialiased;
-}
-.adm button { font-family: inherit; font-size: inherit; cursor: pointer; border: 0; background: none; }
-.adm input, .adm textarea, .adm select { font-family: inherit; font-size: inherit; color: inherit; }
-.adm textarea { resize: vertical; }
-.adm a { color: inherit; text-decoration: none; }
-.adm :focus-visible { outline: 2px solid #018438; outline-offset: 2px; border-radius: 4px; }
-.adm ::placeholder { color: #8b9990; }
-
-/* ป้ายกำกับเชิงเทคนิค (กุญแจของช่อง, URL, เวลา) ตาม label-mono ใน DESIGN.md */
-.adm .mono {
-  font-family: "IBM Plex Mono", ui-monospace, monospace;
-  font-size: 11px;
-  letter-spacing: 0.08em;
-}
-
-/* ตัวอย่างหน้าเว็บใน iframe ต้องไม่โดนกฎ max-width ของ globals.css บีบ */
-.adm iframe { max-width: none; height: auto; }
+/* ── ทับกฎของเว็บหน้าบ้านเฉพาะจุด ────────────────────────────────────────
+   globals.css มี `img,iframe{max-width:100%;height:auto}` สำหรับหน้าบ้าน
+   ทำให้ iframe ตัวอย่างในหน้าแก้ไขยุบเหลือ 150px (ค่า default ของเบราว์เซอร์)
+   ตรงนี้ตั้งใจให้มีน้ำหนักเกิน utility เพราะต้องชนะกฎของหน้าบ้านให้ได้ */
+.adm iframe { max-width: none; height: 100%; }

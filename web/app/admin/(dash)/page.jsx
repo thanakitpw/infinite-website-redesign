@@ -67,7 +67,7 @@ export default async function Dashboard() {
         })}
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-4 items-start">
         <div className="col-span-2 bg-white border border-line rounded-card shadow-card">
           <div className="px-5 py-4 border-b border-line">
             <h2 className="font-semibold text-[15px]">แก้ไขล่าสุด</h2>
@@ -83,12 +83,12 @@ export default async function Dashboard() {
                     <Icon name={r.kind === "image" ? "image" : "file"} size={17} className="text-ink-3 shrink-0" />
                     <span className="min-w-0 flex-1">
                       <span className="block text-[13.5px] truncate">{shown || "(ว่าง)"}</span>
-                      <span className="mono block text-ink-3 normal-case tracking-normal truncate">
+                      <span className="meta block text-ink-3 truncate">
                         {page?.label || r.fragment} · {timeAgo(r.updated_at)}
                       </span>
                     </span>
                     {pending && (
-                      <span className="mono shrink-0 px-2 py-0.5 rounded-full bg-amber-tint text-amber">ร่าง</span>
+                      <span className="meta shrink-0 px-2 py-0.5 rounded-full bg-amber-tint text-amber">ร่าง</span>
                     )}
                     {page && (
                       <Link href={`/admin/pages/${page.key}`} className="shrink-0 text-brand text-[13px] font-medium hover:underline">

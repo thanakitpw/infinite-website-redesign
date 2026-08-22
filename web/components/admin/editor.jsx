@@ -238,7 +238,7 @@ export default function Editor({ page, fragments, rows }) {
         <aside className="w-[300px] shrink-0 bg-white border-r border-line flex flex-col">
           <div className="px-4 h-12 flex items-center justify-between border-b border-line shrink-0">
             <span className="font-semibold text-[14px]">บล็อกในหน้านี้</span>
-            <span className="mono text-ink-3">{blockList.length} บล็อก</span>
+            <span className="meta text-ink-3">{blockList.length} บล็อก</span>
           </div>
           <div className="flex-1 overflow-y-auto py-2">
             {fragments.map((f) => (
@@ -271,7 +271,7 @@ export default function Editor({ page, fragments, rows }) {
                           <span className={`block text-[13.5px] leading-snug truncate ${on ? "font-semibold" : ""}`}>
                             {b.name}
                           </span>
-                          <span className="mono text-ink-3 normal-case tracking-normal">
+                          <span className="meta text-ink-3">
                             {b.textCount} ข้อความ · {b.imageCount} รูป
                           </span>
                         </span>
@@ -304,7 +304,7 @@ export default function Editor({ page, fragments, rows }) {
             <span className="mono text-ink-3">{deviceWidth}</span>
             <button
               onClick={() => setPreviewNonce((n) => n + 1)}
-              className="mono text-ink-3 hover:text-brand ml-2"
+              className="meta text-ink-3 hover:text-brand ml-2"
               title="โหลดตัวอย่างใหม่"
             >
               รีเฟรช
@@ -312,8 +312,8 @@ export default function Editor({ page, fragments, rows }) {
           </div>
           <div className="flex-1 overflow-auto p-5">
             <div
-              className="mx-auto bg-white rounded-card border border-line overflow-hidden shadow-card transition-[width]"
-              style={{ width: deviceWidth, maxWidth: "100%", height: "calc(100% - 0px)" }}
+              className="mx-auto h-full bg-white rounded-card border border-line overflow-hidden shadow-card transition-[width]"
+              style={{ width: deviceWidth, maxWidth: "100%" }}
             >
               <iframe
                 key={previewNonce}
@@ -334,7 +334,7 @@ export default function Editor({ page, fragments, rows }) {
               <span className="block font-semibold text-[14px] truncate">{current?.name}</span>
             </span>
             {dirtyByBlock[current?.id] > 0 && (
-              <span className="mono shrink-0 text-amber">ร่าง {dirtyByBlock[current.id]}</span>
+              <span className="meta shrink-0 text-amber">ร่าง {dirtyByBlock[current.id]}</span>
             )}
           </div>
 
@@ -372,7 +372,7 @@ export default function Editor({ page, fragments, rows }) {
 
           <div className="shrink-0 border-t border-line p-3">
             <div className="flex items-center justify-between mb-2">
-              <span className="mono text-ink-3 normal-case tracking-normal">
+              <span className="meta text-ink-3">
                 {touched.size > 0
                   ? `ยังไม่ได้บันทึก ${touched.size} ช่อง`
                   : savedAt
@@ -430,7 +430,7 @@ function TextField({ field, value, changed, onChange, onReset }) {
       <span className="flex items-center gap-2 mb-1.5">
         <span className="text-[12.5px] font-medium text-ink-2">{field.label}</span>
         {changed && (
-          <button type="button" onClick={onReset} className="mono text-amber hover:underline normal-case tracking-normal">
+          <button type="button" onClick={onReset} className="meta text-amber hover:underline">
             คืนค่าเดิม
           </button>
         )}
@@ -457,7 +457,7 @@ function ImageField({ field, value, alt, changed, onPick, onAlt, onReset }) {
       <span className="flex items-center gap-2 mb-2">
         <span className="text-[12.5px] font-medium text-ink-2">{field.label}</span>
         {changed && (
-          <button type="button" onClick={onReset} className="mono text-amber hover:underline normal-case tracking-normal">
+          <button type="button" onClick={onReset} className="meta text-amber hover:underline">
             คืนค่าเดิม
           </button>
         )}

@@ -81,10 +81,10 @@ export default function PageList({ rows, groups }) {
         <table className="w-full text-[14px]">
           <thead>
             <tr className="bg-[#F2F6F1]">
-              <th className="mono uppercase text-ink-3 font-medium text-left px-5 py-2.5">ชื่อหน้า</th>
-              <th className="mono uppercase text-ink-3 font-medium text-left px-5 py-2.5 w-[140px]">ประเภท</th>
-              <th className="mono uppercase text-ink-3 font-medium text-left px-5 py-2.5 w-[150px]">แก้ไขล่าสุด</th>
-              <th className="mono uppercase text-ink-3 font-medium text-left px-5 py-2.5 w-[170px]">สถานะ</th>
+              <th className="meta text-ink-3 font-medium text-left px-5 py-2.5">ชื่อหน้า</th>
+              <th className="meta text-ink-3 font-medium text-left px-5 py-2.5 w-[140px]">ประเภท</th>
+              <th className="meta text-ink-3 font-medium text-left px-5 py-2.5 w-[150px]">แก้ไขล่าสุด</th>
+              <th className="meta text-ink-3 font-medium text-left px-5 py-2.5 w-[170px]">สถานะ</th>
               <th className="w-[90px]" />
             </tr>
           </thead>

@@ -129,7 +129,7 @@ export default function MediaPicker({ current, alt, onClose, onSelect }) {
                     <option key={f} value={f}>{f}</option>
                   ))}
                 </select>
-                <span className="mono ml-auto text-ink-3">{shown.length} รูป</span>
+                <span className="meta ml-auto text-ink-3">{shown.length} รูป</span>
               </div>
 
               <div className="flex-1 overflow-y-auto p-4">
@@ -176,7 +176,7 @@ export default function MediaPicker({ current, alt, onClose, onSelect }) {
                   />
                   <p className="mono break-all normal-case tracking-normal text-ink-2 mb-1">{picked}</p>
                   {selectedItem && (
-                    <p className="mono text-ink-3 normal-case tracking-normal mb-4">
+                    <p className="meta text-ink-3 mb-4">
                       {kb(selectedItem.bytes)}
                       {selectedItem.readOnly ? " · รูปเดิมของเว็บ" : " · อัปโหลดผ่านหลังบ้าน"}
                     </p>
@@ -230,7 +230,7 @@ export default function MediaPicker({ current, alt, onClose, onSelect }) {
         )}
 
         <div className="shrink-0 flex items-center gap-2 px-5 h-14 border-t border-line">
-          <span className="mono text-ink-3">{picked ? "เลือกแล้ว 1 รูป" : "ยังไม่ได้เลือก"}</span>
+          <span className="meta text-ink-3">{picked ? "เลือกแล้ว 1 รูป" : "ยังไม่ได้เลือก"}</span>
           <button onClick={onClose} className="ml-auto h-9 px-4 rounded-lg border border-line text-[14px] hover:border-ink-3">
             ยกเลิก
           </button>

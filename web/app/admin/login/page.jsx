@@ -26,7 +26,7 @@ export default function LoginPage({ searchParams }) {
             แก้ข้อความและรูปภาพได้เองทุกหน้า ไม่ต้องรอโปรแกรมเมอร์
           </p>
         </div>
-        <p className="mono relative uppercase text-white/35">ใช้ภายในบริษัทเท่านั้น</p>
+        <p className="meta relative text-white/35">ใช้ภายในบริษัทเท่านั้น</p>
       </div>
 
       <div className="flex-1 grid place-items-center p-6">

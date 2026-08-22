@@ -124,7 +124,7 @@ export default function MediaLibrary() {
                 <span className="mono block truncate normal-case tracking-normal" title={m.filename}>
                   {m.filename}
                 </span>
-                <span className="mono block text-ink-3 normal-case tracking-normal">
+                <span className="meta block text-ink-3">
                   {kb(m.bytes)}
                   {m.readOnly ? "" : " · ใหม่"}
                 </span>

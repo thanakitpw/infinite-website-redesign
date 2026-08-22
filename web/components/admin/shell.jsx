@@ -72,7 +72,7 @@ export default function Shell({ user, children }) {
                 )}
                 <Icon name={item.icon} />
                 {!rail && <span className="text-[14px] truncate">{item.label}</span>}
-                {!rail && item.soon && <span className="mono ml-auto text-white/25 shrink-0">เร็วๆ นี้</span>}
+                {!rail && item.soon && <span className="meta ml-auto text-white/25 shrink-0">เร็วๆ นี้</span>}
               </>
             );
             return item.soon ? (

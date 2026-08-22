@@ -9,7 +9,7 @@ export default function SetupNotice() {
   return (
     <div className="adm min-h-screen bg-ground grid place-items-center p-6">
       <div className="w-full max-w-xl bg-white border border-line rounded-card shadow-card p-8">
-        <p className="mono uppercase text-brand mb-3">ระบบจัดการเนื้อหา</p>
+        <p className="meta text-brand mb-3">ระบบจัดการเนื้อหา</p>
         <h1 className="text-[22px] font-semibold mb-2">ยังไม่ได้เชื่อมต่อ Supabase</h1>
         <p className="text-[14px] text-ink-2 mb-6 leading-relaxed">
           เว็บไซต์หน้าบ้านทำงานปกติทุกหน้า — ส่วนนี้เป็นระบบหลังบ้านที่ต้องต่อฐานข้อมูลก่อนถึงจะใช้ได้
