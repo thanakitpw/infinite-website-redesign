@@ -1,5 +1,8 @@
 -- ═══════════════════════════════════════════════════════════════════════════
 -- ระบบหลังบ้าน Infinite Material — เฟส 1: แก้ข้อความและรูปภาพได้ทุกหน้า
+-- หมายเหตุ: ส่วน view และ is_cms_user() ของไฟล์นี้ถูกแทนที่ด้วย 0002 แล้ว
+-- (view เปลี่ยนเป็น security invoker · ฟังก์ชันย้ายไป schema private)
+--
 --
 -- แนวคิด: ไม่แตะ HTML ใน web/app/_content/ เลย แต่เก็บ "ค่าที่ถูกแก้" เป็นราย
 -- ช่อง แล้วทับกลับตอนเสิร์ฟ (ดู web/lib/cms/html.js)
@@ -144,3 +147,40 @@ create policy media_cms_write on storage.objects
 drop policy if exists media_cms_delete on storage.objects;
 create policy media_cms_delete on storage.objects
   for delete to authenticated using (bucket_id = 'media' and public.is_cms_user());
+
+-- ═══════════════════════════════════════════════════════════════════════════
+-- สิทธิ์ระดับตาราง (แยกคนละเรื่องกับ RLS)
+--
+-- RLS คุมว่า "แถวไหน" มองเห็นได้ ส่วน GRANT คุมว่า "แตะตารางได้ไหมตั้งแต่แรก"
+-- ตารางที่สร้างด้วย SQL เองอาจไม่ถูกเปิดให้ Data API อัตโนมัติ ขึ้นกับตั้งค่าของโปรเจค
+-- จึงต้องสั่ง GRANT ให้ชัด ไม่งั้น PostgREST จะตอบ permission denied ทั้งที่ policy ถูก
+-- ═══════════════════════════════════════════════════════════════════════════
+grant usage on schema public to anon, authenticated;
+
+grant select, insert, update, delete on public.cms_users         to authenticated;
+grant select, insert, update, delete on public.content_overrides to authenticated;
+grant select, insert, update, delete on public.content_revisions to authenticated;
+grant select, insert, update, delete on public.media             to authenticated;
+
+-- content_revisions.id เป็น bigserial ต้องให้สิทธิ์ sequence ด้วยถึงจะ insert ได้
+grant usage, select on all sequences in schema public to authenticated;
+
+/* anon ต้องไม่แตะตารางต้นทางเลย — ทางเดียวที่เว็บหน้าบ้านอ่านเนื้อหาได้คือผ่าน
+   view published_content ซึ่งเปิดเฉพาะคอลัมน์ที่เผยแพร่แล้ว ถ้าเผลอให้ anon อ่าน
+   ตารางตรงๆ ร่างที่ยังไม่เสร็จจะหลุดออกไปทันที เพราะ RLS คุมได้แค่ระดับแถว
+   ไม่ได้คุมระดับคอลัมน์ */
+revoke all on public.cms_users         from anon;
+revoke all on public.content_overrides from anon;
+revoke all on public.content_revisions from anon;
+revoke all on public.media             from anon;
+
+/* view เป็น security definer โดยตั้งใจ (security_invoker = off) — จุดประสงค์คือให้
+   ข้ามการปิดกั้นของ RLS บนตารางต้นทาง ซึ่งปลอดภัยเพราะ view เลือกมาเฉพาะคอลัมน์
+   ที่เผยแพร่แล้ว = เนื้อหาที่อยู่บนหน้าเว็บสาธารณะอยู่แล้ว ไม่ใช่ของลับ */
+grant select on public.published_content to anon, authenticated;
+
+/* ฟังก์ชัน security definer ที่อยู่ใน schema public จะถูก grant execute ให้ PUBLIC
+   โดยอัตโนมัติ = anon เรียกได้ด้วย ตัวนี้แค่ตอบ true/false ว่า "คนที่เรียกอยู่เป็นทีมงานไหม"
+   ไม่คืนข้อมูลใคร แต่ปิดไว้ก่อนตามหลักให้สิทธิ์เท่าที่จำเป็น */
+revoke all on function public.is_cms_user() from public, anon;
+grant execute on function public.is_cms_user() to authenticated;

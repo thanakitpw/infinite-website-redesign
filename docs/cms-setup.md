@@ -44,10 +44,16 @@ supabase.com → New project → เลือก region **Southeast Asia (Singap
 
 ### 2. รัน migration
 
-Dashboard → SQL Editor → New query → วางไฟล์ `supabase/migrations/0001_cms.sql` ทั้งไฟล์ → Run
+Dashboard → SQL Editor → รันไฟล์ใน `supabase/migrations/` **ตามลำดับเลข** — 0001, 0002, 0003
 
 สร้างให้: ตาราง `cms_users`, `content_overrides`, `content_revisions`, `media`,
 view `published_content` (เปิดให้อ่านเฉพาะค่าที่เผยแพร่แล้ว), storage bucket `media`, และ RLS ทั้งชุด
+
+> 0002 กับ 0003 คือการรัดกุมเพิ่มหลังรัน advisor — ย้ายฟังก์ชัน security definer ออกจาก
+> schema ที่เปิดให้ API, เปลี่ยน view เป็น security invoker แล้วคุมด้วย column-level grant
+> แทน และถอนสิทธิ์เขียน view ที่ default privileges แจกมาให้ ห้ามข้าม
+
+**โปรเจคนี้รันครบทั้ง 3 ไฟล์แล้ว** (project ref `tdkkuliwwnhebpwitcfr`) — ขั้นนี้ทำเฉพาะตอนตั้งโปรเจคใหม่
 
 ### 3. ตั้ง environment variables
 

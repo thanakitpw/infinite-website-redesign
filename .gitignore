@@ -28,3 +28,6 @@ PROMPT*.MD
 # Stitch export ของหน้าจอหลังบ้าน (4 MB, ส่วนใหญ่เป็น PNG)
 # ตัว design system ที่ต้องใช้จริงถูกคัดไว้ที่ docs/design/admin-design-system.md แล้ว
 stitch_*.zip
+
+# symlink ของ Claude Code ที่ชี้ไป .agents/skills — เป็นของเฉพาะเครื่อง
+.claude/skills/
