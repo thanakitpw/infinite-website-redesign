@@ -167,6 +167,12 @@
 
   /* ── กลไก char ── */
   .lp .how-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+  /* grid item ได้ min-width:auto มาโดยปริยาย = ยุบเล็กกว่า min-content ตัวเองไม่ได้
+     ข้อความไทยไม่มีเว้นวรรค min-content เลยกว้างเป็นร้อยพิกเซล พอ /engineering
+     เอา .car (คารูเซล) มาวางในคอลัมน์ คอลัมน์ 1fr เลยถูกดันเป็น 702px ทะลุจอ
+     มือถือ แล้วโดน clip ทิ้งครึ่งหนึ่ง — min-width:0 ปลดล็อกให้ยุบตามคอลัมน์ได้
+     ส่วนการเลื่อนดูรูปยังทำได้ตามเดิมด้วย overflow-x ของ .car-track */
+  .lp .how-grid > *,.lp .thick-grid > *,.lp .car{min-width:0}
   .lp .how-steps{list-style:none;display:grid;gap:20px}
   .lp .how-step{display:flex;gap:16px}
   .lp .how-step-n{width:34px;height:34px;border-radius:50%;background:rgba(94,224,143,.16);border:1px solid rgba(94,224,143,.4);color:var(--green-light);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0}

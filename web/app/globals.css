@@ -124,6 +124,38 @@ div[style*="width:1440px"]{width:100%!important}
   [style*="margin:-52px auto 0"]{margin:-28px auto 0!important}
   [style*="display:flex"][style*="gap:40px"]{flex-wrap:wrap!important}
   [style*="display:flex"][style*="gap:12px"]{flex-wrap:wrap!important}
+
+  /* ── QUOTE BAND (แถบเขียว "ไม่แน่ใจว่าต้องใช้สินค้าตัวไหน?") ────────────
+     /products /services /standards /about ใช้กล่องเดียวกันหมด เป็น flex row
+     ที่ไม่ห่อบรรทัด + ปุ่มเป็น white-space:nowrap พอจอแคบปุ่มไม่ยอมหด หัวข้อ
+     เลยถูกบีบเหลือ ~49px = ตัวหนังสือตกบรรทัดละคำ ต้องวางเป็นแนวตั้งแทน */
+  [style*="padding:44px 52px"]{
+    padding:28px 20px!important;
+    flex-direction:column!important;align-items:flex-start!important;gap:18px!important;
+  }
+
+  /* ── แท็บหน้าสินค้า (/product/<slug>) ─────────────────────────────────
+     4 แท็บรวมกันกว้าง ~495px เกินจอ และ .ptab ถูกสั่ง white-space:nowrap ไว้
+     ตั้งใจให้เลื่อนแนวนอน แต่ไม่มีใครใส่ overflow-x ให้ แท็บสุดท้ายเลยหลุด
+     ขอบจอไปเฉยๆ แล้วโดน overflow-x:clip ของ html ตัดทิ้ง (กดไม่ได้เลย) */
+  [style*="gap:28px"][style*="border-bottom:1px solid #e7eae4"][style*="font-weight:600"]{
+    overflow-x:auto;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none;gap:22px!important;
+  }
+  [style*="gap:28px"][style*="border-bottom:1px solid #e7eae4"][style*="font-weight:600"]::-webkit-scrollbar{display:none}
+
+  /* หน้าบทความรายตัว (_shell.js) — 56px สองข้างเหลือคอลัมน์อ่านแค่ ~278px */
+  [style*="padding:46px 56px 10px"]{padding:32px 16px 10px!important}
+  [style*="padding:46px 56px 56px"]{padding:36px 16px 44px!important}
+  /* การ์ดบทความเด่นหน้า /articles — พอกริดยุบเป็นคอลัมน์เดียว ระยะ 6px ซ้าย/
+     40px ขวา ที่ออกแบบไว้ตอนรูปอยู่ข้างๆ กลายเป็นเนื้อหาเบี้ยวไปข้างเดียว */
+  [style*="padding:40px 40px 40px 6px"]{padding:22px 20px 26px!important}
+  [style*="padding:8px 56px 64px"]{padding:8px 16px 48px!important}
+
+  /* หัวข้อ section + ลิงก์ "ดูทั้งหมด →" ที่จับคู่กันแบบ space-between */
+  [style*="align-items:flex-end"][style*="justify-content:space-between"]{
+    flex-wrap:wrap!important;gap:10px 16px!important;
+  }
 }
 
 /* ── HERO หน้าแรก: ความสูงตามขนาดจอ ───────────────────────────────────────
