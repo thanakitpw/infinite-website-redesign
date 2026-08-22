@@ -1,0 +1,27 @@
+@tailwind components;
+@tailwind utilities;
+
+/* ── รีเซ็ตเฉพาะใต้ต้นไม้หลังบ้าน ────────────────────────────────────────────
+   preflight ของ Tailwind ถูกปิดทั้งโปรเจค (ไม่งั้นเว็บหน้าบ้านพัง) จึงต้องเก็บ
+   กวาดเฉพาะจุดที่ globals.css ของเว็บหน้าบ้านทิ้งไว้ ให้กับหน้าจอหลังบ้านเอง */
+.adm {
+  font-family: "IBM Plex Sans Thai", system-ui, sans-serif;
+  color: #0e1a14;
+  -webkit-font-smoothing: antialiased;
+}
+.adm button { font-family: inherit; font-size: inherit; cursor: pointer; border: 0; background: none; }
+.adm input, .adm textarea, .adm select { font-family: inherit; font-size: inherit; color: inherit; }
+.adm textarea { resize: vertical; }
+.adm a { color: inherit; text-decoration: none; }
+.adm :focus-visible { outline: 2px solid #018438; outline-offset: 2px; border-radius: 4px; }
+.adm ::placeholder { color: #8b9990; }
+
+/* ป้ายกำกับเชิงเทคนิค (กุญแจของช่อง, URL, เวลา) ตาม label-mono ใน DESIGN.md */
+.adm .mono {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+/* ตัวอย่างหน้าเว็บใน iframe ต้องไม่โดนกฎ max-width ของ globals.css บีบ */
+.adm iframe { max-width: none; height: auto; }

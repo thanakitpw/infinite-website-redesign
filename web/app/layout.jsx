@@ -1,6 +1,5 @@
 import "./globals.css";
-import Enhance from "./enhance";
-import LineFab from "./line-fab";
+import SiteChrome from "./site-chrome";
 
 export const metadata = {
   title: "Infinite Material & Technology",
@@ -21,8 +20,7 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         {children}
-        <LineFab />
-        <Enhance />
+        <SiteChrome />
       </body>
     </html>
   );
