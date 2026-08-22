@@ -392,6 +392,61 @@ function navDropdown() {
   onDoc("keydown", (e) => { if (e.key === "Escape") dd.classList.remove("nav-open"); });
 }
 
+/* ── เมนูแฮมเบอร์เกอร์บนมือถือ ─────────────────────────────────────────────
+   ปุ่มถูกสร้างจากที่นี่ ไม่ได้เขียนไว้ใน _content/*.html สักหน้า ตั้งใจให้เป็น
+   progressive enhancement แบบเดียวกับ standardsModal(): ถ้า JS ไม่ทำงาน จะไม่มี
+   ทั้งปุ่มและคลาส .hdr-js กฎซ่อนเมนูใน globals.css ผูกกับ .hdr-js ทั้งชุด เมนูจึง
+   กลับไปโชว์เต็มแบบห่อบรรทัดเหมือนเดิม ไม่มีทางเจอหน้าที่เข้าเมนูไม่ได้เลย
+
+   ไม่เช็ค matchMedia ปล่อยให้ CSS ที่ ≤720px เป็นคนตัดสินใจว่าจะโชว์ปุ่ม/ซ่อน
+   เมนูหรือไม่ — ถ้าตัดสินจาก JS ตอนโหลด พอผู้ใช้หมุนจอหรือย่อหน้าต่างจะได้
+   header ที่ไม่ตรงกับ CSS ทันที
+
+   หมายเหตุ: ห้ามแตะ hd.style เด็ดขาด ด้วยเหตุผลเดียวกับ stickyHeader() ท้ายไฟล์ */
+const BURGER_SVG =
+  '<svg class="nav-burger-bars" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>' +
+  '<svg class="nav-burger-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+
+function mobileNav() {
+  const hd = document.querySelector(HEADER_SEL);   // แถว header (โลโก้ + ปุ่มขอใบเสนอราคา)
+  if (!hd || hd.dataset.mnav) return;
+  const nav = hd.querySelector(':scope > div[style*="font-size:15px;font-weight:500"]');
+  if (!nav) return;
+  /* หน้าบทความ (/articles/<slug>) ใช้ลิงก์ "สินค้า" ธรรมดา ไม่มี .nav-dd
+     ทุกจุดที่แตะ dd ต่อจากนี้ต้องเช็ค null ก่อนเสมอ */
+  const dd = nav.querySelector(".nav-dd");
+  hd.dataset.mnav = "1";
+  hd.classList.add("hdr-js");
+
+  if (!nav.id) nav.id = "site-nav";
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "nav-burger";
+  btn.setAttribute("aria-label", "เมนู");
+  btn.setAttribute("aria-controls", nav.id);
+  btn.setAttribute("aria-expanded", "false");
+  btn.innerHTML = BURGER_SVG;
+  hd.appendChild(btn);
+
+  const setOpen = (on) => {
+    hd.classList.toggle("mnav-open", on);
+    btn.setAttribute("aria-expanded", on ? "true" : "false");
+    if (!on && dd) dd.classList.remove("nav-open");   // ปิดแผงสินค้าที่กางค้างอยู่ข้างในด้วย
+  };
+  btn.addEventListener("click", () => setOpen(!hd.classList.contains("mnav-open")));
+
+  /* แตะลิงก์ในเมนูแล้วต้องปิดเอง — Next.js เปลี่ยนหน้าแบบ client-side ถ้าไม่ปิด
+     เมนูจะค้างกางข้ามหน้า ยกเว้นปุ่ม "สินค้า" ที่เป็นตัวกางแผงหมวดหมู่
+     (navDropdown() ด้านบนดูแลการแตะครั้งแรกของมันอยู่แล้ว) */
+  nav.addEventListener("click", (e) => {
+    const a = e.target.closest("a");
+    if (a && a.parentElement !== dd) setOpen(false);
+  });
+
+  onDoc("click", (e) => { if (!hd.contains(e.target)) setOpen(false); });
+  onDoc("keydown", (e) => { if (e.key === "Escape") setOpen(false); });
+}
+
 /* ── หน้า /standards: การ์ดมาตรฐาน → popup ────────────────────────────────
    การ์ดโชว์แค่รูปใหญ่ + หัวข้อ ส่วนคำอธิบายเต็มยังอยู่ใน [data-std-body] ใน DOM
    ตลอดเวลา (ดีต่อ SEO และคนที่ปิด JS) — ซ่อนด้วย CSS ก็ต่อเมื่อฟังก์ชันนี้ติด
@@ -743,6 +798,7 @@ export default function Enhance() {
       safe(linkifyButtons);
       safe(linkifyContacts);
       safe(navDropdown);
+      safe(mobileNav);
       safe(stickyHeader);
       safe(motion);   // ต้องมาก่อน slider() เพราะ slider จะสั่งเล่น animation ของสไลด์
       safe(slider);

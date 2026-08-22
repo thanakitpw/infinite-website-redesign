@@ -106,8 +106,14 @@ div[style*="width:1440px"]{width:100%!important}
   [style*="font-size:30px"]{font-size:20px!important}
   [style*="font-size:28px"]{font-size:19px!important}
   [style*="line-height:1.15"]{display:none!important}
-  [style*="gap:24px"][style*="font-size:15px;font-weight:500"]{display:none!important}
-  [style*="gap:18px"][style*="font-size:15px;font-weight:500"]{display:none!important}
+  /* เมนูหลักใน header — ยกลงมาเป็นแถวของตัวเองเต็มความกว้าง ใต้แถวโลโก้+ปุ่ม
+     order:3 ทำให้ปุ่ม "ขอใบเสนอราคา" ขยับขึ้นไปอยู่แถวเดียวกับโลโก้
+     selector ผูกกับ gap:20px ของ inline style ถ้าแก้ค่า gap ใน _content/*.html
+     ต้องมาแก้เลขตรงนี้ด้วย ไม่งั้นเมนูจะล้นจอเหมือนเดิม */
+  [style*="align-items:center;gap:20px"][style*="font-size:15px;font-weight:500"]{
+    order:3;width:100%;flex-wrap:wrap!important;justify-content:center!important;
+    gap:6px 14px!important;font-size:14px!important;
+  }
   [style*="max-width:760px"],[style*="max-width:480px"]{max-width:100%!important}
   [style*="padding:16px 56px"][style*="justify-content:space-between"]{flex-wrap:wrap!important;gap:10px 12px!important}
   [style*="padding:9px 56px"]{flex-wrap:wrap!important;justify-content:center!important;gap:2px 12px!important;text-align:center;font-size:11.5px!important}
@@ -200,38 +206,55 @@ a[style*="border-radius:16px"][style*="overflow:hidden"]:hover{
    ต้องประกาศ background เอง เพราะ header ส่วนใหญ่ไม่มี background ของตัวเอง
    (อาศัยพื้นขาวของ wrapper 1440px) พอยกมาลอยทับเนื้อหาจะทะลุทันที
 
-   จำกัดไว้ที่ ≥721px (breakpoint เดียวกับทั้งไฟล์) เพราะต่ำกว่านั้น header ถูก
-   สั่ง flex-wrap เมนู 7 ลิงก์เลยห่อลงหลายบรรทัดจนสูงมาก ถ้าตรึงไว้บนมือถือจะ
-   กินพื้นที่จอเกินครึ่ง — ถ้าจะเอา sticky บนมือถือด้วย ต้องทำ header เวอร์ชัน
-   ย่อ (แฮมเบอร์เกอร์) ก่อน
+   ติดทุกขนาดจอแล้ว — เดิมจำกัดไว้ ≥721px เพราะเมนู 7 ลิงก์ห่อบรรทัดจนหัวเว็บ
+   สูงเกินครึ่งจอ ตอนนี้มือถือเป็นแฮมเบอร์เกอร์ (บล็อก .nav-burger ด้านบน)
+   หัวเว็บเหลือแถวเดียว ~78px จะตรึงไว้ก็ไม่กินจอแล้ว
 
    คลาส .hdr-min ถูกเติมโดย stickyHeader() ใน enhance.jsx ตอนเลื่อนพ้น 90px
    ถ้า JS ไม่ทำงาน header ก็ยังติดขอบบนได้ปกติ แค่ไม่ย่อ */
+div[style*="width:1440px"] > div[style*="padding:16px 56px"][style*="border-bottom:1px solid #e7eae4"]{
+  position:sticky;top:0;z-index:300;
+  background:#fff!important;
+  box-shadow:0 6px 18px rgba(6,53,31,.07);
+  transition:padding .3s var(--ease-out),box-shadow .3s var(--ease-out);
+}
+/* ย่อเฉพาะ padding บน–ล่าง ห้ามแตะซ้าย–ขวา เพราะ rule gutter ด้านบนของไฟล์นี้
+   คุมสองด้านนั้นด้วย !important อยู่แล้ว (เขียนทับจะทำให้คอลัมน์ขยับตอนย่อ)
+   ต้อง !important เพราะค่าเดิมเป็น inline style */
+.hdr-min{
+  padding-top:7px!important;padding-bottom:7px!important;
+  box-shadow:0 8px 22px rgba(6,53,31,.12);
+}
+/* โลโก้ย่อตาม — inline เขียน height:56px ไว้ ต้อง !important ถึงจะทับได้ */
+div[style*="width:1440px"] > div[style*="padding:16px 56px"][style*="border-bottom:1px solid #e7eae4"] img{
+  transition:height .3s var(--ease-out);
+}
+.hdr-min img{height:40px!important}
+
 @media (min-width:721px){
-  div[style*="width:1440px"] > div[style*="padding:16px 56px"][style*="border-bottom:1px solid #e7eae4"]{
-    position:sticky;top:0;z-index:300;
-    background:#fff!important;
-    box-shadow:0 6px 18px rgba(6,53,31,.07);
-    transition:padding .3s var(--ease-out),box-shadow .3s var(--ease-out);
-  }
-  /* ย่อเฉพาะ padding บน–ล่าง ห้ามแตะซ้าย–ขวา เพราะ rule gutter ด้านบนของไฟล์นี้
-     คุมสองด้านนั้นด้วย !important อยู่แล้ว (เขียนทับจะทำให้คอลัมน์ขยับตอนย่อ)
-     ต้อง !important เพราะค่าเดิมเป็น inline style */
-  .hdr-min{
-    padding-top:7px!important;padding-bottom:7px!important;
-    box-shadow:0 8px 22px rgba(6,53,31,.12);
-  }
-  /* โลโก้ย่อตาม — inline เขียน height:56px ไว้ ต้อง !important ถึงจะทับได้ */
-  div[style*="width:1440px"] > div[style*="padding:16px 56px"][style*="border-bottom:1px solid #e7eae4"] img{
-    transition:height .3s var(--ease-out);
-  }
-  .hdr-min img{height:40px!important}
-  /* คำโปรยใต้ชื่อบริษัทยุบหายตอนย่อ เหลือชื่อบริษัทบรรทัดเดียว */
+  /* คำโปรยใต้ชื่อบริษัทยุบหายตอนย่อ เหลือชื่อบริษัทบรรทัดเดียว
+     (บนมือถือทั้งบล็อกชื่อบริษัทถูกซ่อนอยู่แล้วด้วยกฎ line-height:1.15 หัวไฟล์) */
   .hdr-min [style*="font-size:10.5px"]{
     opacity:0;max-height:0;overflow:hidden;
   }
   div[style*="width:1440px"] > div[style*="padding:16px 56px"][style*="border-bottom:1px solid #e7eae4"] [style*="font-size:10.5px"]{
     max-height:20px;transition:opacity .22s var(--ease-out),max-height .3s var(--ease-out);
+  }
+}
+
+@media (max-width:720px){
+  .hdr-min img{height:38px!important}
+  /* header ตรึงกับ viewport แล้ว แผงเมนูที่กางออกมาจึงยาวเกินจอไม่ได้
+     100dvh ไม่ใช่ 100vh — Safari/Chrome มือถือคิด 100vh รวมแถบ address bar
+     ที่ซ่อนๆ โผล่ๆ ตอนเลื่อน เมนูจะยาวทะลุจอจริงไปหนึ่งแถบพอดี
+     ตัว calc ลบ 96px คือความสูงแถวโลโก้ตอนย่อ + ระยะหายใจก้นจอ
+     บรรทัด vh ข้างบนเป็น fallback ให้เบราว์เซอร์ที่ยังไม่รู้จัก dvh */
+  .hdr-js.mnav-open > [style*="align-items:center;gap:20px"][style*="font-size:15px;font-weight:500"]{
+    max-height:calc(100vh - 96px);
+    max-height:calc(100dvh - 96px);
+    overflow-y:auto;
+    /* กันการเลื่อนในเมนูจนสุดแล้วไป "ต่อ" ให้หน้าเว็บข้างหลังเลื่อนตาม */
+    overscroll-behavior:contain;
   }
 }
 /* ปิด animation ให้คนที่ตั้งค่าลดการเคลื่อนไหว — ย่อได้ แต่ตัดช่วง transition ทิ้ง */
@@ -401,10 +424,84 @@ a[style*="border-radius:16px"][style*="overflow:hidden"]:hover{
 
 /* มือถือ: header ห่อบรรทัดอยู่แล้ว ถ้าลอยทับจะอ่านไม่ได้ ให้ดันเนื้อหาลงแทน */
 @media (max-width:720px){
-  .nav-dd-panel{position:static;transform:none;padding-top:8px;width:100%}
-  .nav-dd.nav-open .nav-dd-panel{transform:none}
+  /* ปิดอยู่ = เป็นลิงก์ตัวหนึ่งในแถวเมนูตามปกติ เปิดแล้วค่อยกินเต็มบรรทัด
+     ถ้าตั้ง width:100% ไว้ตลอด ตัว .nav-dd จะกินทั้งแถวตั้งแต่ยังไม่เปิด
+     แล้วลิงก์ที่เหลือจะถูกดันหลุดขอบจอไปทางขวา */
+  .nav-dd{display:flex;flex-direction:column;align-items:center;width:auto}
+  .nav-dd:hover,.nav-dd:focus-within,.nav-dd.nav-open{width:100%}
+  /* display:none คือหัวใจ — visibility:hidden ยัง "จองที่" ไว้อยู่ พอแผงเมนู
+     เปลี่ยนเป็น position:static บนมือถือ ที่ที่จองไว้เกือบ 500px เลยกลายเป็น
+     ช่องว่างเปล่าคาหัวเว็บทั้งที่มองไม่เห็นเมนู */
+  .nav-dd-panel{position:static;transform:none;padding-top:8px;width:100%;display:none}
+  .nav-dd:hover .nav-dd-panel,
+  .nav-dd:focus-within .nav-dd-panel,
+  .nav-dd.nav-open .nav-dd-panel{display:block;transform:none}
   .nav-dd-card{width:100%}
-  .nav-dd{width:100%}
+}
+
+/* ── แฮมเบอร์เกอร์บนมือถือ ─────────────────────────────────────────────────
+   ปุ่ม .nav-burger กับคลาส .hdr-js / .mnav-open มาจาก mobileNav() ใน enhance.jsx
+   ทุกกฎที่ "ซ่อน" อะไรในบล็อกนี้ต้องผูกกับ .hdr-js เสมอ เพราะถ้า JS ไม่ทำงาน
+   จะไม่มีปุ่มให้กด เมนูต้องตกกลับไปโชว์เต็มแบบห่อบรรทัด (กฎ gap:20px หัวไฟล์)
+   ไม่ใช่หายไปทั้งแถบจนเข้าหน้าอื่นไม่ได้ */
+.nav-burger{display:none}
+
+@media (max-width:720px){
+  .nav-burger{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:44px;height:44px;flex:none;padding:0;
+    background:#fff;color:#0e1a14;
+    border:1px solid #d9e0da;border-radius:11px;cursor:pointer;
+    transition:background .2s var(--ease-out),color .2s,border-color .2s;
+  }
+  .nav-burger svg{width:22px;height:22px;display:block}
+  .nav-burger .nav-burger-x{display:none}
+  .mnav-open .nav-burger{background:#0e1a14;color:#fff;border-color:#0e1a14}
+  .mnav-open .nav-burger .nav-burger-bars{display:none}
+  .mnav-open .nav-burger .nav-burger-x{display:block}
+
+  /* header เป็น space-between ถ้าปล่อยไว้ ปุ่ม CTA กับแฮมเบอร์เกอร์จะกระจาย
+     ห่างกันคนละมุม — ให้โลโก้กินที่ว่างทั้งหมดแทน ปุ่มสองตัวจะไปเกาะกลุ่มขวา */
+  .hdr-js > :first-child{margin-right:auto}
+  /* CTA ย่อลงหน่อยให้โลโก้ + ปุ่ม + แฮมเบอร์เกอร์อยู่บรรทัดเดียวได้ถึงจอ 320px */
+  .hdr-js > [style*="padding:12px 22px"][style*="font-size:14.5px"]{
+    padding:11px 15px!important;font-size:13.5px!important;
+  }
+
+  /* แถวลิงก์ → แผงกางลงมาเต็มความกว้าง (width:100% กับ order:3 มาจากกฎหัวไฟล์) */
+  .hdr-js > [style*="align-items:center;gap:20px"][style*="font-size:15px;font-weight:500"]{
+    display:none!important;
+    flex-direction:column!important;align-items:stretch!important;
+    justify-content:flex-start!important;gap:0!important;font-size:15px!important;
+    margin-top:8px;padding-top:2px;border-top:1px solid #eef1ec;
+  }
+  .hdr-js.mnav-open > [style*="align-items:center;gap:20px"][style*="font-size:15px;font-weight:500"]{
+    display:flex!important;animation:mnav-in .2s var(--ease-out) both;
+  }
+  /* ทุกลิงก์เป็นแถวเต็มความกว้าง สูงพอให้นิ้วแตะติด (44px) */
+  .hdr-js.mnav-open > [style*="font-size:15px;font-weight:500"] > a,
+  .hdr-js.mnav-open > [style*="font-size:15px;font-weight:500"] > span,
+  .hdr-js.mnav-open .nav-dd > a{
+    display:flex;align-items:center;min-height:44px;
+    padding:2px;border-bottom:1px solid #f2f5f0;
+  }
+  .hdr-js.mnav-open > [style*="font-size:15px;font-weight:500"] > :last-child{border-bottom:0}
+  /* ปุ่ม "สินค้า" — ดันลูกศรไปชิดขวาสุดให้เห็นชัดว่ากดกางได้ */
+  .hdr-js.mnav-open .nav-dd{width:100%;align-items:stretch}
+  .hdr-js.mnav-open .nav-dd > a{justify-content:space-between}
+  .hdr-js.mnav-open .nav-dd-caret{width:14px;height:14px}
+  /* แผงหมวดหมู่ในเมนูมือถือเป็นรายการย่อย ไม่ใช่การ์ดลอย — ถอดกรอบ/เงาออก
+     แล้วเยื้องเข้ามาแทน จะได้ไม่ดูเหมือนกล่องซ้อนกล่องในแผงเดียวกัน */
+  .hdr-js.mnav-open .nav-dd-panel{padding-top:2px;padding-bottom:6px}
+  .hdr-js.mnav-open .nav-dd-card{
+    border:0;border-left:2px solid #e7eae4;border-radius:0;
+    box-shadow:none;padding:0 0 0 10px;
+  }
+  .hdr-js.mnav-open .nav-dd-item{padding:9px 8px}
+}
+@keyframes mnav-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .hdr-js.mnav-open > [style*="align-items:center;gap:20px"][style*="font-size:15px;font-weight:500"]{animation:none}
 }
 
 /* ── VIDEO SECTION ────────────────────────────────────────────────────────
