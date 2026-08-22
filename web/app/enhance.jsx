@@ -214,13 +214,21 @@ function form() {
   }
 }
 
-function productCat(t) {
+/* หมวดของการ์ดอ่านจาก data-cat ที่ฝังไว้ใน products.html ซึ่งเจนจาก _data/products.js
+   ตรงๆ — เดิมเดาหมวดจากข้อความในการ์ด ซึ่งไม่มีเงื่อนไขไหนครอบ Four Plus ทั้ง 3 ใบเลย
+   กดหมวด "สีน้ำพลาสติก" (หรือเข้ามาทาง /products?cat=สีน้ำพลาสติก) จึงได้ 0 รายการ
+   เงื่อนไขข้อความเก็บไว้เป็นทางสำรอง เผื่อการ์ดที่ยังไม่ได้ติด data-cat */
+function productCat(card) {
+  const tagged = card.dataset && card.dataset.cat;
+  if (tagged) return tagged;
+  const t = card.textContent || "";
   if (t.includes("Intumescent")) return "สีกันไฟ";
   if (t.includes("Primer") || t.includes("Neogloss")) return "สีรองพื้น/ทับหน้า";
   if (t.includes("ทินเนอร์") || t.includes("น้ำมันสน")) return "ทินเนอร์/น้ำมันสน";
   if (t.includes("ซีเมนต์") || t.includes("Fendolite")) return "ซีเมนต์กันไฟ";
   if (t.includes("ผ้ากันไฟ") || t.includes("Fiberglass")) return "ผ้ากันไฟ";
   if (t.includes("เซรามิค") || t.includes("Roof Shield")) return "เซรามิคสะท้อนร้อน";
+  if (t.includes("Four Plus") || t.includes("สีน้ำพลาสติก")) return "สีน้ำพลาสติก";
   return "";
 }
 function productFilter() {
@@ -246,7 +254,7 @@ function productFilter() {
         x.style.fontWeight = on ? "600" : "400";
       });
       let shown = 0;
-      cards.forEach((c) => { const vis = label === "ทั้งหมด" || productCat(c.textContent) === label; c.style.display = vis ? "" : "none"; if (vis) shown++; });
+      cards.forEach((c) => { const vis = label === "ทั้งหมด" || productCat(c) === label; c.style.display = vis ? "" : "none"; if (vis) shown++; });
       if (countEl) countEl.textContent = "แสดง " + shown + " รายการ";
     });
   });
