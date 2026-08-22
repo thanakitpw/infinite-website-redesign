@@ -1,10 +1,6 @@
-import fs from "node:fs";
-import path from "node:path";
-
+import { renderFragments } from "../../lib/cms/render";
 /* Landing page ยิงแอด — โครง .lp และ CSS ใช้ร่วมกับ /neocoat ผ่าน _lp-head.html
    เนื้อหาของหน้านี้อยู่ที่ _content/lp/roof-shield.html */
-const read = (...seg) =>
-  fs.readFileSync(path.join(process.cwd(), "app", "_content", ...seg), "utf8");
 
 export const metadata = {
   title: "สีเซรามิคสะท้อนความร้อน Roof Shield | ลดร้อน 93% ประหยัดไฟ 30% ราคาโรงงาน",
@@ -14,7 +10,7 @@ export const metadata = {
   robots: { index: false, follow: true },
 };
 
-export default function LandingPage() {
-  const html = read("_lp-head.html") + read("lp", "roof-shield.html");
+export default async function LandingPage() {
+  const html = await renderFragments(["_lp-head.html", "lp/roof-shield.html"]);
   return <div dangerouslySetInnerHTML={{ __html: html }} />;
 }

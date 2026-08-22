@@ -1,7 +1,6 @@
-import fs from "node:fs";
-import path from "node:path";
 import { notFound } from "next/navigation";
 import { ARTICLES, renderArticlePage } from "../../_content/articles/_shell";
+import { renderFragments, hasFragment } from "../../../lib/cms/render";
 
 const BY_SLUG = Object.fromEntries(ARTICLES.map((a) => [a.slug, a]));
 
@@ -18,19 +17,15 @@ export function generateMetadata({ params }) {
   };
 }
 
-export default function Page({ params }) {
+export default async function Page({ params }) {
   const a = BY_SLUG[params.slug];
   if (!a) notFound();
 
-  let body;
-  try {
-    body = fs.readFileSync(
-      path.join(process.cwd(), "app", "_content", "articles", `${a.slug}.html`),
-      "utf8"
-    );
-  } catch {
-    notFound();
-  }
+  /* เมนูกับส่วนท้ายของหน้าบทความประกอบใน _shell.js ด้วย template string ไม่ใช่
+     ไฟล์ HTML จึงยังไม่เข้าระบบหลังบ้านในเฟสนี้ — เนื้อบทความแก้ได้แล้ว */
+  const frag = `articles/${a.slug}.html`;
+  if (!hasFragment(frag)) notFound();
 
+  const body = await renderFragments([frag]);
   return <div dangerouslySetInnerHTML={{ __html: renderArticlePage(a, body) }} />;
 }

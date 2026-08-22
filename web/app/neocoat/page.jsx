@@ -1,10 +1,6 @@
-import fs from "node:fs";
-import path from "node:path";
-
+import { renderFragments } from "../../lib/cms/render";
 /* CSS ของ .lp ถูกแยกไปไว้ที่ _content/_lp-head.html แล้ว เพราะตอนนี้มี landing
    page 6 หน้าที่ใช้ชุดเดียวกัน (pattern เดียวกับ _product-head.html ของหน้าสินค้า) */
-const read = (...seg) =>
-  fs.readFileSync(path.join(process.cwd(), "app", "_content", ...seg), "utf8");
 
 export const metadata = {
   title: "สีกันไฟโครงสร้างเหล็ก Neocoat | ทนไฟ 1–3 ชม. ตามกฎกระทรวง 2566 — ประเมินราคาฟรี",
@@ -14,7 +10,7 @@ export const metadata = {
   robots: { index: false, follow: true },
 };
 
-export default function LandingPage() {
-  const html = read("_lp-head.html") + read("neocoat.html");
+export default async function LandingPage() {
+  const html = await renderFragments(["_lp-head.html", "neocoat.html"]);
   return <div dangerouslySetInnerHTML={{ __html: html }} />;
 }

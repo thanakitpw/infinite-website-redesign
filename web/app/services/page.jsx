@@ -1,5 +1,4 @@
-import fs from "node:fs";
-import path from "node:path";
+import { renderFragments } from "../../lib/cms/render";
 
 export const metadata = {
   title: "บริการวิศวกรรม ออกแบบ ตรวจสอบ รับรองโครงสร้าง | Infinite Material",
@@ -7,10 +6,7 @@ export const metadata = {
     "บริการด้านวิชาชีพวิศวกรรมโยธา ตรวจสอบงานออกแบบ ตรวจรับรองอาคารและโรงงาน วิเคราะห์และออกแบบโครงสร้าง รับรองงานฐานราก และรับรองงานสีกันไฟ โดยวุฒิวิศวกร",
 };
 
-export default function Page() {
-  const html = fs.readFileSync(
-    path.join(process.cwd(), "app", "_content", "services.html"),
-    "utf8"
-  );
+export default async function Page() {
+  const html = await renderFragments(["services.html"]);
   return <div dangerouslySetInnerHTML={{ __html: html }} />;
 }

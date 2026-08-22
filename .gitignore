@@ -24,3 +24,7 @@ PROMPT*.MD
 # ใหญ่ระดับนี้ลบทีหลังก็ยังค้างใน history ตลอดไป
 /*.mp4
 /*.mov
+
+# Stitch export ของหน้าจอหลังบ้าน (4 MB, ส่วนใหญ่เป็น PNG)
+# ตัว design system ที่ต้องใช้จริงถูกคัดไว้ที่ docs/design/admin-design-system.md แล้ว
+stitch_*.zip
