@@ -212,6 +212,14 @@
   .lp .calc .calc-row span:last-child{color:var(--white)}
 
   /* ── รูปประกอบในเนื้อหา ── */
+  /* รูปเดี่ยวที่วางเป็นคอลัมน์ของ .how-grid (ตอนนี้มีที่ /engineering ที่เดียว)
+     ความสูงคงที่ใช้ได้บนจอกว้าง แต่พอ .how-grid ยุบเหลือคอลัมน์เดียวที่ 1024px
+     รูปที่ background-size:contain จะลอยอยู่กลางกล่องสูง 460px เหลือที่ว่าง
+     บน-ล่างเกือบ 100px ให้ยุบตามสัดส่วนรูปแทน (ไฟล์เป็น 4:3 พอดี จึงเต็มกล่อง) */
+  .lp .how-figure{height:460px}
+  @media (max-width:1024px){
+    .lp .how-figure{height:auto;aspect-ratio:4/3}
+  }
   .lp .figure{margin-top:26px}
   .lp .figure img{width:100%;border-radius:var(--radius);border:1px solid var(--border);object-fit:cover}
   .lp .figure figcaption{margin-top:10px;font-size:13px;color:var(--text-muted);line-height:1.6}
@@ -228,7 +236,13 @@
   .lp .car-item{flex:0 0 100%;min-width:0;scroll-snap-align:start;margin:0}
   .lp .car-item img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border-radius:var(--radius);border:1px solid rgba(255,255,255,.16)}
   .lp .car-item figcaption{margin-top:12px;min-height:36px;padding:0 46px;font-size:13px;line-height:1.6;color:var(--green-mute);text-align:center}
+  /* -18px ชดเชยความสูงของ figcaption ที่อยู่ใต้รูป เพื่อให้ลูกศรอยู่กลาง "รูป"
+     ไม่ใช่กลาง figure ทั้งก้อน */
   .lp .car-btn{position:absolute;top:calc(50% - 18px);transform:translateY(-50%);width:40px;height:40px;padding:0;border:0;border-radius:50%;background:rgba(4,20,12,.55);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s,opacity .2s}
+  /* แต่ถ้าสไลด์ชุดนั้นไม่มีคำบรรยายเลย (เช่น hero ของ /fire-blanket) ก็ไม่มีอะไร
+     ให้ชดเชย ถ้ายังหัก 18px อยู่ลูกศรจะลอยสูงกว่ากลางรูป — เห็นชัดบนมือถือที่
+     รูปสูงราว 270px เบราว์เซอร์เก่าที่ไม่รู้จัก :has() จะตกกลับไปใช้ค่าด้านบน */
+  .lp .car-stage:not(:has(figcaption)) .car-btn{top:50%}
   .lp .car-btn:hover{background:rgba(4,20,12,.85)}
   .lp .car-btn:disabled{opacity:.25;cursor:default}
   .lp .car-btn:focus-visible{outline:2px solid var(--green-bright);outline-offset:2px}
