@@ -195,12 +195,39 @@ div[style*="width:1440px"]{width:100%!important}
 .rv-d6{transition-delay:.42s}
 .rv-d7{transition-delay:.49s}
 
-/* hero: เลเยอร์ภาพแยกไว้ซูมช้าๆ (Ken Burns) — ตัวหนังสือไม่ถูกซูมไปด้วย */
-.hero-kb{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;background-repeat:no-repeat;transform:scale(1.005);transition:transform 0s}
-.hero-on .hero-kb{transform:scale(1.085);transition:transform 7.5s linear}
 /* ตัวหนังสือใน hero ทยอยขึ้นทีละบรรทัด (หน่วงด้วยคลาส .rv-d* ชุดเดียวกัน) */
 [data-hero-copy]{opacity:0;transform:translateY(16px);transition:opacity .65s var(--ease-out),transform .65s var(--ease-out)}
 .hero-on [data-hero-copy]{opacity:1;transform:none}
+/* ปุ่มลูกศร ‹ › กับจุดบอกสไลด์ — เขียนไว้หลังสไลด์ใน HTML ก็จริง แต่ slider() ตั้ง
+   z-index ให้ตัวสไลด์ (1/2) ตอนสลับใบ ของที่ z-index:auto เลยจมอยู่ใต้สไลด์
+   สีพื้น/ขอบของลูกศรเป็น inline style ตอน hover จึงต้อง !important ถึงจะทับได้ */
+.hero-ctl{z-index:3}
+.hero-arrow{cursor:pointer;user-select:none;transition:background .2s,border-color .2s}
+.hero-arrow:hover{background:rgba(255,255,255,.3)!important;border-color:rgba(255,255,255,.65)!important}
+.hero-arrow:focus-visible{outline:2px solid #5ee08f;outline-offset:2px}
+
+/* ── หัวข้อที่วางทับสไลด์ banner สำเร็จรูป ────────────────────────────────────
+   สไลด์พวกนี้มีโลโก้กับข้อความฝังมาในไฟล์รูปแล้ว หัวข้อที่วางทับจึงต้องเกาะ
+   "คอลัมน์ข้อความในรูป" ไม่ใช่เกาะขอบจอ ทุกค่าเลยเป็น % ของกล่อง hero ซึ่งเท่ากับ
+   % ของรูปพอดี เพราะรูป 8:3 = สัดส่วนกล่อง hero (37.5vw) จึงไม่ถูกครอปเลย
+     11%  = ขอบซ้ายของบรรทัด INFINITE MATERIAL & TECHNOLOGY ในไฟล์รูป (วัดได้ x=225/2048)
+     33%  = กลางช่องเขียวว่างพอดี ช่องนี้อยู่ระหว่าง 26.3% (ใต้บรรทัด Fire Protection
+            Solutions) ถึง 46.5% (ขอบบนของแถวถังสี) เลื่อนออกนอกช่วงนี้เมื่อไหร่
+            ตัวหนังสือจะไปทับของที่ฝังมาในรูปทันที
+     30%  = เพดานความกว้าง กันข้อความที่ถูกแก้จากหลังบ้านยาวจนล้นออกนอกพื้นเขียว
+            (ขอบเขียวที่ความสูงนี้อยู่ราว 43%)
+   ห้ามใช้ left:72px เป็น inline style เด็ดขาด — rule [style*="left:72px"] ด้านบน
+   จะลากไปชิดคอลัมน์เนื้อหาที่ 1345px ขึ้นไป หัวข้อจะหลุดไปกลางรูป
+
+   ต่ำกว่า 1121px กล่อง hero ชนพื้น 420px แล้วเตี้ยกว่าสัดส่วนรูป รูปจึงโดนครอป
+   ซ้าย-ขวา คอลัมน์ข้อความในรูปเลื่อนหนีจนเกาะไม่ได้ ตรงนั้นเปลี่ยนไปจัดกลาง
+   ด้านล่างพร้อมฉากหลังจางๆ ให้อ่านออกไม่ว่ารูปจะถูกครอปตรงไหน */
+.hero-caption{position:absolute;left:11%;top:33%;z-index:2;max-width:30%;pointer-events:none}
+.hero-caption h2{margin:0;font-size:clamp(18px,2.15vw,50px);font-weight:700;line-height:1.2;letter-spacing:-.3px;color:#fff;text-shadow:0 2px 14px rgba(4,20,12,.55)}
+@media (max-width:1120px){
+  .hero-caption{left:50%;top:auto;bottom:13%;transform:translateX(-50%);max-width:86%;text-align:center}
+  .hero-caption h2{display:inline-block;font-size:clamp(17px,3.2vw,26px);padding:9px 18px;border-radius:12px;background:rgba(4,20,12,.55);text-shadow:none}
+}
 
 /* hover: การ์ดสินค้า/บทความ ยกตัวขึ้นเล็กน้อย */
 [style*="border-radius:14px"][style*="overflow:hidden"],
@@ -224,7 +251,6 @@ a[style*="border-radius:16px"][style*="overflow:hidden"]:hover{
 
 @media (prefers-reduced-motion:reduce){
   .rv,[data-hero-copy]{opacity:1!important;transform:none!important;transition:none!important}
-  .hero-on .hero-kb{transition:none;transform:scale(1)}
 }
 
 /* ── STICKY HEADER — แถบเมนูตามลงมาตอนเลื่อนหน้า ──────────────────────────
@@ -604,6 +630,28 @@ div[style*="width:1440px"] > div[style*="padding:16px 56px"][style*="border-bott
 @keyframes clients-marquee-l{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @keyframes clients-marquee-r{from{transform:translateX(-50%)}to{transform:translateX(0)}}
 
+/* ── หน้า /about: กริดโลโก้ลูกค้าแบบนิ่ง (ไม่เลื่อนแบบหน้าแรก) ─────────────
+   ใช้แทนการ์ดผลงาน/โครงการอ้างอิงเดิม มีป้ายชื่อแบรนด์ต่อท้ายโลโก้ด้วย จึงแยก
+   คลาสจาก .clients-logo (ตัวนั้นออกแบบไว้ให้อยู่ใน .clients-track แบบเลื่อน
+   อย่างเดียว ไม่มีที่ให้ใส่ชื่อ) แต่ยังคงเอฟเฟกต์ grayscale→สีตอน hover แบบ
+   เดียวกัน ส่วน animation ตอนเข้าหน้าจอมาจาก revealOnScroll() ทำให้อัตโนมัติ
+   อยู่แล้ว (กริดที่เป็นลูกตรงของ section จะได้ .rv + .rv-d* ไปทยอย fade-up) */
+.client-tile{
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  padding:20px 14px;background:#fff;border:1px solid #e7eae4;border-radius:14px;
+  translate:0 0;
+  transition:border-color .25s,box-shadow .25s,translate .25s var(--ease-out);
+}
+.client-tile-logo{height:56px;width:100%;display:flex;align-items:center;justify-content:center}
+.client-tile-logo img{max-height:100%;max-width:100%;width:auto;opacity:.65;filter:grayscale(1);transition:opacity .25s,filter .25s}
+.client-tile-name{font-size:12.5px;font-weight:600;color:#5c6b62;text-align:center;line-height:1.35}
+.client-tile:hover{border-color:#c9dbcf;box-shadow:0 10px 24px rgba(6,53,31,.09);translate:0 -3px}
+.client-tile:hover .client-tile-logo img{opacity:1;filter:grayscale(0)}
+@media (prefers-reduced-motion:reduce){
+  .client-tile{transition:none!important}
+  .client-tile:hover{translate:none}
+}
+
 @media (max-width:720px){
   .clients-head{padding-left:16px;padding-right:16px}
   .clients-row::before,.clients-row::after{width:44px}
@@ -646,7 +694,7 @@ div[style*="width:1440px"] > div[style*="padding:16px 56px"][style*="border-bott
 /* .std-js ถูกติดโดย standardsModal() เท่านั้น — ถ้า JS ไม่ทำงาน คำอธิบายจะยัง
    แสดงเต็มในการ์ดเหมือนเดิม ไม่กลายเป็นการ์ดเปล่าที่กดอะไรไม่ได้ */
 .std-js .std-card{cursor:pointer}
-.std-js [data-std-body]{display:none}
+.std-js [data-std-body],.std-js [data-svc-body]{display:none}
 .std-card:focus-visible{outline:2px solid #018438;outline-offset:3px}
 .std-more{display:inline-block;margin-top:2px;font-size:13.5px;font-weight:600;color:#018438}
 .std-card:hover .std-more{text-decoration:underline}
@@ -720,6 +768,12 @@ div[style*="width:1440px"] > div[style*="padding:16px 56px"][style*="border-bott
    กว่าเยอะ อ่านที่ 16px สบายตากว่า จึงต้อง !important ถึงจะทับ inline ได้ */
 .std-modal-text p{font-size:16px!important;line-height:1.9!important;margin:0 0 12px!important;color:#4a584f!important}
 .std-modal-text p:last-child{margin-bottom:0!important}
+/* หน้า /services ใช้ modal เดียวกันนี้แต่บางใบมีลิสต์เอกสารที่ต้องเตรียม —
+   ไม่มี <ul> ในป๊อปอัพหน้า standards มาก่อนเลยต้องเพิ่มสไตล์ให้ */
+.std-modal-text ul{margin:0 0 12px;padding-left:20px;font-size:16px;line-height:1.85;color:#4a584f}
+.std-modal-text ul:last-child{margin-bottom:0}
+.std-modal-text li{margin-bottom:6px}
+.std-modal-text li:last-child{margin-bottom:0}
 /* ปุ่มดาวน์โหลดท้ายป๊อปอัพ — บอกขนาดไฟล์ไว้ด้วยเพราะรายงานฉบับเต็มใหญ่ถึง 12 MB
    ถ้าไม่บอกคนกดบนมือถือจะไม่รู้ว่ากำลังจะโหลดอะไร */
 .std-modal-dl{
@@ -746,6 +800,14 @@ div[style*="width:1440px"] > div[style*="padding:16px 56px"][style*="border-bott
   .std-modal-cover{height:230px}
   .std-modal-text{padding:22px 20px 26px}
   .std-modal-text h3{font-size:21px}
+}
+/* หน้า /services: popup รูปเอกสารรับรอง — รูปเป็นภาพถ่าย/สแกนจัตุรัส 1000×1000
+   อยากให้เห็นรายละเอียดชัดกว่ากรอบ 760/340 เดิมของหน้า standards (ปกเอกสาร A4
+   แนวตั้ง) จึงแยกคลาสเฉพาะ ไม่กระทบขนาด popup มาตรฐานเดิม */
+.svc-modal-lg .std-modal-panel{width:min(940px,100%)}
+.svc-modal-lg .std-modal-cover{height:520px}
+@media (max-width:720px){
+  .svc-modal-lg .std-modal-cover{height:320px}
 }
 @media (prefers-reduced-motion:reduce){
   .std-modal-back,.std-modal-panel,.std-modal-x{transition:none!important}

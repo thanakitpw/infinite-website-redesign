@@ -11,24 +11,24 @@ export const PRODUCTS = [
     slug: "neocoat-intumescent-paint-s",
     oldId: 14,
     name: "สีกันไฟ Neocoat สูตรน้ำมัน Intumescent Paint-S",
-    short: "สูตรน้ำมัน สีขาว น้ำหนัก 22 กก. ทาได้ 23–25 ตร.ม. หนา 500 ไมครอน",
+    short: "สูตรน้ำมัน สีขาว น้ำหนัก 22 กก. ทาได้ 0.8–1 ตร.ม./กก. หนา 500 ไมครอน",
     cat: "สีกันไฟ",
     image: "/images/neocoat-paint-s.png",
     badge: "ขายดี",
     title: "สีกันไฟ Neocoat Intumescent Paint-S สูตรน้ำมัน | ราคาโรงงาน",
     description:
-      "สีกันไฟ Neocoat Intumescent Paint-S สูตรน้ำมัน (Solvent Base) 22 กก. ทาได้ 23–25 ตร.ม. ทดสอบตาม ASTM E119 · ISO 834 พร้อมเอกสารวุฒิวิศวกรโยธารับรอง",
+      "สีกันไฟ Neocoat Intumescent Paint-S สูตรน้ำมัน (Solvent Base) 22 กก. ทาได้ 0.8–1 ตร.ม./กก. ทดสอบตาม ASTM E119 · ISO 834 พร้อมเอกสารวุฒิวิศวกรโยธารับรอง",
   },
   {
     slug: "neocoat-intumescent-paint-w",
     oldId: 13,
     name: "สีกันไฟ Neocoat สูตรน้ำ Intumescent Paint-W",
-    short: "สูตรน้ำ สีขาว น้ำหนัก 22 กก. ทาได้ 23–25 ตร.ม. หนา 500 ไมครอน",
+    short: "สูตรน้ำ สีขาว น้ำหนัก 22 กก. ทาได้ 0.8–1 ตร.ม./กก. หนา 500 ไมครอน",
     cat: "สีกันไฟ",
     image: "/images/neocoat-paint-w.png",
     title: "สีกันไฟ Neocoat Intumescent Paint-W สูตรน้ำ Low VOC | ราคาโรงงาน",
     description:
-      "สีกันไฟ Neocoat Intumescent Paint-W สูตรผสมด้วยน้ำ ค่า VOC ต่ำ เหมาะกับอาคารเขียว (Green Building) ไม่ใช้ทินเนอร์เป็นตัวทำละลาย 22 กก. ทาได้ 23–25 ตร.ม.",
+      "สีกันไฟ Neocoat Intumescent Paint-W สูตรผสมด้วยน้ำ ค่า VOC ต่ำ เหมาะกับอาคารเขียว (Green Building) ไม่ใช้ทินเนอร์เป็นตัวทำละลาย 22 กก. ทาได้ 0.8–1 ตร.ม./กก.",
   },
   {
     slug: "neocoat-primer-grey-oxide",
@@ -58,7 +58,7 @@ export const PRODUCTS = [
     name: "ทินเนอร์ 3A ผสมสี อินทนิล",
     short: "ผสมสีทาเหล็ก ขนาดบรรจุ 15 กก.",
     cat: "ทินเนอร์/น้ำมันสน",
-    image: "/images/thinner-aaa.webp",
+    image: "/images/thinner-3a-intanin.webp",
     title: "ทินเนอร์ AAA (3A) ผสมสี อินทนิล 15 กก. | พร้อมส่ง ราคาถูก",
     description:
       "ทินเนอร์ AAA (3A) อินทนิล คุณภาพสูง ขนาดบรรจุ 15 กก. ใช้เป็นตัวทำละลายผสมสีสูตรน้ำมัน สีรองพื้น สีทับหน้า และสีชนิดโซลเวนต์",
@@ -80,7 +80,7 @@ export const PRODUCTS = [
     name: "น้ำมันสนผสมสี อินทนิล",
     short: "ผสมสีทาเหล็ก ขนาด 15 กก.",
     cat: "ทินเนอร์/น้ำมันสน",
-    image: "/images/turpentine.webp",
+    image: "/images/turpentine-intanin.webp",
     title: "น้ำมันสนผสมสี อินทนิล 15 กก. น้ำมันสนเชียงใหม่ | ราคาถูก",
     description:
       "น้ำมันสนผสมสี อินทนิล (น้ำมันสนเชียงใหม่) ขนาด 15 กก. ใช้เป็นตัวทำละลายผสมสีสูตรน้ำมันชนิดต่างๆ พร้อมส่ง",
@@ -124,7 +124,7 @@ export const PRODUCTS = [
     name: "ผ้ากันไฟ Fiberglass Cloth",
     short: "ขนาด กว้าง 1 ม. ยาว 1 ม. · ทนอุณหภูมิใช้งาน 550°C และ 1000°C",
     cat: "ผ้ากันไฟ",
-    image: "/images/fabric-fiberglass.jpg",
+    image: "/images/fiberglass-cloth-panel-main.webp",
     title: "ผ้ากันไฟ ผ้ากันสะเก็ดไฟ Fiberglass Cloth ทน 550°C | พร้อมส่งทั่วไทย",
     description:
       "ผ้ากันไฟ Fiberglass Cloth เนื้อสีทอง หนา 1 มม. ทอแบบซาติน ผ่านการอบ 2 ครั้ง (Double Heat Treatment) ทนความร้อน 550°C และ 1000°C ตัดเย็บตามขนาด มีบริการเจาะรูตาไก่",

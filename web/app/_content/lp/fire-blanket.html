@@ -10,12 +10,12 @@
   <div class="topbar">
     <div class="lp-wrap topbar-inner">
       <div class="topbar-group">
-        <span class="topbar-item">โทร <a href="tel:020410119"><b>02-041-0119</b></a></span>
-        <span class="topbar-item"><a href="tel:0863394682">086-339-4682</a></span>
-      </div>
-      <div class="topbar-group">
         <span class="topbar-item">จ–ส 8:00–17:00</span>
         <span class="topbar-item"><a href="mailto:imatthailand@gmail.com">imatthailand@gmail.com</a></span>
+      </div>
+      <div class="topbar-group">
+        <span class="topbar-item">โทร <a href="tel:020410119"><b>02-041-0119</b></a></span>
+        <span class="topbar-item"><a href="tel:0863394682">086-339-4682</a></span>
       </div>
     </div>
   </div>
@@ -53,20 +53,38 @@
         <div class="hero-actions">
           <a href="tel:020410119" class="btn btn-primary btn-lg"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"/></svg>โทรปรึกษาฝ่ายขาย</a>
           <a href="https://lin.ee/N3VgCj5" target="_blank" rel="noopener" class="btn btn-ghost btn-lg">ทัก LINE @imat999</a>
+          <a href="https://line.me/ti/p/~imat999" target="_blank" rel="noopener" class="btn btn-ghost btn-lg">LINE: imat999</a>
         </div>
         <div class="hero-trust">
           <div class="hero-trust-item"><span class="hero-trust-k">550 / 1000°C</span><span class="hero-trust-v">อุณหภูมิใช้งานให้เลือก</span></div>
-          <div class="hero-trust-item"><span class="hero-trust-k">1 มม.</span><span class="hero-trust-v">ความหนาเนื้อผ้า</span></div>
-          <div class="hero-trust-item"><span class="hero-trust-k">100 ม.</span><span class="hero-trust-v">สั่งตัดได้สูงสุด</span></div>
         </div>
       </div>
 
-      <!-- รูปอยู่ในจอแรก ชิง LCP กับ hero จึงไม่ใส่ loading="lazy" -->
-      <figure class="hero-figure">
+      <!-- รูปแรกอยู่ในจอแรก ชิง LCP กับ hero จึงไม่ใส่ loading="lazy" เฉพาะรูปแรก
+           รูปทั้ง 4 ใบใช้ชุดเดียวกับแกลเลอรีของ /product/fiberglass-cloth
+           ปุ่มลูกศรและจุดบอกตำแหน่งถูกเติมโดย lpCarousel() ใน enhance.jsx
+           ถ้า JS ไม่ทำงาน แถบนี้ยังปัดดูรูปได้ด้วย scroll-snap ตามปกติ -->
+      <div>
         <span class="hero-figure-flag">ตัดตามขนาด · พร้อมส่ง</span>
-        <img src="/images/fabric-fiberglass.jpg" alt="ผ้ากันไฟ Fiberglass Cloth เนื้อสีทอง ทอแบบซาติน สำหรับคลุมงานเชื่อมและกันสะเก็ดไฟ" fetchpriority="high">
-        <figcaption>Fiberglass Cloth เนื้อสีทอง หนา 1 มม. · ตัดเย็บตามสั่ง</figcaption>
-      </figure>
+        <div class="car" data-carousel>
+          <div class="car-stage">
+            <div class="car-track">
+              <figure class="car-item">
+                <img src="/images/fiberglass-cloth-weave-detail.webp" alt="เนื้อผ้ากันไฟ Fiberglass Cloth ทอแบบซาติน เนื้อสีทองละเอียด" fetchpriority="high">
+              </figure>
+              <figure class="car-item">
+                <img src="/images/fiberglass-cloth-fringe-detail.webp" alt="ขอบผ้ากันไฟ Fiberglass Cloth ที่ตัดแล้ว เห็นเส้นใยขอบผ้าชัดเจน" loading="lazy">
+              </figure>
+              <figure class="car-item">
+                <img src="/images/fiberglass-cloth-panels-grommet.webp" alt="ผ้ากันไฟตัดเย็บพร้อมเจาะรูตาไก่ (Eyelet) มุมผ้า" loading="lazy">
+              </figure>
+              <figure class="car-item">
+                <img src="/images/fiberglass-cloth-roll-grey.webp" alt="ม้วนผ้ากันไฟ Fiberglass Cloth พร้อมตัดตามความยาวที่ต้องการ" loading="lazy">
+              </figure>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -82,24 +100,67 @@
           <div class="calc-rows">
             <div class="calc-row"><span class="calc-t">วัสดุ</span><span class="calc-d">Fiberglass (ใยแก้ว)</span></div>
             <div class="calc-row"><span class="calc-t">สี / เนื้อผ้า</span><span class="calc-d">สีทอง ละเอียด</span></div>
-            <div class="calc-row"><span class="calc-t">ความหนา</span><span class="calc-d">1 มม.</span></div>
             <div class="calc-row"><span class="calc-t">ลักษณะการทอ</span><span class="calc-d">ทอแบบซาติน (Satin Type)</span></div>
             <div class="calc-row"><span class="calc-t">การอบ</span><span class="calc-d">อบ 2 ครั้ง (Double Heat Treatment)</span></div>
             <div class="calc-row"><span class="calc-t">อุณหภูมิใช้งาน</span><span class="calc-d">550°C และ 1000°C</span></div>
             <div class="calc-row"><span class="calc-t">ขนาดมาตรฐาน</span><span class="calc-d">กว้าง 1 ม. × ยาว 1 ม.</span></div>
-            <div class="calc-row"><span class="calc-t">สั่งตัดได้ถึง</span><span class="calc-d">ยาว 100 ม.</span></div>
             <div class="calc-row"><span class="calc-t">บริการเพิ่ม</span><span class="calc-d">เจาะรูตาไก่ (Eyelet) ระยะมาตรฐาน 50 ซม. · ทำ U shape ปลายผ้า</span></div>
           </div>
         </div>
         <figure class="figure">
-          <img src="/images/fabric-fiberglass-2.png" alt="เนื้อผ้ากันไฟ Fiberglass Cloth ทอแบบซาติน" loading="lazy">
-          <figcaption>เนื้อผ้าทอแบบซาติน ผ่านการอบ 2 ครั้ง</figcaption>
+          <img src="/images/fiberglass-cloth-panel-main.webp" alt="ผ้ากันไฟ Fiberglass Cloth เนื้อสีทอง เจาะรูตาไก่ 4 มุม" loading="lazy">
+          <figcaption>ผ้ากันไฟ Fiberglass Cloth เนื้อสีทอง หนา 1 มม.</figcaption>
         </figure>
       </div>
     </div>
   </div>
 
+  <!-- ══════════════ เอกสารดาวน์โหลด ══════════════ -->
   <div class="section">
+    <div class="lp-wrap">
+      <div class="section-head section-head-center">
+        <div class="section-tag section-tag-green">DOCUMENTS</div>
+        <h2 class="section-title">สเปกผ้ากันไฟ ดาวน์โหลดตรวจสอบได้ทันที</h2>
+        <p class="section-sub">ไม่ต้องกรอกฟอร์มก่อนโหลด เลือกเกรดและอุณหภูมิที่ตรงกับหน้างานได้เลย</p>
+      </div>
+      <div class="docs">
+        <a href="/docs/fiberglass-gold-550c-1mm.pdf" target="_blank" rel="noopener" class="doc">
+          <span class="doc-img" style="background-image:url('/images/fiberglass-cloth-panel-main.webp')"></span>
+          <span class="doc-k">550°C · 1 มม.</span>
+          <span class="doc-t">ผ้ากันไฟสีทอง Fiberglass</span>
+          <span class="doc-m">สเปกผ้ากันไฟเนื้อสีทอง หนา 1 มม. ทนความร้อนใช้งาน 550°C</span>
+          <span class="doc-sz">PDF · 0.2 MB · 1 หน้า</span>
+          <span class="doc-dl">↓ ดาวน์โหลด</span>
+        </a>
+        <a href="/docs/fiberglass-gold-1000c-0.7mm.pdf" target="_blank" rel="noopener" class="doc">
+          <span class="doc-img" style="background-image:url('/images/fiberglass-cloth-weave-detail.webp')"></span>
+          <span class="doc-k">1000°C · 0.7 มม.</span>
+          <span class="doc-t">ผ้ากันไฟสีทอง Fiberglass</span>
+          <span class="doc-m">สเปกผ้ากันไฟเนื้อสีทอง หนา 0.70 มม. ทนความร้อนใช้งานสูงสุด 1000°C</span>
+          <span class="doc-sz">PDF · 0.2 MB · 1 หน้า</span>
+          <span class="doc-dl">↓ ดาวน์โหลด</span>
+        </a>
+        <a href="/docs/fiberglass-silicone-grey-red-550c.pdf" target="_blank" rel="noopener" class="doc">
+          <span class="doc-img" style="background-image:url('/images/fiberglass-cloth-panels-grommet.webp')"></span>
+          <span class="doc-k">550°C · ซิลิโคน</span>
+          <span class="doc-t">ผ้าใยแก้วเคลือบซิลิโคน เทา/แดง</span>
+          <span class="doc-m">สเปกผ้าใยแก้วเคลือบซิลิโคน สีเทาและสีแดง ทนความร้อนใช้งาน 550°C</span>
+          <span class="doc-sz">PDF · 0.1 MB · 1 หน้า</span>
+          <span class="doc-dl">↓ ดาวน์โหลด</span>
+        </a>
+        <a href="/docs/fiberglass-silica-silicone-red-1000c.pdf" target="_blank" rel="noopener" class="doc">
+          <span class="doc-img" style="background-image:url('/images/fiberglass-cloth-fringe-detail.webp')"></span>
+          <span class="doc-k">1000°C · ซิลิก้า</span>
+          <span class="doc-t">ผ้าซิลิก้าเคลือบซิลิโคน สีแดง</span>
+          <span class="doc-m">สเปกผ้าซิลิก้าเคลือบซิลิโคน สีแดง ทนความร้อนใช้งานสูงสุด 1000°C</span>
+          <span class="doc-sz">PDF · 0.2 MB · 1 หน้า</span>
+          <span class="doc-dl">↓ ดาวน์โหลด</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="section section-alt">
     <div class="lp-wrap">
       <div class="section-head section-head-center">
         <div class="section-tag section-tag-green">USE CASES</div>
@@ -114,7 +175,7 @@
     </div>
   </div>
 
-  <div class="section section-alt">
+  <div class="section">
     <div class="lp-wrap">
       <div class="section-head section-head-center">
         <div class="section-tag section-tag-green">FAQ</div>
@@ -139,7 +200,7 @@
       <div class="final-actions">
         <a href="tel:020410119" class="btn btn-primary btn-lg"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"/></svg>02-041-0119</a>
         <a href="https://lin.ee/N3VgCj5" target="_blank" rel="noopener" class="btn btn-line btn-lg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.69 2 10.22c0 4.06 3.56 7.46 8.37 8.1.33.07.78.22.89.5.1.26.07.66.03.92l-.14.86c-.04.26-.2 1.01.89.55s5.86-3.45 8-5.91c1.47-1.61 2.17-3.25 2.17-5.02C22 5.69 17.52 2 12 2Z"/></svg>ทัก LINE @imat999</a>
-        <a href="mailto:imatthailand@gmail.com" class="btn btn-ghost btn-lg">ส่งรายละเอียดทางอีเมล</a>
+        <a href="https://line.me/ti/p/~imat999" target="_blank" rel="noopener" class="btn btn-ghost btn-lg">LINE: imat999</a>
       </div>
       <div class="final-note">จ–ส 8:00–17:00 · imatthailand@gmail.com · 086-339-4682 · 061-421-5422</div>
     </div>

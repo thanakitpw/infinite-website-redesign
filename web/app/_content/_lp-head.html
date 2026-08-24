@@ -53,7 +53,7 @@
 
   /* ── Top Bar ── */
   .lp .topbar{background:var(--green-darker);color:rgba(255,255,255,.85);font-size:13px;padding:9px 0}
-  .lp .topbar-inner{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+  .lp .topbar-inner{display:flex;justify-content:flex-end;align-items:center;gap:28px;flex-wrap:wrap}
   .lp .topbar a{color:rgba(255,255,255,.85)}
   .lp .topbar a:hover{color:var(--white)}
   .lp .topbar-group{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
@@ -100,8 +100,10 @@
   .lp .hero-figure{position:relative;text-align:center}
   .lp .hero-figure img{width:100%;height:auto;display:block;filter:drop-shadow(0 20px 34px rgba(0,0,0,.45))}
   /* หน้าที่รูป hero เป็นสินค้าชิ้นเดียวแนวตั้ง (เช่น /thinner) ถ้าปล่อยเต็ม 100%
-     ของคอลัมน์ รูปจะสูงกว่าคอลัมน์ข้อความไปมาก จำกัดความกว้างแล้วจัดกลางแทน */
-  .lp .hero-figure-sm img{max-width:330px;margin-left:auto;margin-right:auto}
+     ของคอลัมน์ รูปจะสูงกว่าคอลัมน์ข้อความไปมาก จำกัดความกว้างแล้วจัดกลางแทน
+     (/thinner เปลี่ยนเป็นรูปสองกระป๋องคู่ ซึ่งเป็นแนวนอนแล้ว ไม่ใช่ทรงสูงแบบเดิม
+     จึงขยับ cap ขึ้นจาก 330 ไม่งั้นจะดูเล็กเกินไปเมื่อเทียบกับคอลัมน์ข้อความ) */
+  .lp .hero-figure-sm img{max-width:480px;margin-left:auto;margin-right:auto}
   .lp .hero-figure-flag{display:inline-flex;align-items:center;background:var(--accent);color:var(--white);font-size:12px;font-weight:600;padding:6px 15px;border-radius:7px;letter-spacing:.2px;margin-bottom:16px}
   .lp .hero-figure figcaption{padding-top:16px;font-size:13px;color:var(--green-mute);text-align:center;line-height:1.65}
   /* ── Lab strip ── */
@@ -171,8 +173,9 @@
      ข้อความไทยไม่มีเว้นวรรค min-content เลยกว้างเป็นร้อยพิกเซล พอ /engineering
      เอา .car (คารูเซล) มาวางในคอลัมน์ คอลัมน์ 1fr เลยถูกดันเป็น 702px ทะลุจอ
      มือถือ แล้วโดน clip ทิ้งครึ่งหนึ่ง — min-width:0 ปลดล็อกให้ยุบตามคอลัมน์ได้
-     ส่วนการเลื่อนดูรูปยังทำได้ตามเดิมด้วย overflow-x ของ .car-track */
-  .lp .how-grid > *,.lp .thick-grid > *,.lp .car{min-width:0}
+     ส่วนการเลื่อนดูรูปยังทำได้ตามเดิมด้วย overflow-x ของ .car-track
+     (รวม .hero-grid ด้วย เพราะ /fire-blanket เอา .car มาวางในคอลัมน์ hero) */
+  .lp .how-grid > *,.lp .thick-grid > *,.lp .hero-grid > *,.lp .car{min-width:0}
   .lp .how-steps{list-style:none;display:grid;gap:20px}
   .lp .how-step{display:flex;gap:16px}
   .lp .how-step-n{width:34px;height:34px;border-radius:50%;background:rgba(94,224,143,.16);border:1px solid rgba(94,224,143,.4);color:var(--green-light);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0}

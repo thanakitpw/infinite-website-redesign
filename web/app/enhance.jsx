@@ -74,6 +74,12 @@ function linkifyButtons() {
 function linkifyContacts() {
   leaves().forEach((el) => {
     if (el.dataset.enhc) return;
+    /* el เป็น <a> อยู่แล้ว (เช่นปุ่ม "ทัก LINE @imat999" ที่ทั้งปุ่มเป็นลิงก์
+       เดียวอยู่แล้ว) ห้ามยัด <a> ซ้อนเข้าไปอีกชั้น — นอกจากเป็น HTML ที่ผิด
+       สเปกแล้ว ปุ่มที่ใช้ .btn (display:inline-flex;gap:10px) จะเห็นช่องว่าง
+       โผล่ขึ้นมาระหว่างข้อความเดิมกับลิงก์ที่เพิ่งสร้าง เพราะกลายเป็นคนละ flex
+       item ทันที (บั๊กจริงที่เจอกับปุ่ม LINE ในหน้า /thinner) */
+    if (el.tagName === "A") return;
     let h = el.innerHTML;
     if (!h || !/[@0-9]/.test(h)) return;
     let changed = false;
@@ -89,33 +95,82 @@ function linkifyContacts() {
   });
 }
 
+/* สไลด์ hero เลื่อนแนวนอน — ใบใหม่เข้ามาจากขวา ใบเก่าออกไปทางซ้าย
+   (กลับทิศเมื่อกดลูกศรย้อนกลับ) ทั้งใบขยับด้วย transform ใบเดียว ตัวหนังสือกับ
+   ภาพจึงไปด้วยกันเป็นก้อนเดียว ไม่ใช่ crossfade แบบเดิม */
+const SLIDE_MS = 720;
+const SLIDE_EASE = "cubic-bezier(.45,.05,.15,1)";
+
 function slider() {
   let slides = $$('[data-slide]');
   if (slides.length < 2) slides = $$('[style*="animation:imgcycle"]');
   if (slides.length < 2) return;
-  slides.forEach((s, i) => { s.dataset.slide = String(i); s.style.animation = "none"; s.style.transition = "opacity .6s ease"; });
-  const wrap = slides[0].parentElement;
+  const reduce = reduceMotion();
+  /* anim=false ใช้ตอน "วางตำแหน่งตั้งต้น" ของใบที่กำลังจะเข้า ต้องไม่มี transition
+     ไม่งั้นมันจะวิ่งจากตำแหน่งเดิมข้ามจอมาก่อนแล้วค่อยวิ่งเข้า = เห็นสองจังหวะ */
+  const place = (s, x, anim) => {
+    s.style.transition = anim && !reduce ? `transform ${SLIDE_MS}ms ${SLIDE_EASE}` : "none";
+    s.style.transform = `translateX(${x}%)`;
+  };
+  slides.forEach((s, i) => {
+    s.dataset.slide = String(i);
+    s.style.animation = "none";
+    // ตำแหน่งคุมด้วย transform แล้ว opacity ที่ HTML ตั้งไว้ให้ crossfade ต้องเปิดทุกใบ
+    s.style.opacity = "1";
+    s.style.zIndex = i === 0 ? "2" : "1";
+    place(s, i === 0 ? 0 : 100, false);
+  });
   const dotsWrap = document.querySelector('[style*="bottom:20px"][style*="left:72px"]');
   const dots = dotsWrap ? Array.from(dotsWrap.children) : [];
   let idx = 0;
-  const show = (i) => {
-    idx = (i + slides.length) % slides.length;
-    slides.forEach((s, k) => {
-      const on = k === idx;
-      s.style.opacity = on ? "1" : "0";
-      s.style.zIndex = on ? "2" : "1";
-      // ถอดคลาสออกจากสไลด์ที่ไม่ active เพื่อรีเซ็ตซูม/ตัวหนังสือให้เริ่มใหม่รอบหน้า
-      s.classList.toggle("hero-on", on);
-    });
-    dots.forEach((d, k) => { d.style.width = k === idx ? "30px" : "10px"; d.style.background = k === idx ? "#12b459" : "rgba(255,255,255,.4)"; d.style.cursor = "pointer"; });
+  let settle = 0;
+  const paintDots = () => dots.forEach((d, k) => {
+    d.style.width = k === idx ? "30px" : "10px";
+    d.style.background = k === idx ? "#12b459" : "rgba(255,255,255,.4)";
+    d.style.cursor = "pointer";
+  });
+  const show = (i, dir) => {
+    const next = (i + slides.length) % slides.length;
+    if (next === idx) return;
+    const cur = slides[idx];
+    const nxt = slides[next];
+    place(nxt, dir * 100, false);
+    nxt.style.zIndex = "2";
+    void nxt.offsetWidth;   // บังคับ reflow ให้ตำแหน่งตั้งต้นมีผลก่อน ไม่งั้นเบราว์เซอร์ยุบสองสเต็ปเหลือก้าวเดียว
+    place(nxt, 0, true);
+    place(cur, -dir * 100, true);
+    cur.style.zIndex = "1";
+    nxt.classList.add("hero-on");
+    idx = next;
+    paintDots();
+    /* ถอด hero-on ของใบเก่าหลังเลื่อนจบ ไม่ใช่ตอนเริ่ม — คลาสนี้คุมตัวหนังสือใน hero
+       ถ้าถอดทันทีข้อความจะวูบหายตั้งแต่ยังเลื่อนออกไม่พ้นจอ */
+    clearTimeout(settle);
+    settle = setTimeout(() => slides.forEach((s, k) => s.classList.toggle("hero-on", k === idx)), reduce ? 0 : SLIDE_MS);
   };
-  show(0);
-  const auto = () => { clearTimers(); timers.push(setInterval(() => show(idx + 1), 5000)); };
+  slides[0].classList.add("hero-on");
+  /* ลูกศรกับจุดเขียนไว้ใน HTML หลังตัวสไลด์ แต่พอสไลด์ถูกตั้ง z-index (1/2) ตอนสลับใบ
+     ของที่ z-index:auto จะจมอยู่ใต้สไลด์ทันที ต้องดันขึ้นมาด้วยคลาส .hero-ctl
+     ใช้คลาส ไม่ใช่ el.style.zIndex — กล่องจุดถูก globals.css เกาะด้วย
+     [style*="left:72px"] ถ้าแตะ inline style เบราว์เซอร์จะ serialize ใหม่ selector หลุด */
+  if (dotsWrap) dotsWrap.classList.add("hero-ctl");
+  paintDots();
+  const auto = () => { clearTimers(); timers.push(setInterval(() => show(idx + 1, 1), 5000)); };
   const arrowL = leaves().find((e) => txt(e) === "‹");
   const arrowR = leaves().find((e) => txt(e) === "›");
-  if (arrowL) { arrowL.style.cursor = "pointer"; arrowL.onclick = () => { show(idx - 1); auto(); }; }
-  if (arrowR) { arrowR.style.cursor = "pointer"; arrowR.onclick = () => { show(idx + 1); auto(); }; }
-  dots.forEach((d, k) => (d.onclick = () => { show(k); auto(); }));
+  const bindArrow = (el, dir, label) => {
+    if (!el) return;
+    el.classList.add("hero-ctl", "hero-arrow");
+    el.setAttribute("role", "button");
+    el.setAttribute("tabindex", "0");
+    el.setAttribute("aria-label", label);
+    const go = () => { show(idx + dir, dir); auto(); };
+    el.onclick = go;
+    el.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } };
+  };
+  bindArrow(arrowL, -1, "สไลด์ก่อนหน้า");
+  bindArrow(arrowR, 1, "สไลด์ถัดไป");
+  dots.forEach((d, k) => (d.onclick = () => { show(k, k > idx ? 1 : -1); auto(); }));
   auto();
 }
 
@@ -570,6 +625,103 @@ function standardsModal() {
   disposers.push(() => { modal.remove(); document.documentElement.style.overflow = ""; });
 }
 
+/* ── หน้า /services: การ์ดบริการ 3 ใบแรก → popup รูป + คำอธิบายเต็ม ─────────
+   ใช้โครง modal เดียวกับ standardsModal() ทุกคลาส (.std-modal ฯลฯ) เพราะเป็น
+   popup แสดงรูป+ข้อความแบบเดียวกันเป๊ะ ต่างแค่ว่าการ์ดหน้านี้ไม่มีรูปปกอยู่ใน
+   การ์ดเอง (โชว์แค่เลข+หัวข้อ+ย่อหน้าสั้นตามดีไซน์เดิม) จึงเก็บ path รูปไว้ใน
+   data-svc-img แล้วตั้ง background ให้ป๊อปอัพตรงๆ แทนการก๊อปจาก element ในการ์ด
+   คำอธิบายเต็มอยู่ใน [data-svc-body] ในการ์ดตลอดเวลาเหมือนหน้า standards —
+   ซ่อนด้วย .std-js (คลาสเดียวกัน) ต่อเมื่อฟังก์ชันนี้ติดสำเร็จเท่านั้น ถ้า JS
+   ไม่ทำงานผู้ใช้ยังอ่านคำอธิบายเต็มได้ในการ์ดตามปกติ */
+function servicesModal() {
+  const cards = $$("[data-svc]");
+  if (!cards.length) return;
+  const grid = cards[0].parentElement;
+  if (!grid || grid.dataset.svcJs) return;
+  grid.dataset.svcJs = "1";
+  grid.classList.add("std-js");
+
+  const modal = document.createElement("div");
+  modal.className = "std-modal svc-modal-lg";
+  modal.setAttribute("role", "dialog");
+  modal.setAttribute("aria-modal", "true");
+  modal.hidden = true;
+  modal.innerHTML =
+    '<div class="std-modal-back"></div>' +
+    '<div class="std-modal-panel">' +
+      '<button type="button" class="std-modal-x" aria-label="ปิด">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>' +
+      '</button>' +
+      '<div class="std-modal-cover"></div>' +
+      '<div class="std-modal-text"></div>' +
+    '</div>';
+  document.body.appendChild(modal);
+
+  const panel = modal.querySelector(".std-modal-panel");
+  const cover = modal.querySelector(".std-modal-cover");
+  const text = modal.querySelector(".std-modal-text");
+  const closeBtn = modal.querySelector(".std-modal-x");
+  let opener = null;
+
+  const close = () => {
+    if (modal.hidden) return;
+    modal.classList.remove("std-modal-on");
+    document.documentElement.style.overflow = "";
+    const done = () => { modal.hidden = true; text.innerHTML = ""; };
+    if (reduceMotion()) done();
+    else setTimeout(done, 220);
+    if (opener) { opener.focus(); opener = null; }
+  };
+
+  const open = (card) => {
+    const body = card.querySelector("[data-svc-body]");
+    // การ์ดหน้า /services ใช้ inline style ล้วน แต่การ์ด "01" ของ /engineering
+    // เป็นการ์ด .layer เดิม (คลาส .layer-t) จึงต้องเช็คสองแบบ
+    const head = card.querySelector('[style*="font-size:19px"]') || card.querySelector(".layer-t");
+    if (!body) return;
+
+    opener = card;
+    cover.innerHTML = "";
+    cover.style.backgroundImage = card.dataset.svcImg ? "url('" + card.dataset.svcImg + "')" : "none";
+    cover.style.backgroundColor = "#f6f7f3";
+    cover.style.backgroundSize = "contain";
+    cover.style.backgroundPosition = "center";
+    cover.style.backgroundRepeat = "no-repeat";
+
+    text.innerHTML = (head ? "<h3>" + head.textContent + "</h3>" : "") + body.innerHTML;
+    modal.setAttribute("aria-label", head ? txt(head) : "รายละเอียดบริการ");
+
+    modal.hidden = false;
+    document.documentElement.style.overflow = "hidden";
+    void panel.offsetWidth;
+    modal.classList.add("std-modal-on");
+    closeBtn.focus();
+  };
+
+  cards.forEach((card) => {
+    card.classList.add("std-card");
+    card.setAttribute("role", "button");
+    card.setAttribute("tabindex", "0");
+
+    const more = document.createElement("span");
+    more.className = "std-more";
+    more.textContent = "ดูรายละเอียด →";
+    card.appendChild(more);
+
+    card.addEventListener("click", () => open(card));
+    card.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      e.preventDefault();
+      open(card);
+    });
+  });
+
+  closeBtn.addEventListener("click", close);
+  modal.querySelector(".std-modal-back").addEventListener("click", close);
+  onDoc("keydown", (e) => { if (e.key === "Escape") close(); });
+  disposers.push(() => { modal.remove(); document.documentElement.style.overflow = ""; });
+}
+
 /* ── ANIMATION ────────────────────────────────────────────────────────────
    คลาสทั้งหมดถูกเติมจาก JS ไม่ได้อยู่ใน HTML — ถ้า JS ไม่ทำงานหรือผู้ใช้ตั้ง
    prefers-reduced-motion ไว้ เนื้อหาจะแสดงปกติทันที ไม่มีทางที่ opacity:0
@@ -586,9 +738,9 @@ const reduceMotion = () =>
 const DELAY_STEPS = 7;
 const delayClass = (i) => `rv-d${Math.min(i, DELAY_STEPS)}`;
 
-/* hero: แยกภาพพื้นหลังออกมาเป็นเลเยอร์ของตัวเอง เพื่อซูมด้วย transform ได้
-   (ถ้าซูมที่ตัวสไลด์ ตัวหนังสือจะถูกซูมไปด้วย และการขยับ background-size
-   ทำให้เบราว์เซอร์ repaint ทุกเฟรม — transform ใช้ GPU ลื่นกว่ามาก) */
+/* hero: เตรียมตัวหนังสือให้ทยอยโผล่ทีละบรรทัดตอนสไลด์เข้ามา
+   (เดิมแยกภาพออกเป็นเลเยอร์ต่างหากเพื่อซูมช้าๆ แบบ Ken Burns ตอนนี้เอาซูมออกแล้ว
+   เหลือแค่เลื่อนทั้งใบด้วย transform ที่ slider() จึงไม่ต้องแยกเลเยอร์อีก) */
 function heroMotion() {
   // ใช้ selector ชุดเดียวกับ slider() เพราะ motion() รันก่อน — data-slide ยังไม่ถูกใส่
   let slides = $$("[data-slide]");
@@ -603,14 +755,6 @@ function heroMotion() {
     // ทำให้ selector สำรองของ slider() หาไม่เจอ ถ้าไม่มี data-slide ไว้ก่อน
     // สไลด์ hero จะตายทั้งหมด
     s.dataset.slide = String(i);
-    const img = getComputedStyle(s).backgroundImage;
-    if (img && img !== "none") {
-      const layer = document.createElement("div");
-      layer.className = "hero-kb";
-      layer.style.backgroundImage = img;
-      s.style.backgroundImage = "none";
-      s.insertBefore(layer, s.firstChild);
-    }
     // ทยอยโผล่: ป้าย → หัวเรื่อง → คำโปรย → ปุ่ม
     // หน่วงเวลาใช้ "คลาส" ไม่ใช่ el.style.transitionDelay — ดูเหตุผลที่ delayClass ด้านบน
     const copy = Array.from(s.children).find((c) => c.querySelector("h1,p"));
@@ -823,6 +967,7 @@ export default function Enhance() {
       }
       if (pathname === "/articles") safe(articleFilter);
       if (pathname === "/standards") safe(standardsModal);
+      if (pathname === "/services" || pathname === "/engineering") safe(servicesModal);
     };
     const t = setTimeout(run, 30);
     return () => { clearTimeout(t); clearTimers(); clearObservers(); clearDisposers(); };
