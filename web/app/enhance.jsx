@@ -55,7 +55,10 @@ function linkifyButtons() {
     const t = txt(el);
     let url = null, opt = {};
     if (["ขอใบเสนอราคา", "ขอใบเสนอราคาฟรี", "ขอใบเสนอราคาโครงการ", "ปรึกษาวิศวกร", "ขอคำนวณ & ใบเสนอราคา"].includes(t)) url = "/contact";
-    else if (t.startsWith("ปรึกษา") && t.includes("LINE")) { url = LINE_MAIN; opt.external = true; }
+    /* ปุ่ม "ปรึกษาผ่าน LINE" (hero หน้าแรก + product.html) ชี้ไลน์ส่วนตัว imat999
+       ไม่ใช่ LINE OA — ตรงกับปุ่มชื่อเดียวกันในหน้าสินค้าทั้ง 14 หน้า ซึ่งเขียน
+       <a href="line.me/ti/p/~imat999"> ไว้ใน HTML อยู่แล้ว จึงไม่ผ่านกติกานี้ */
+    else if (t.startsWith("ปรึกษา") && t.includes("LINE")) { url = LINE.imat999; opt.external = true; }
     else if (t === "LINE: imat999") { url = LINE.imat999; opt.external = true; }
     else if (t === "LINE: blue999") { url = LINE.blue999; opt.external = true; }
     else if (t.startsWith("ดูสินค้าทั้งหมด") || t.startsWith("ดูทั้งหมด")) url = "/products";
@@ -85,7 +88,7 @@ function linkifyContacts() {
     let changed = false;
     h = h.replace(/([\w.\-]+@[\w.\-]+\.\w{2,})/g, (m) => { changed = true; return `<a href="mailto:${m}" style="color:inherit;text-decoration:none">${m}</a>`; });
     h = h.replace(/(0\d{1,2}-\d{3}-\d{4})/g, (m) => { changed = true; return `<a href="tel:${m.replace(/-/g, "")}" style="color:inherit;text-decoration:none">${m}</a>`; });
-    /* @imat คือ LINE OA ชี้ไปลิงก์ lin.ee ตัวเดียวกับปุ่ม "ปรึกษาผ่าน LINE"
+    /* @imat คือ LINE OA ชี้ไปลิงก์ lin.ee (LINE_MAIN) ซึ่งตอนนี้เหลือที่ใช้ที่เดียวคือตรงนี้
        ต้องมาก่อน imat999 และห้ามใส่ \b หน้า @ (space→@ ไม่ใช่ขอบเขตคำ จะไม่แมตช์)
        ส่วน \b ท้ายกัน "@imat999" ถูกตัดครึ่งเป็น @imat */
     h = h.replace(/@imat\b/g, () => { changed = true; return `<a href="${LINE_MAIN}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">@imat</a>`; });

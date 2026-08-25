@@ -11,24 +11,24 @@ export const PRODUCTS = [
     slug: "neocoat-intumescent-paint-s",
     oldId: 14,
     name: "สีกันไฟ Neocoat สูตรน้ำมัน Intumescent Paint-S",
-    short: "สูตรน้ำมัน สีขาว น้ำหนัก 22 กก. ทาได้ 0.8–1 ตร.ม./กก. หนา 500 ไมครอน",
+    short: "สูตรน้ำมัน สีขาว น้ำหนัก 22 กก. ทาได้ 23–25 ตร.ม./ถัง หนา 500 ไมครอน",
     cat: "สีกันไฟ",
     image: "/images/neocoat-paint-s.png",
     badge: "ขายดี",
     title: "สีกันไฟ Neocoat Intumescent Paint-S สูตรน้ำมัน | ราคาโรงงาน",
     description:
-      "สีกันไฟ Neocoat Intumescent Paint-S สูตรน้ำมัน (Solvent Base) 22 กก. ทาได้ 0.8–1 ตร.ม./กก. ทดสอบตาม ASTM E119 · ISO 834 พร้อมเอกสารวุฒิวิศวกรโยธารับรอง",
+      "สีกันไฟ Neocoat Intumescent Paint-S สูตรน้ำมัน (Solvent Base) 22 กก. ทาได้ 23–25 ตร.ม./ถัง ทดสอบตาม ASTM E119 · ISO 834 พร้อมเอกสารวุฒิวิศวกรโยธารับรอง",
   },
   {
     slug: "neocoat-intumescent-paint-w",
     oldId: 13,
     name: "สีกันไฟ Neocoat สูตรน้ำ Intumescent Paint-W",
-    short: "สูตรน้ำ สีขาว น้ำหนัก 22 กก. ทาได้ 0.8–1 ตร.ม./กก. หนา 500 ไมครอน",
+    short: "สูตรน้ำ สีขาว น้ำหนัก 22 กก. ทาได้ 23–25 ตร.ม./ถัง หนา 500 ไมครอน",
     cat: "สีกันไฟ",
     image: "/images/neocoat-paint-w.png",
     title: "สีกันไฟ Neocoat Intumescent Paint-W สูตรน้ำ Low VOC | ราคาโรงงาน",
     description:
-      "สีกันไฟ Neocoat Intumescent Paint-W สูตรผสมด้วยน้ำ ค่า VOC ต่ำ เหมาะกับอาคารเขียว (Green Building) ไม่ใช้ทินเนอร์เป็นตัวทำละลาย 22 กก. ทาได้ 0.8–1 ตร.ม./กก.",
+      "สีกันไฟ Neocoat Intumescent Paint-W สูตรผสมด้วยน้ำ ค่า VOC ต่ำ เหมาะกับอาคารเขียว (Green Building) ไม่ใช้ทินเนอร์เป็นตัวทำละลาย 22 กก. ทาได้ 23–25 ตร.ม./ถัง",
   },
   {
     slug: "neocoat-primer-grey-oxide",
