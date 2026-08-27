@@ -825,9 +825,11 @@ div[style*="width:1440px"] > div[style*="padding:16px 56px"][style*="border-bott
   transition:border-color .3s var(--ease-out),box-shadow .3s var(--ease-out),translate .3s var(--ease-out);
 }
 .cert-tile:hover{border-color:#b9d9c6;box-shadow:0 12px 28px rgba(6,53,31,.10);translate:0 -4px}
+/* ใบเซอร์ทั้งสี่ใบเป็นแนวตั้งอัตราส่วนใกล้ A4 กันหมด (0.71 ± .02) — ตรึงกรอบไว้ที่
+   A4 แล้วใช้ cover ให้รูปเต็มกรอบไม่เหลือขอบขาวข้างๆ ส่วนที่ถูกตัดไม่ถึง 3% */
 .cert-tile-img{
-  flex:1;min-height:186px;scale:1;
-  background:#fff center/contain no-repeat;
+  aspect-ratio:1/1.414;scale:1;
+  background:#fff center/cover no-repeat;
   transition:scale .45s var(--ease-out);
 }
 .cert-tile:hover .cert-tile-img{scale:1.04}

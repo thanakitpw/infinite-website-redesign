@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { PRODUCTS, bySlug } from "../../_data/products";
-import { renderFragments, hasFragment } from "../../../lib/cms/render";
+import { renderFragments, hasFragment, markNav } from "../../../lib/cms/render";
 
 /* nav + footer อยู่ในไฟล์ _product-head/_product-foot ไฟล์เดียว ไม่ก๊อป 11 รอบ
    เนื้อ body ของแต่ละสินค้าอยู่ _content/products/<slug>.html
@@ -24,6 +24,9 @@ export default async function Page({ params }) {
   const body = `products/${p.slug}.html`;
   if (!hasFragment(body)) notFound();
 
-  const html = await renderFragments(["_product-head.html", body, "_product-foot.html"]);
+  const html = markNav(
+    await renderFragments(["_product-head.html", body, "_product-foot.html"]),
+    "products"
+  );
   return <div dangerouslySetInnerHTML={{ __html: html }} />;
 }

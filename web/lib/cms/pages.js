@@ -1,4 +1,5 @@
 import { PRODUCTS } from "../../app/_data/products.js";
+import { SERVICES } from "../../app/_data/services.js";
 import { ARTICLES } from "../../app/_content/articles/_shell.js";
 
 /* ── ทะเบียนหน้าเว็บที่แก้ได้จากหลังบ้าน ─────────────────────────────────────
@@ -16,7 +17,7 @@ export const SHARED_FRAGMENTS = new Set(["_product-head.html", "_product-foot.ht
 const MAIN = [
   ["home", "หน้าแรก", "/", "home.html"],
   ["products", "สินค้าทั้งหมด", "/products", "products.html"],
-  ["services", "บริการ", "/services", "services.html"],
+  ["services", "บริการด้านวิศวกรรม", "/services", "services.html"],
   ["standards", "มาตรฐานและการรับรอง", "/standards", "standards.html"],
   ["articles", "บทความ", "/articles", "articles.html"],
   ["about", "เกี่ยวกับเรา", "/about", "about.html"],
@@ -39,6 +40,14 @@ export const PAGES = [
   })),
   ...LANDING.map(([key, label, url, frag]) => ({
     key, label, url, group: "landing", groupLabel: "แลนดิ้งเพจ", fragments: [frag],
+  })),
+  ...SERVICES.map((s) => ({
+    key: `service/${s.slug}`,
+    label: s.name,
+    url: `/services/${s.slug}`,
+    group: "service",
+    groupLabel: "หน้าบริการ",
+    fragments: ["_product-head.html", `services/${s.slug}.html`, "_product-foot.html"],
   })),
   ...PRODUCTS.map((p) => ({
     key: `product/${p.slug}`,
@@ -66,6 +75,7 @@ export const pageByKey = (key) => BY_KEY[key] || null;
 export const GROUPS = [
   { id: "main", label: "หน้าเว็บหลัก" },
   { id: "landing", label: "แลนดิ้งเพจ" },
+  { id: "service", label: "หน้าบริการ" },
   { id: "product", label: "หน้าสินค้า" },
   { id: "article", label: "บทความ" },
 ];

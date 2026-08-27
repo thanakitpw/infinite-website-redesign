@@ -40,6 +40,17 @@ export async function renderPage(pageKey, { draft = false } = {}) {
   return draft ? renderDraftFragments(page.fragments) : renderFragments(page.fragments);
 }
 
+/* ทาสีเมนูตัวที่ตรงกับหน้าที่เปิดอยู่ — _product-head.html ใช้ร่วมกันทั้งหน้าสินค้า
+   และหน้าบริการ จะติดสีเขียวตายตัวไว้ในไฟล์ไม่ได้ ลิงก์เมนูจึงติด data-nav ไว้
+   แล้วให้แต่ละ route บอกว่าตัวเองคือหมวดไหน */
+export function markNav(html, key) {
+  if (!key) return html;
+  return html.replace(
+    `data-nav="${key}" style="color:#2b382f"`,
+    `data-nav="${key}" style="color:#018438;font-weight:600"`
+  );
+}
+
 export function hasFragment(frag) {
   try {
     return fs.statSync(path.join(CONTENT_DIR, frag)).isFile();
