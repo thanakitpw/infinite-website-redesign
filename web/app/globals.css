@@ -174,6 +174,21 @@ div[style*="width:1440px"]{width:100%!important}
   [style*="height:474px"]{height:clamp(420px,37.5vw,720px)!important}
 }
 
+/* ── HERO หน้าแรกบนมือถือ: สลับไปใช้ banner แนวตั้ง ────────────────────────
+   ไฟล์ banner ของเดสก์ท็อปเป็น 8:3 มีโลโก้กับข้อความฝังมาในรูป พอกล่อง hero
+   บนมือถือกลายเป็นแนวตั้ง background-size:cover จะครอปซ้าย-ขวาทิ้งจนโลโก้และ
+   ข้อความหายไปเกือบหมด จึงมีไฟล์ชุด -mobile ที่จัดองค์ประกอบมาเป็น 4:5 สำหรับ
+   จอแคบโดยเฉพาะ และตรึงกล่อง hero ไว้ที่ 4:5 เท่ากับรูป — cover จึงไม่ครอปเลย
+
+   ต้องอยู่ *หลัง* rule [style*="height:474px"]{min-height:520px} ด้านบน
+   ถึงจะทับ min-height ได้ (specificity เท่ากัน ตัวหลังชนะ) */
+@media (max-width:720px){
+  [style*="height:474px"]{aspect-ratio:4/5;min-height:0!important}
+  [style*="hero-warehouse-materials.webp"]{background-image:url('/images/hero-warehouse-materials-mobile.webp')!important}
+  [style*="hero-neocoat-lineup.webp"]{background-image:url('/images/hero-neocoat-lineup-mobile.webp')!important}
+  [style*="hero-fire-protection.webp"]{background-image:url('/images/hero-fire-protection-mobile.webp')!important}
+}
+
 /* ── ANIMATION ────────────────────────────────────────────────────────────
    คลาสในบล็อกนี้ถูกเติมโดย enhance.jsx เท่านั้น ไม่มีใน HTML — ถ้า JS พัง
    หรือผู้ใช้ปิด animation ไว้ เนื้อหาจะแสดงเต็มทันที ไม่มีอะไรค้างที่ opacity:0 */
