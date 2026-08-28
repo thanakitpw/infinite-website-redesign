@@ -12,11 +12,11 @@ const NAV = [
   { href: "/admin/media", icon: "image", label: "คลังรูปภาพ" },
   { href: "/admin/products", icon: "box", label: "สินค้า", soon: true },
   { href: "/admin/articles", icon: "file", label: "บทความ", soon: true },
-  { href: "/admin/leads", icon: "inbox", label: "ใบขอราคา", soon: true },
+  { href: "/admin/leads", icon: "inbox", label: "ใบขอราคา", badge: "newLeads" },
   { href: "/admin/settings", icon: "gear", label: "ตั้งค่าเว็บไซต์", soon: true },
 ];
 
-export default function Shell({ user, children }) {
+export default function Shell({ user, newLeads = 0, children }) {
   const pathname = usePathname() || "";
   const router = useRouter();
 
@@ -65,6 +65,8 @@ export default function Shell({ user, children }) {
                 ? "bg-white/[0.14] text-white font-medium"
                 : "text-white/70 hover:bg-white/[0.07] hover:text-white"
             }`;
+            // ใบขอราคาที่ยังไม่ได้ติดต่อกลับ ต้องเห็นตั้งแต่ยังไม่กดเข้าไป
+            const count = item.badge === "newLeads" ? newLeads : 0;
             const body = (
               <>
                 {on && !item.soon && (
@@ -73,6 +75,15 @@ export default function Shell({ user, children }) {
                 <Icon name={item.icon} />
                 {!rail && <span className="text-[14px] truncate">{item.label}</span>}
                 {!rail && item.soon && <span className="meta ml-auto text-white/25 shrink-0">เร็วๆ นี้</span>}
+                {count > 0 && (
+                  <span
+                    className={`mono grid place-items-center shrink-0 min-w-[20px] h-5 px-1.5 rounded-full bg-[#71dd85] text-brand-deep normal-case tracking-normal ${
+                      rail ? "absolute top-1 right-1" : "ml-auto"
+                    }`}
+                  >
+                    {count}
+                  </span>
+                )}
               </>
             );
             return item.soon ? (
