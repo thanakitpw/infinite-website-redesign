@@ -137,7 +137,14 @@ export async function POST(req) {
     if (!r.ok) failures.push(`email: ${r.error}`);
   }
 
-  if (stored || mailed) return NextResponse.json({ ok: true, id: lead.id });
+  if (stored || mailed) {
+    /* เก็บได้แต่เมลไม่ออก = lead ปลอดภัยแต่ทีมขายไม่รู้ตัว ต้องมีร่องรอยไว้เสมอ
+       ไม่งั้นวันที่ Resend หมดโควตาหรือ key ถูกถอน จะเงียบไปเป็นเดือนโดยไม่มีใครรู้ */
+    if (!mailed && canEmail()) {
+      console.error("[LEAD EMAIL FAILED]", `lead ${lead.id} ของ ${lead.name}`, "|", failures.join(" · "));
+    }
+    return NextResponse.json({ ok: true, id: lead.id });
+  }
 
   // ไม่มีปลายทางไหนรับได้ — log ตัว lead เต็มๆ ไว้ให้กู้จาก Vercel logs ได้
   // และตอบ error ให้ลูกค้ารู้ ห้ามตอบ ok:true เด็ดขาด
