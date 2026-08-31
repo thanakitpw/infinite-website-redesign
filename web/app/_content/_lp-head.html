@@ -298,6 +298,12 @@
   .lp .final{scroll-margin-top:80px;background:linear-gradient(135deg,var(--green-darker),var(--green-dark) 60%,#0a4a2c);color:var(--white);text-align:center;padding:80px 0}
   .lp .final h2{font-size:38px;font-weight:700;line-height:1.25;margin-bottom:16px;letter-spacing:-.5px}
   .lp .final p{font-size:17px;color:var(--green-mute);max-width:620px;margin:0 auto 32px;line-height:1.75}
+  /* ฟอร์มขอใบเสนอราคาใน CTA ปิดท้าย — ช่องกรอกใช้ inline style สี #d9e0da เหมือน
+     ฟอร์มหน้าแรก เพราะ enhance.jsx หาช่องจากสีนั้นในแอตทริบิวต์ style ห้ามย้าย
+     ไปเป็น class และห้ามแทรก element อื่นคั่นระหว่างช่อง ตัวแรกต้องไม่มีพี่น้อง
+     ก่อนหน้า ไม่งั้น form() จะอ่านข้อความนั้นเป็น label แล้วตั้งชื่อฟิลด์ผิด */
+  .lp .quote-card{background:var(--white);border-radius:var(--radius-lg);padding:26px;max-width:520px;margin:0 auto 26px;box-shadow:var(--shadow-xl);text-align:left}
+  .lp .quote-alt{font-size:13.5px;color:var(--green-pale);margin-bottom:14px}
   .lp .final-actions{display:flex;gap:13px;justify-content:center;flex-wrap:wrap}
   .lp .final-note{margin-top:26px;font-size:13.5px;color:var(--green-mute)}
 
@@ -333,6 +339,7 @@
     .lp .section-title{font-size:27px}
     .lp .section-sub{font-size:15.5px}
     .lp .final h2{font-size:28px}
+    .lp .quote-card{padding:20px}
     .lp .prod-grid,.lp .layers{grid-template-columns:1fr}
     .lp .header-cta .btn span{display:none}
     .lp .header-cta .btn{padding:11px 14px}

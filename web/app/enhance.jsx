@@ -205,6 +205,13 @@ function nameFromLabel(l) {
   if (l.includes("พื้นที่")) return "area";
   return "field";
 }
+/* หน้าที่มีฟอร์มขอใบเสนอราคา — หน้าแรกกับ landing page ทุกหน้ามีฟอร์มเดียวกันใน
+   บล็อกปิดท้าย ไม่รัน form() แบบเหมารวมทุกหน้าเพราะหน้าสินค้า/มาตรฐานก็ใช้สี
+   #d9e0da เป็นเส้นขอบการ์ด จะโดนแปลงเป็นช่องกรอกไปด้วย */
+const QUOTE_FORM_PATHS = new Set([
+  "/", "/contact", "/neocoat", "/engineering", "/fire-blanket",
+  "/fireproof-cement", "/four-plus", "/roof-shield", "/thinner",
+]);
 function form() {
   const fields = $$('div[style*="#d9e0da"]').filter((d) => d.children.length === 0);
   // ช่องกรอกเองก็เข้าเงื่อนไข #d9e0da — ต้องแยกว่า element ก่อนหน้าเป็น "label"
@@ -250,7 +257,9 @@ function form() {
     const orig = btn.textContent;
     btn.addEventListener("click", async () => {
       const get = (n) => { const el = document.querySelector(`[name="${n}"]`); return el ? el.value.trim() : ""; };
-      const payload = { name: get("name"), phone: get("phone"), company: get("company"), contact: get("contact"), jobType: get("jobType"), area: get("area"), detail: get("detail") };
+      // ที่มาของ lead = path ของหน้า — ฟอร์มเดียวกันนี้อยู่บน landing page ทุกหน้า
+      // แล้ว ถ้าไม่ส่งไปด้วยเมลแจ้งเตือนจะขึ้นว่า "web" เหมือนกันหมดจนแยกไม่ออก
+      const payload = { name: get("name"), phone: get("phone"), company: get("company"), contact: get("contact"), jobType: get("jobType"), area: get("area"), detail: get("detail"), source: location.pathname };
       if (!payload.name || !payload.phone) { alert("กรุณากรอกชื่อและเบอร์โทรติดต่อกลับ"); return; }
       btn.textContent = "กำลังส่ง…";
       try {
@@ -959,9 +968,7 @@ export default function Enhance() {
       safe(slider);
       safe(solutionIcons);
       safe(lpCarousel);   // no-op ถ้าหน้านั้นไม่มี [data-carousel]
-      // หน้าแรกก็มีฟอร์มขอใบเสนอราคาใน QUOTE BAND — เดิม form() รันแค่ /contact
-      // ทำให้ฟอร์มหน้าแรกกดส่งไม่ได้เลย
-      if (pathname === "/contact" || pathname === "/") safe(form);
+      if (QUOTE_FORM_PATHS.has(pathname)) safe(form);
       if (pathname === "/products") safe(productFilter);
       // เช็คแบบนี้เพราะ "/products" ก็ startsWith("/product") เหมือนกัน
       if (pathname === "/product" || pathname.startsWith("/product/")) {

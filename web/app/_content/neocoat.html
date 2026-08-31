@@ -81,8 +81,8 @@
         </div>
       </div>
 
-      <!-- รูปสินค้าแทนฟอร์ม — ทั้งหน้าไม่มีฟอร์มแล้วตามที่ตกลง ทุก CTA พาไปบล็อก
-           ติดต่อท้ายหน้า (#contact) ซึ่งมีโทร / LINE / อีเมล
+      <!-- hero ใช้รูปสินค้าไม่ใช่ฟอร์ม ทุก CTA พาไปบล็อกติดต่อท้ายหน้า (#contact)
+           ซึ่งมีฟอร์มขอใบเสนอราคา + โทร / LINE / อีเมล
            ไม่ใส่ loading="lazy" เพราะอยู่ในจอแรก เป็นตัวชิง LCP กับ hero พอดี -->
       <figure class="hero-figure">
         <img src="/images/infinite-lineup-cutout.webp" alt="สีกันไฟ Neocoat Intumescent Paint สูตรน้ำมัน (S) และสูตรน้ำ (W) พร้อมทินเนอร์ AAA และน้ำมันสนเชียงใหม่ แบรนด์อินทนิล" width="1400" height="521" fetchpriority="high">
@@ -490,7 +490,7 @@
   </div>
 
   <!-- ══════════════ CTA ปิดท้าย ══════════════ -->
-  <!-- ปลายทางเดียวของทุก CTA ในหน้า — หน้านี้ไม่มีฟอร์ม ติดต่อผ่านโทร/LINE/อีเมล -->
+  <!-- ปลายทางเดียวของทุก CTA ในหน้า — ฟอร์มขอใบเสนอราคา + โทร/LINE/อีเมล -->
   <div class="final" id="contact">
     <div class="lp-wrap">
       <h2>ส่งแบบมา ให้วิศวกรตอบว่าต้องใช้เท่าไหร่</h2>
@@ -498,6 +498,14 @@
         แจ้งพื้นที่และชั่วโมงกันไฟที่ต้องการ ทีมวิศวกรโยธาจะคำนวณความหนา จำนวนถัง
         และเสนอราคากลับภายใน 24 ชั่วโมง ปรึกษาฟรี ไม่มีค่าใช้จ่าย
       </p>
+      <!-- ฟอร์มขอใบเสนอราคา — ส่งเข้า /api/quote ผ่าน form() ใน enhance.jsx -->
+      <div class="quote-card">
+        <div style="border:1px solid #d9e0da;border-radius:9px;padding:13px 15px;color:#9aa79c;font-size:14px;margin-bottom:11px">ชื่อ–บริษัท *</div>
+        <div style="border:1px solid #d9e0da;border-radius:9px;padding:13px 15px;color:#9aa79c;font-size:14px;margin-bottom:11px">เบอร์โทร / LINE ID *</div>
+        <div style="border:1px solid #d9e0da;border-radius:9px;padding:13px 15px;color:#9aa79c;font-size:14px;margin-bottom:16px;height:64px">รายละเอียดงาน (พื้นที่ ตร.ม. / ชั่วโมงกันไฟ)</div>
+        <div style="background:#018438;color:#fff;text-align:center;padding:14px;border-radius:9px;font-weight:600;font-size:15px">ส่งขอใบเสนอราคา</div>
+      </div>
+      <div class="quote-alt">หรือติดต่อทีมงานโดยตรง</div>
       <div class="final-actions">
         <a href="tel:020410119" class="btn btn-primary btn-lg">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"/></svg>
