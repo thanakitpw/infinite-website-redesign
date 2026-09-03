@@ -6,8 +6,10 @@ export const metadata = {
   title: "สีเซรามิคสะท้อนความร้อน Roof Shield | ลดร้อน 93% ประหยัดไฟ 30% ราคาโรงงาน",
   description:
     "สีเซรามิคโค๊ตติ้ง Roof Shield White อะคริลิคสูตรน้ำ สะท้อนรังสีอินฟราเรด ลดความร้อนสูงสุด 93% ลดอุณหภูมิผิวหลังคากว่า 10 องศา ประหยัดค่าไฟกว่า 30% ปรึกษาฟรี",
-  // หน้ายิงแอด ไม่ต้องการให้แข่ง ranking กับหน้าสินค้าจริงใน organic
-  robots: { index: false, follow: true },
+  /* เคยใส่ robots noindex ไว้กันไม่ให้แข่ง ranking กับหน้าสินค้าจริง แต่ Google Ads
+     ตีตกหน้า noindex เป็น "ปลายทางใช้งานไม่ได้" ยิงแอดไม่ได้ทั้ง 7 หน้า
+     canonical กันชนกันใน organic ได้เหมือนกันโดยที่หน้ายังยิงแอดได้ */
+  alternates: { canonical: "/product/roof-shield-ceramic" },
 };
 
 export default async function LandingPage() {

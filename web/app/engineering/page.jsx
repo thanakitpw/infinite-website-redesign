@@ -8,8 +8,10 @@ export const metadata = {
   title: "งานรับรองสีกันไฟ ตรวจสอบโครงสร้างอาคาร | วุฒิวิศวกรโยธา — ปรึกษาฟรี",
   description:
     "รับงานวิศวกรรมโยธาครบวงจร รับรองงานสีกันไฟ ตรวจรับรองอาคารและโรงงาน ตรวจสอบและออกแบบโครงสร้าง รับรองงานฐานราก คำนวณความหนาฟิล์มตามค่า Hp/A ลงนามโดยวุฒิวิศวกรโยธา ประเมินฟรีใน 24 ชม.",
-  // หน้ายิงแอด ไม่ต้องการให้แข่ง ranking กับหน้า /services ใน organic
-  robots: { index: false, follow: true },
+  /* เคยใส่ robots noindex ไว้กันไม่ให้แข่ง ranking กับหน้า /services แต่ Google Ads
+     ตีตกหน้า noindex เป็น "ปลายทางใช้งานไม่ได้" ยิงแอดไม่ได้ทั้ง 7 หน้า
+     canonical กันชนกันใน organic ได้เหมือนกันโดยที่หน้ายังยิงแอดได้ */
+  alternates: { canonical: "/services" },
 };
 
 export default async function LandingPage() {

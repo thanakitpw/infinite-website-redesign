@@ -1,7 +1,11 @@
 import "./globals.css";
 import SiteChrome from "./site-chrome";
+import { SITE_URL } from "./_data/site";
 
 export const metadata = {
+  /* ต้องมี ไม่งั้น alternates.canonical ของหน้า landing ที่เขียนเป็น path สั้น ๆ
+     จะถูก resolve เป็น localhost ตอน build */
+  metadataBase: new URL(SITE_URL),
   title: "Infinite Material & Technology",
   description: "ผู้เชี่ยวชาญสีกันไฟโครงสร้างเหล็ก Neocoat มาตรฐาน ISO 834 · ASTM E119",
   icons: { icon: "/images/logo.jpg" },

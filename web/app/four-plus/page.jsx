@@ -6,8 +6,10 @@ export const metadata = {
   title: "สีน้ำพลาสติก Four Plus | ทาภายใน ภายนอก รองพื้นปูน อะคริลิก 100% ราคาโรงงาน",
   description:
     "สีน้ำพลาสติก Four Plus อะคริลิกอิมัลชั่น 100% ครบระบบ รองพื้นปูนกันด่าง สีทาภายใน และสีทาภายนอก ถัง 18.925 ลิตร ทาได้ 150 ตร.ม./เที่ยว ผลิตโดยโรงงาน ISO 9001:2015",
-  // หน้ายิงแอด ไม่ต้องการให้แข่ง ranking กับหน้าสินค้าจริงใน organic
-  robots: { index: false, follow: true },
+  /* เคยใส่ robots noindex ไว้กันไม่ให้แข่ง ranking กับหน้าสินค้าจริง แต่ Google Ads
+     ตีตกหน้า noindex เป็น "ปลายทางใช้งานไม่ได้" ยิงแอดไม่ได้ทั้ง 7 หน้า
+     canonical กันชนกันใน organic ได้เหมือนกันโดยที่หน้ายังยิงแอดได้ */
+  alternates: { canonical: "/product/four-plus-exterior" },
 };
 
 export default async function LandingPage() {
