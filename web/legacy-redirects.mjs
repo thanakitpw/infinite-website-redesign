@@ -70,9 +70,46 @@ const MAP = {
   "/สีกันไฟ-สีกันไฟ": "/products",
   "/-สีกันไฟ": "/products",
   "/ระบบกันซึม-สีกันไฟ": "/products",
+  "/สีกันความร้อน-เซรามิคโค": "/roof-shield",
   "/ฟื้นฟูผู้ป่วย-สีกันไฟ": "/",
   "/ติดต่อเรา-สีกันไฟ": "/contact",
   "/ติดต่อเรา-1": "/contact",
+};
+
+/* เว็บเดิมสนใจแค่เลข id ท้าย URL ส่วนชื่อตรงกลางเป็นของประดับ แก้ชื่อบทความ
+   เมื่อไหร่ URL ก็เปลี่ยนตาม แต่หน้าเดิมยังเปิดได้ทุกแบบ แอดเก่าบางตัวเลยค้าง
+   ชื่อรุ่นที่ Wayback ไม่ได้เก็บไว้ อย่าง /ข่าว-สีกันไฟสีทนไฟ-187 ที่ลูกค้าแจ้ง
+   เข้ามา (ตัวที่เก็บไว้คือ /ข่าว-สีกันไฟNeocoatIntumescentPaintทาพ่น-187 หน้า
+   เดียวกันคนละชื่อ) ชุดนี้เลยจับจากเลขท้ายอย่างเดียวไม่สนชื่อ กันไล่ตามทีละ URL
+
+   ใส่เฉพาะ id ที่ไม่ซ้ำ — 1, 2, 3, 6 เว็บเดิมใช้ซ้ำทั้งหน้าสินค้าและหน้าหมวด
+   ส่วน 245 ใช้ทั้งหน้ารวมสินค้าและหน้า Neocoat เดาไม่ได้ว่าชื่อที่ไม่รู้จักเป็น
+   อันไหน ปล่อยให้ match ตรง ๆ ข้างบนอย่างเดียว */
+const BY_ID = {
+  181: "/engineering",
+  183: "/fire-blanket",
+  184: "/fireproof-cement",
+  185: "/thinner",
+  186: "/roof-shield",
+  187: "/neocoat",
+  265: "/product/neocoat-primer-grey-oxide",
+  266: "/product/neogloss-enamel",
+  267: "/thinner",
+  268: "/thinner",
+  269: "/roof-shield",
+  270: "/fireproof-cement",
+  271: "/fireproof-cement",
+  272: "/fire-blanket",
+  4: "/fireproof-cement",
+  5: "/products",
+  7: "/products",
+  11: "/product/neocoat-primer-grey-oxide",
+  13: "/product/neocoat-intumescent-paint-w",
+  14: "/product/neocoat-intumescent-paint-s",
+  15: "/product/mandolite-cp2",
+  18: "/product/fendolite-m2",
+  19: "/product/fiberglass-cloth",
+  21: "/product/thinner-2k",
 };
 
 /* source ต้อง encodeURI ก่อน — Next.js เทียบ redirect กับพาธที่ยัง percent-encoded
@@ -82,8 +119,17 @@ const MAP = {
    เว็บเดิมไม่กลับมาแล้ว ใช้ permanent เพื่อให้ค่าลิงก์เดิมไหลมาหน้าใหม่ด้วย
    ถ้าจะเติมพาธใหม่ ระวัง ":" กับ "*" — path-to-regexp อ่านเป็น pattern ไม่ใช่
    ตัวอักษรธรรมดา ชุดที่มีอยู่ตอนนี้ไม่มีสองตัวนั้นเลยใส่ตรง ๆ ได้ */
-export const legacyRedirects = Object.entries(MAP).map(([source, destination]) => ({
-  source: encodeURI(source),
-  destination,
-  permanent: true,
-}));
+/* ลำดับสำคัญ — Next.js เอาตัวแรกที่ match ชุดที่เทียบ URL เต็มต้องมาก่อนชุดที่
+   จับเลขท้าย ไม่งั้น id ที่ชื่อคนละแบบจะถูกดักไปก่อน */
+export const legacyRedirects = [
+  ...Object.entries(MAP).map(([source, destination]) => ({
+    source: encodeURI(source),
+    destination,
+    permanent: true,
+  })),
+  ...Object.entries(BY_ID).map(([id, destination]) => ({
+    source: `/:slug-${id}`,
+    destination,
+    permanent: true,
+  })),
+];
