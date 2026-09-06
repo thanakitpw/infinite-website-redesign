@@ -212,6 +212,12 @@ const QUOTE_FORM_PATHS = new Set([
   "/", "/contact", "/neocoat", "/engineering", "/fire-blanket",
   "/fireproof-cement", "/four-plus", "/roof-shield", "/thinner",
 ]);
+/* landing page ยิงแอดให้สายเข้าเบอร์ 086 เบอร์เดียว ตามที่ลูกค้าสั่ง — หน้าแรกกับ
+   /contact ใช้ฟอร์มตัวเดียวกันแต่ยังโชว์เบอร์ออฟฟิศเหมือนเดิม */
+const LP_PATHS = new Set([
+  "/neocoat", "/engineering", "/fire-blanket",
+  "/fireproof-cement", "/four-plus", "/roof-shield", "/thinner",
+]);
 function form() {
   const fields = $$('div[style*="#d9e0da"]').filter((d) => d.children.length === 0);
   // ช่องกรอกเองก็เข้าเงื่อนไข #d9e0da — ต้องแยกว่า element ก่อนหน้าเป็น "label"
@@ -259,6 +265,9 @@ function form() {
       const get = (n) => { const el = document.querySelector(`[name="${n}"]`); return el ? el.value.trim() : ""; };
       // ที่มาของ lead = path ของหน้า — ฟอร์มเดียวกันนี้อยู่บน landing page ทุกหน้า
       // แล้ว ถ้าไม่ส่งไปด้วยเมลแจ้งเตือนจะขึ้นว่า "web" เหมือนกันหมดจนแยกไม่ออก
+      const onLp = LP_PATHS.has(location.pathname);
+      const urgentTel = onLp ? "0863394682" : "020410119";
+      const urgentLabel = onLp ? "086-339-4682" : "02-041-0119";
       const payload = { name: get("name"), phone: get("phone"), company: get("company"), contact: get("contact"), jobType: get("jobType"), area: get("area"), detail: get("detail"), source: location.pathname };
       if (!payload.name || !payload.phone) { alert("กรุณากรอกชื่อและเบอร์โทรติดต่อกลับ"); return; }
       btn.textContent = "กำลังส่ง…";
@@ -273,7 +282,7 @@ function form() {
               '<div style="width:74px;height:74px;border-radius:50%;background:#eafaf0;display:flex;align-items:center;justify-content:center;margin:0 auto 20px">' +
               '<svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#018438" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>' +
               '<div style="font-size:22px;font-weight:700;margin-bottom:10px;color:#0e1a14">ส่งคำขอเรียบร้อยแล้ว</div>' +
-              '<div style="font-size:15px;color:#5c6b62;line-height:1.6">ทีมวิศวกรจะติดต่อกลับพร้อมใบเสนอราคาภายใน 24 ชั่วโมง<br>ต้องการด่วน โทร <a href="tel:020410119" style="color:#018438;font-weight:600">02-041-0119</a> หรือแอด LINE ได้เลย</div></div>';
+              '<div style="font-size:15px;color:#5c6b62;line-height:1.6">ทีมวิศวกรจะติดต่อกลับพร้อมใบเสนอราคาภายใน 24 ชั่วโมง<br>ต้องการด่วน โทร <a href="tel:' + urgentTel + '" style="color:#018438;font-weight:600">' + urgentLabel + '</a> หรือแอด LINE ได้เลย</div></div>';
           }
         } else { alert(j.error || "ส่งไม่สำเร็จ กรุณาลองใหม่"); btn.textContent = orig; }
       } catch (e) { alert("เกิดข้อผิดพลาดในการส่ง กรุณาลองใหม่"); btn.textContent = orig; }
