@@ -30,7 +30,7 @@ const FOOTER = `<div style="background:#0e1a14;color:#c3cfc7;padding:56px 56px 3
 
 // Article catalogue — single source of truth for detail pages + related lists.
 export const ARTICLES = [
-  { slug: "fireproof-paint-price", title: "ราคาสีกันไฟคิดยังไง ต่อถังกับต่อตารางเมตรต่างกันตรงไหน", cat: "วิธีเลือก/คำนวณ", date: "10 ก.ย. 2026", read: "8 นาที", excerpt: "ราคาสีกันไฟไม่ได้อยู่ที่ราคาต่อถัง แต่อยู่ที่ความหนาฟิล์มตามชั่วโมงทนไฟและค่า Hp/A — แจกแจงต้นทุน 4 ก้อน พร้อมตัวอย่างคำนวณจากพื้นที่ผิวเหล็กจริง", related: ["calculate-fireproof-paint", "fire-rating-hours", "water-vs-solvent-based"] },
+  { slug: "fireproof-paint-price", title: "ราคาสีกันไฟต่อตารางเมตร คำนวณจากความหนาฟิล์มและพื้นที่ผิวเหล็ก", cat: "วิธีเลือก/คำนวณ", date: "10 ก.ย. 2026", read: "8 นาที", excerpt: "ต้นทุนงานสีกันไฟประกอบด้วย 4 ส่วน และแปรผันตามความหนาฟิล์มที่ชั่วโมงทนไฟและค่า Hp/A กำหนด พร้อมตัวอย่างคำนวณสำหรับพื้นที่ผิวเหล็ก 500 ตร.ม.", related: ["calculate-fireproof-paint", "fire-rating-hours", "water-vs-solvent-based"] },
   { slug: "what-is-fireproof-paint", title: "สีกันไฟคืออะไร ทำงานอย่างไร แบบเข้าใจง่าย", cat: "ความรู้พื้นฐาน", date: "10 ก.ค. 2026", read: "5 นาที", image: "/images/articles/what-is-fireproof-paint.jpg", fit: "cover", w: 1600, h: 1000, excerpt: "ทำความรู้จักหลักการ “ขยายตัวเป็นฉนวน” (intumescent) ที่ช่วยหน่วงเวลาการวิบัติของโครงสร้างเหล็กเมื่อเกิดเพลิงไหม้", related: ["iso834-astm-e119", "cement-vs-fireproof-paint", "fire-rating-hours"] },
   { slug: "fire-rating-hours", title: "สีกันไฟทนไฟได้กี่ชั่วโมง เลือกอย่างไรให้ผ่านกฎหมาย", cat: "มาตรฐาน & กฎหมาย", date: "3 ก.ค. 2026", read: "6 นาที", image: "/images/articles/fire-rating-hours.jpg", fit: "cover", w: 1600, h: 840, excerpt: "แนวทางเลือกชั่วโมงทนไฟให้ตรงกับกฎกระทรวงและประเภทอาคาร", related: ["iso834-astm-e119", "calculate-fireproof-paint", "what-is-fireproof-paint"] },
   { slug: "water-vs-solvent-based", title: "สีกันไฟสูตรน้ำ vs สูตรน้ำมัน ต่างกันอย่างไร", cat: "วิธีเลือก/คำนวณ", date: "26 มิ.ย. 2026", read: "5 นาที", image: "/images/articles/water-vs-solvent-based.jpg", fit: "cover", w: 1600, h: 840, excerpt: "เปรียบเทียบข้อดี–ข้อจำกัด และงานที่เหมาะกับแต่ละสูตร", related: ["what-is-fireproof-paint", "fireproof-application-steps", "calculate-fireproof-paint"] },
@@ -64,7 +64,7 @@ function hero(a) {
 
 function cta() {
   return `<div style="background:#06351f;border-radius:18px;padding:32px 36px;margin:44px 0 4px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
-    <div style="max-width:560px"><div style="color:#fff;font-size:21px;font-weight:700;margin-bottom:8px">ต้องการคำปรึกษาหรือใบเสนอราคางานกันไฟ?</div><div style="color:#a9c6b5;font-size:15px;line-height:1.7">ทีมวิศวกรช่วยคำนวณปริมาณ ความหนาฟิล์ม และชั่วโมงทนไฟให้ตรงมาตรฐาน — ฟรี ไม่มีค่าใช้จ่าย</div></div>
+    <div style="max-width:560px"><div style="color:#fff;font-size:21px;font-weight:700;margin-bottom:8px">ต้องการคำปรึกษาหรือใบเสนอราคางานกันไฟ?</div><div style="color:#a9c6b5;font-size:15px;line-height:1.7">ทีมวิศวกรช่วยคำนวณปริมาณ ความหนาฟิล์ม และชั่วโมงทนไฟให้ตรงมาตรฐาน โดยไม่มีค่าใช้จ่าย</div></div>
     <a href="/contact" style="background:#12b459;color:#04140c;padding:15px 30px;border-radius:11px;font-weight:700;font-size:15.5px;white-space:nowrap">ขอใบเสนอราคา</a>
   </div>`;
 }
