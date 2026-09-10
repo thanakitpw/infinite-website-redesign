@@ -12,6 +12,8 @@ export default function SiteChrome() {
   /* ตัวอย่างเนื้อหาในหลังบ้านต้องได้สคริปต์ชุดเดียวกับเว็บจริง ไม่งั้นสไลด์
      กับเมนูจะนิ่งจนดูไม่ออกว่าของจริงหน้าตาเป็นยังไง */
   if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/preview")) return null;
+  /* หน้ารายงานใต้ /reports ส่งให้ลูกค้าอ่านอย่างเดียว ไม่ต้องมีปุ่ม LINE */
+  if (pathname.startsWith("/reports")) return null;
   return (
     <>
       <LineFab />
