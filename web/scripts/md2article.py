@@ -107,9 +107,67 @@ def convert(md):
     return "\n\n".join(out) + "\n"
 
 
+def convert_doc(md):
+    """HTML ธรรมดาสำหรับอัปเป็น Google Doc: ชื่อเรื่อง + บรรทัด keyword + เนื้อหา ไม่มีสเปกรูป/โน้ต"""
+    fm, body = (md.split("\n---\n", 1) if md.startswith("---") else ("", md))
+    kw = re.search(r'^keyword_หลัก:\s*"?([^"\n]+)"?', fm, re.M)
+    lines, out, i, in_faq = body.split("\n"), [], 0, False
+    while i < len(lines):
+        l = lines[i].rstrip()
+        if not l.strip(): i += 1; continue
+        if l.startswith("# "):
+            out.append(f"<h1>{esc(l[2:].strip())}</h1>")
+            if kw: out.append(f"<p><b>คีย์เวิร์ด:</b> {esc(kw.group(1).strip())}</p>")
+            i += 1; continue
+        if l.startswith("## "):
+            t = l[3:].strip(); in_faq = t.startswith("คำถามที่พบบ่อย")
+            out.append(f"<h2>{inline(t)}</h2>"); i += 1; continue
+        if l.startswith("### "):
+            out.append(f"<h3>{inline(l[4:].strip())}</h3>"); i += 1; continue
+        if l.startswith("|"):
+            rows = []
+            while i < len(lines) and lines[i].startswith("|"):
+                rows.append([c.strip() for c in lines[i].strip().strip("|").split("|")]); i += 1
+            rows = [r for r in rows if not all(re.match(r"^:?-+:?$", c) for c in r)]
+            h = "".join(f"<th>{inline(c)}</th>" for c in rows[0])
+            b = "".join("<tr>" + "".join(f"<td>{inline(c)}</td>" for c in r) + "</tr>" for r in rows[1:])
+            out.append(f'<table border="1" cellpadding="6" cellspacing="0"><tr>{h}</tr>{b}</table>'); continue
+        if l.startswith(">"):
+            q = []
+            while i < len(lines) and lines[i].startswith(">"):
+                q.append(lines[i].lstrip("> ").strip()); i += 1
+            out.append(f"<blockquote><p>{inline(' '.join(q))}</p></blockquote>"); continue
+        m = re.match(r"^(\d+)\.\s+(.*)", l)
+        if m or l.startswith("- "):
+            ordered = bool(m); items = []
+            while i < len(lines):
+                mm = re.match(r"^(\d+)\.\s+(.*)", lines[i]) if ordered else re.match(r"^-\s+(.*)", lines[i])
+                if not mm: break
+                items.append(mm.group(2) if ordered else mm.group(1)); i += 1
+            tag = "ol" if ordered else "ul"
+            out.append(f"<{tag}>" + "".join(f"<li>{inline(x)}</li>" for x in items) + f"</{tag}>"); continue
+        if in_faq and re.match(r"^\*\*[^*]+\*\*\s*$", l):
+            out.append(f"<h3>{esc(l.strip('*').strip())}</h3>"); i += 1
+            ans = []
+            while i < len(lines) and lines[i].strip() and not lines[i].startswith(("**", "#")):
+                ans.append(lines[i].strip()); i += 1
+            if ans: out.append(f"<p>{inline(' '.join(ans))}</p>")
+            continue
+        para = []
+        while i < len(lines) and lines[i].strip() and not lines[i].startswith(("#", "|", ">", "- ")) and not re.match(r"^\d+\.\s", lines[i]):
+            para.append(lines[i].strip()); i += 1
+        out.append(f"<p>{inline(' '.join(para))}</p>")
+    # ลิงก์ในเอกสารให้ลูกค้าเป็นข้อความธรรมดา (ยังไม่มีโดเมนแนบ)
+    html = "\n".join(out)
+    html = re.sub(r'<a href="[^"]*"[^>]*>(.*?)</a>', r"\1", html)
+    return '<html><head><meta charset="utf-8"></head><body>\n' + html + "\n</body></html>\n"
+
+
 def main():
-    src = pathlib.Path(sys.argv[1])
+    src = pathlib.Path([a for a in sys.argv[1:] if not a.startswith("--")][0])
     md = io.open(src, encoding="utf-8").read()
+    if "--doc" in sys.argv:
+        sys.stdout.write(convert_doc(md)); return
     m = re.search(r"^slug:\s*(\S+)", md, re.M)
     if not m: sys.exit("ไม่พบ slug ใน frontmatter")
     root = pathlib.Path(__file__).resolve().parent.parent
