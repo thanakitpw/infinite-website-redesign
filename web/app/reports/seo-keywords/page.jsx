@@ -71,7 +71,7 @@ const HTML = `
   <dl class="meta">
     <div><dt>จัดทำสำหรับ</dt><dd>Infinite Material &amp; Technology</dd></div>
     <div><dt>วันที่</dt><dd>10 ก.ย. 2569</dd></div>
-    <div><dt>คีย์เวิร์ดหลัก</dt><dd>16 คำ · 16 หน้าเป้าหมาย</dd></div>
+    <div><dt>คีย์เวิร์ดหลัก</dt><dd>17 คำ · 17 หน้าเป้าหมาย</dd></div>
     <div><dt>บทความ</dt><dd>12 บท · 12 คีย์เวิร์ดหลัก</dd></div>
   </dl>
 </div>
@@ -103,6 +103,7 @@ const HTML = `
       <tr><td class="k">สีกันไฟโครงสร้างเหล็ก</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/neocoat-intumescent-paint-s</td><td class="sub">TOA, Pro-Act</td></tr>
       <tr><td class="k">สีกันไฟ ราคา · ราคาต่อตารางเมตร</td><td><span class="tag buy">ซื้อ</span></td><td class="u">บทความ 1 → หน้าสินค้า Neocoat</td><td class="sub">TOA ลงราคาไว้ชัด</td></tr>
       <tr><td class="k">สีกันไฟสูตรน้ำ · Low VOC</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/neocoat-intumescent-paint-w</td><td class="sub">TOA Fire Shield</td></tr>
+      <tr><td class="k">พ่นสีกันไฟ · สีกันไฟ พ่นหรือทา</td><td><span class="tag buy">ซื้อ</span></td><td class="u">บทความ 10 → หน้าสินค้า Neocoat</td><td class="sub">ยังไม่ได้สำรวจ</td></tr>
       <tr><td class="k">สีทับหน้า สีกันไฟ</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/neogloss-enamel + บทความ 6</td><td class="sub">ยังไม่ได้สำรวจ</td></tr>
       <tr><td class="k">ซีเมนต์พ่นกันไฟ · Mandolite CP-2</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/mandolite-cp2</td><td class="sub">แทบไม่มี · เก็บได้เร็วที่สุด</td></tr>
       <tr><td class="k">Fendolite M II</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/fendolite-m2</td><td class="sub">แทบไม่มี</td></tr>
@@ -134,7 +135,7 @@ const HTML = `
       <tr><td class="n">7</td><td class="k">ผ้ากันไฟใยแก้ว 550°C กับ 1000°C ข้อแตกต่างและการเลือกใช้ตามลักษณะงาน</td><td>ผ้ากันไฟ ราคา</td><td class="sub">ผ้ากันสะเก็ดไฟ · ผ้ากันไฟ 1000 องศา · ผ้าใยแก้วกันไฟ · ผ้ากันไฟงานเชื่อม</td></tr>
       <tr><td class="n">8</td><td class="k">การเตรียมผิวเหล็กก่อนทาสีกันไฟตามมาตรฐาน Sa 2.5 และ St 2</td><td>เตรียมผิวเหล็ก Sa 2.5</td><td class="sub">Sa 2.5 คือ · St 2 St 3 เตรียมผิว · ISO 8501-1 · พ่นทรายก่อนทาสีกันไฟ · สีรองพื้นกันสนิม สีกันไฟ</td></tr>
       <tr><td class="n">9</td><td class="k">สีกันไฟสูตรน้ำ VOC ต่ำ กับข้อกำหนดอาคารเขียว LEED และ TREES</td><td>สีกันไฟ VOC ต่ำ</td><td class="sub">สีกันไฟสูตรน้ำ · สีกันไฟ อาคารเขียว · LEED สีทาอาคาร VOC · TREES วัสดุปล่อยสารระเหยต่ำ</td></tr>
-      <tr><td class="n">10</td><td class="k">สีสะท้อนความร้อนหลังคาโรงงาน วิธีคำนวณระยะคืนทุนจากค่าไฟ</td><td>สีสะท้อนความร้อน คุ้มไหม</td><td class="sub">สีสะท้อนความร้อนหลังคา ระยะคืนทุน · สีเซรามิคกันร้อน โรงงาน · ลดค่าไฟ โรงงาน หลังคา · Roof Shield</td></tr>
+      <tr><td class="n">10</td><td class="k">พ่นหรือทาสีกันไฟ เลือกวิธีจากหน้างาน พื้นที่ และค่าสูญเสีย</td><td>พ่นสีกันไฟ</td><td class="sub">สีกันไฟ พ่น หรือ ทา · เครื่องพ่นสีกันไฟ airless · ทาสีกันไฟด้วยลูกกลิ้ง · ค่าสูญเสียสี งานพ่น</td></tr>
       <tr><td class="n">11</td><td class="k">ทินเนอร์ 3A ทินเนอร์ 2K และน้ำมันสน การเลือกใช้ให้ตรงกับประเภทงานสี</td><td>ทินเนอร์ 3A กับ 2K</td><td class="sub">ทินเนอร์ 3A ใช้กับอะไร · น้ำมันสน กับ ทินเนอร์ ต่างกัน · ทินเนอร์ผสมสีอุตสาหกรรม · ทินเนอร์ อินทนิล</td></tr>
       <tr><td class="n">12</td><td class="k">ผู้รับเหมาทาสีกันไฟ 8 คำถามที่ต้องถามก่อนจ้าง</td><td>ผู้รับเหมาทาสีกันไฟ</td><td class="sub">จ้างทาสีกันไฟ · เลือกผู้รับเหมาสีกันไฟ · ใบเสนอราคาสีกันไฟ · ทาสีกันไฟ เจ้าไหนดี</td></tr>
     </tbody>
