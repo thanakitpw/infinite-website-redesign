@@ -255,6 +255,20 @@ function form() {
     el.replaceWith(ctrl);
   });
 
+  /* กันสแปมฝั่งหน้าเว็บ (คู่กับ lib/leads/guard.js ฝั่ง server)
+     - honeypot: ช่อง "website" ที่คนมองไม่เห็นและ tab ไม่ถึง บอทที่เติมทุกช่องจะกรอก
+       ต้องซ่อนด้วยการเลื่อนออกนอกจอ ไม่ใช้ display:none เพราะบอทฉลาดขึ้นจะข้ามช่องนั้น
+     - readyAt: เวลาที่ฟอร์มพร้อมใช้ ส่งส่วนต่างไปตอนกดเป็น elapsed คนกรอกไม่ทัน 3 วิแน่ */
+  const readyAt = Date.now();
+  const nameEl = document.querySelector('[name="name"]');
+  if (nameEl && !document.querySelector('[name="website"]')) {
+    const hp = document.createElement("input");
+    hp.type = "text"; hp.name = "website"; hp.tabIndex = -1;
+    hp.autocomplete = "off"; hp.setAttribute("aria-hidden", "true");
+    hp.setAttribute("style", "position:absolute;left:-9999px;top:0;width:1px;height:1px;opacity:0;pointer-events:none");
+    nameEl.insertAdjacentElement("afterend", hp);
+  }
+
   // submit
   const btn = leaves().find((e) => txt(e) === "ส่งขอใบเสนอราคา");
   if (btn && !btn.dataset.enh) {
@@ -268,7 +282,7 @@ function form() {
       const onLp = LP_PATHS.has(location.pathname);
       const urgentTel = onLp ? "0863394682" : "020410119";
       const urgentLabel = onLp ? "086-339-4682" : "02-041-0119";
-      const payload = { name: get("name"), phone: get("phone"), company: get("company"), contact: get("contact"), jobType: get("jobType"), area: get("area"), detail: get("detail"), source: location.pathname };
+      const payload = { name: get("name"), phone: get("phone"), company: get("company"), contact: get("contact"), jobType: get("jobType"), area: get("area"), detail: get("detail"), source: location.pathname, website: get("website"), elapsed: Date.now() - readyAt };
       if (!payload.name || !payload.phone) { alert("กรุณากรอกชื่อและเบอร์โทรติดต่อกลับ"); return; }
       btn.textContent = "กำลังส่ง…";
       try {

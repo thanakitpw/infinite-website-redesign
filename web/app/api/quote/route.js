@@ -4,6 +4,7 @@ import path from "node:path";
 import { timingSafeEqual } from "node:crypto";
 import { publicClient } from "../../../lib/supabase/public";
 import { emailLead, canEmail } from "../../../lib/leads/notify";
+import { scoreLead, rateLimited, clientIp } from "../../../lib/leads/guard";
 
 export const dynamic = "force-dynamic";
 
@@ -26,6 +27,8 @@ const ADMIN_TOKEN = process.env.LEADS_ADMIN_TOKEN;
 const FALLBACK_MSG =
   "ระบบบันทึกข้อมูลขัดข้องชั่วคราว กรุณาโทร 02-041-0119 หรือแอด LINE imat999 " +
   "เพื่อไม่ให้คำขอของคุณตกหล่น";
+const TOO_MANY_MSG =
+  "ส่งคำขอถี่เกินไป กรุณารอสักครู่แล้วลองใหม่ หรือโทร 02-041-0119 ได้เลย";
 
 const MAX = {
   name: 120, phone: 40, company: 160, contact: 120,
@@ -84,6 +87,11 @@ function saveToFile(lead) {
 }
 
 export async function POST(req) {
+  // นับก่อนอ่าน body — คนยิงรัวไม่ควรได้ให้เราทำงานอะไรต่อเลย
+  if (rateLimited(clientIp(req))) {
+    return NextResponse.json({ ok: false, error: TOO_MANY_MSG }, { status: 429 });
+  }
+
   let body;
   try {
     body = await req.json();
@@ -113,6 +121,20 @@ export async function POST(req) {
     source: clean(body.source, MAX.source) || "web",
     receivedAt: new Date().toISOString(),
   };
+
+  /* ด่านกันสแปม (ดู lib/leads/guard.js) — ที่ทิ้งก็ตอบ ok:true กลับไปเหมือนรับแล้ว
+     บอทจะได้ไม่รู้ว่าโดนจับและไม่ปรับตัว แต่ log ตัว lead เต็มไว้ เผื่อจับผิดคน
+     จะได้กู้จาก Vercel logs ทัน ส่วนที่ก้ำกึ่งส่งต่อตามปกติ แค่ติดป้ายในเมล */
+  const verdict = scoreLead(lead, {
+    honeypot: body.website,
+    elapsed: body.elapsed,
+    country: req.headers.get("x-vercel-ip-country"),
+  });
+  if (verdict.drop) {
+    console.warn("[LEAD SPAM DROPPED]", verdict.reasons.join(" · "), "|", JSON.stringify(lead));
+    return NextResponse.json({ ok: true, id: lead.id });
+  }
+  if (verdict.flag) lead.suspect = verdict.reasons;
 
   const failures = [];
   let stored = false;

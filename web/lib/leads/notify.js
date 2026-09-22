@@ -33,6 +33,9 @@ const FIELDS = [
 /* ลูกค้าอาจกรอกอีเมลมาในช่อง "LINE ID / อีเมล" ถ้าใช่ก็ตั้งเป็น reply-to
    ให้ทีมขายกด reply ตอบกลับได้ทันทีโดยไม่ต้องก๊อปอีเมลออกมา */
 const emailIn = (s) => (String(s || "").match(/[^\s@]+@[^\s@]+\.[^\s@]+/) || [])[0];
+// เหตุผลที่ตัวกรองสแปมติดป้ายไว้ (route ใส่มาใน lead.suspect) — ไม่มีคืน null
+const suspectOf = (lead) =>
+  Array.isArray(lead.suspect) && lead.suspect.length ? lead.suspect : null;
 
 function html(lead) {
   const rows = FIELDS
@@ -45,13 +48,20 @@ function html(lead) {
     .join("");
 
   const tel = esc(String(lead.phone).replace(/[^\d+]/g, ""));
+  /* lead ที่ตัวกรอง (lib/leads/guard.js) ให้คะแนนก้ำกึ่ง — ยังส่งให้ตามปกติ แต่บอก
+     เหตุผลไว้บนสุดให้ทีมขายกวาดตาก่อนโทร ไม่ต้องเสียเวลากับสแปม */
+  const warn = suspectOf(lead)
+    ? `<div style="margin-bottom:12px;padding:10px 14px;background:#fff7e0;border:1px solid #f0d78a;border-radius:10px;color:#7a5a00;font-size:13px">` +
+      `<strong>อาจเป็นสแปม</strong> — ${esc(suspectOf(lead).join(" · "))}<br>` +
+      `<span style="opacity:.8">ตรวจดูก่อนโทรกลับ ถ้าเป็นลูกค้าจริงก็ติดต่อได้ตามปกติ</span></div>`
+    : "";
   return `<div style="font-family:'IBM Plex Sans Thai',-apple-system,Segoe UI,sans-serif;max-width:600px;margin:0 auto;padding:24px">
   <div style="background:#018438;color:#fff;padding:20px 24px;border-radius:14px 14px 0 0">
     <div style="font-size:12px;opacity:.85;letter-spacing:.4px">INFINITE MATERIAL &amp; TECHNOLOGY</div>
     <div style="font-size:20px;font-weight:700;margin-top:4px">มีคำขอใบเสนอราคาใหม่</div>
   </div>
   <div style="border:1px solid #e4eae5;border-top:none;border-radius:0 0 14px 14px;padding:20px 24px">
-    <table style="width:100%;border-collapse:separate;border-spacing:0 6px">${rows}</table>
+    ${warn}<table style="width:100%;border-collapse:separate;border-spacing:0 6px">${rows}</table>
     <div style="margin-top:18px;padding-top:16px;border-top:1px solid #eef1ec;font-size:12.5px;color:#8a978d">
       ส่งจากฟอร์ม <strong>${esc(lead.source || "web")}</strong> เมื่อ ${esc(
         new Date(lead.receivedAt || Date.now()).toLocaleString("th-TH", { timeZone: "Asia/Bangkok" })
@@ -63,8 +73,9 @@ function html(lead) {
 }
 
 function text(lead) {
+  const warn = suspectOf(lead) ? `⚠ อาจเป็นสแปม: ${suspectOf(lead).join(" · ")}\n\n` : "";
   return (
-    "มีคำขอใบเสนอราคาใหม่\n\n" +
+    "มีคำขอใบเสนอราคาใหม่\n\n" + warn +
     FIELDS.filter(([, k]) => lead[k]).map(([label, k]) => `${label}: ${lead[k]}`).join("\n") +
     `\n\nส่งจากฟอร์ม ${lead.source || "web"} เมื่อ ` +
     new Date(lead.receivedAt || Date.now()).toLocaleString("th-TH", { timeZone: "Asia/Bangkok" })
@@ -80,7 +91,9 @@ export async function emailLead(lead) {
   const body = {
     from: FROM,
     to: TO,
-    subject: `[ขอใบเสนอราคา] ${lead.name}${lead.company ? ` · ${lead.company}` : ""} · ${lead.phone}`,
+    subject:
+      (suspectOf(lead) ? "[อาจเป็นสแปม] " : "") +
+      `[ขอใบเสนอราคา] ${lead.name}${lead.company ? ` · ${lead.company}` : ""} · ${lead.phone}`,
     html: html(lead),
     text: text(lead),
   };
