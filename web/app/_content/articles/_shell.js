@@ -2,6 +2,11 @@
 // Kept as plain HTML strings so the existing client script (enhance.jsx) can
 // linkify contacts/buttons exactly the way it does on every other page.
 
+import META from "./_meta.json";
+import { isLive } from "./schedule";
+
+export { isLive };
+
 const CONTACT_BAR = `<div style="background:#018438;color:#eafaf0;display:flex;justify-content:flex-end;gap:28px;align-items:center;padding:9px 56px;font-size:13px;font-weight:500"><span>จ–ส 8:00–17:00 · imatthailand@gmail.com</span><span>โทร 02-041-0119 · 086-339-4682 · 061-421-5422</span></div>`;
 
 const HEADER = `<div style="display:flex;align-items:center;justify-content:space-between;padding:16px 56px;border-bottom:1px solid #e7eae4">
@@ -29,8 +34,9 @@ const FOOTER = `<div style="background:#0e1a14;color:#c3cfc7;padding:56px 56px 3
 </div>`;
 
 // Article catalogue — single source of truth for detail pages + related lists.
-export const ARTICLES = [
-  { slug: "fireproof-paint-price", title: "ราคาสีกันไฟต่อตารางเมตร คำนวณจากความหนาฟิล์ม", cat: "วิธีเลือก/คำนวณ", date: "10 ก.ย. 2026", read: "8 นาที", excerpt: "ต้นทุนงานสีกันไฟประกอบด้วย 4 ส่วน และแปรผันตามความหนาฟิล์มที่ชั่วโมงทนไฟและค่า Hp/A กำหนด พร้อมตัวอย่างคำนวณสำหรับพื้นที่ผิวเหล็ก 500 ตร.ม.", related: ["calculate-fireproof-paint", "fire-rating-hours", "water-vs-solvent-based"] },
+// บทความชุด SEO มาจาก _meta.json ซึ่ง web/scripts/publish-article.py เขียนจาก seo/blog/*.md
+// อย่าแก้ไฟล์นั้นมือ แก้ที่ .md แล้วรันสคริปต์ใหม่ (ดู .claude/skills/infinite-blog-publish)
+const HAND_WRITTEN = [
   { slug: "what-is-fireproof-paint", title: "สีกันไฟคืออะไร ทำงานอย่างไร แบบเข้าใจง่าย", cat: "ความรู้พื้นฐาน", date: "10 ก.ค. 2026", read: "5 นาที", image: "/images/articles/what-is-fireproof-paint.jpg", fit: "cover", w: 1600, h: 1000, excerpt: "ทำความรู้จักหลักการ “ขยายตัวเป็นฉนวน” (intumescent) ที่ช่วยหน่วงเวลาการวิบัติของโครงสร้างเหล็กเมื่อเกิดเพลิงไหม้", related: ["iso834-astm-e119", "cement-vs-fireproof-paint", "fire-rating-hours"] },
   { slug: "fire-rating-hours", title: "สีกันไฟทนไฟได้กี่ชั่วโมง เลือกอย่างไรให้ผ่านกฎหมาย", cat: "มาตรฐาน & กฎหมาย", date: "3 ก.ค. 2026", read: "6 นาที", image: "/images/articles/fire-rating-hours.jpg", fit: "cover", w: 1600, h: 840, excerpt: "แนวทางเลือกชั่วโมงทนไฟให้ตรงกับกฎกระทรวงและประเภทอาคาร", related: ["iso834-astm-e119", "calculate-fireproof-paint", "what-is-fireproof-paint"] },
   { slug: "water-vs-solvent-based", title: "สีกันไฟสูตรน้ำ vs สูตรน้ำมัน ต่างกันอย่างไร", cat: "วิธีเลือก/คำนวณ", date: "26 มิ.ย. 2026", read: "5 นาที", image: "/images/articles/water-vs-solvent-based.jpg", fit: "cover", w: 1600, h: 840, excerpt: "เปรียบเทียบข้อดี–ข้อจำกัด และงานที่เหมาะกับแต่ละสูตร", related: ["what-is-fireproof-paint", "fireproof-application-steps", "calculate-fireproof-paint"] },
@@ -40,7 +46,30 @@ export const ARTICLES = [
   { slug: "cement-vs-fireproof-paint", title: "ซีเมนต์กันไฟ vs สีกันไฟ เลือกแบบไหนดี", cat: "ความรู้พื้นฐาน", date: "29 พ.ค. 2026", read: "5 นาที", image: "/images/articles/cement-vs-fireproof-paint.jpg", fit: "cover", w: 1600, h: 840, excerpt: "เทียบการใช้งาน ต้นทุน และความเหมาะสมกับแต่ละประเภทงาน", related: ["what-is-fireproof-paint", "fire-rating-hours", "iso834-astm-e119"] },
 ];
 
+const fromMeta = new Set(META.map((a) => a.slug));
+export const ARTICLES = [...META, ...HAND_WRITTEN.filter((a) => !fromMeta.has(a.slug))];
+
+export const liveArticles = (now = new Date()) => ARTICLES.filter((a) => isLive(a, now));
+
 const BY_SLUG = Object.fromEntries(ARTICLES.map((a) => [a.slug, a]));
+
+/* ลิงก์ในเนื้อบทความที่ชี้ไปบทที่ยังไม่ถึงวัน ให้เหลือแค่ข้อความ ไม่งั้นเป็นลิงก์ 404
+   พอถึงวันลิงก์กลับมาเองตอน revalidate */
+export function unlinkUnpublished(html, now = new Date()) {
+  return html.replace(/<a href="\/articles\/([^"#?]+)"[^>]*>(.*?)<\/a>/g, (m, slug, text) =>
+    BY_SLUG[slug] && !isLive(BY_SLUG[slug], now) ? text : m
+  );
+}
+
+/* FAQPage schema สร้างจาก FAQ ที่สคริปต์เก็บไว้ใน _meta.json — ข้อความชุดเดียวกับที่แสดงบนหน้า */
+export function faqSchema(a) {
+  if (!a.faq?.length) return null;
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: a.faq.map(({ q, a: ans }) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: ans } })),
+  };
+}
 
 function imgBox(image, fit, h) {
   const bg = fit === "contain" ? "#ffffff" : "#eef4ef";
@@ -72,11 +101,22 @@ function cta() {
 function related(a) {
   const cards = (a.related || [])
     .map((slug) => BY_SLUG[slug])
-    .filter(Boolean)
+    .filter((r) => isLive(r))
     .map((r) => `<a href="/articles/${r.slug}" style="border:1px solid #e7eae4;border-radius:16px;overflow:hidden;color:inherit;display:block"><div style="${imgBox(r.image, r.fit, 150)}"></div><div style="padding:20px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#8a978d;margin-bottom:9px">${r.cat} · ${r.date}</div><div style="font-size:16.5px;font-weight:600;line-height:1.45;margin-bottom:10px">${r.title}</div><span style="color:#018438;font-weight:600;font-size:14px">อ่านต่อ →</span></div></a>`)
     .join("");
   if (!cards) return "";
   return `<div style="background:#f7faf8;border-top:1px solid #e7eae4;padding:46px 56px 56px"><div style="max-width:1120px;margin:0 auto"><div style="font-size:22px;font-weight:700;margin-bottom:22px;color:#0e1a14">บทความที่เกี่ยวข้อง</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">${cards}</div></div></div>`;
+}
+
+/* การ์ดในหน้า /articles สำหรับบทที่ไม่ได้เขียนไว้ใน articles.html — หน้าตาเดียวกับการ์ดเดิมในไฟล์ */
+export function articleCard(a) {
+  const img = a.image
+    ? `background:#fff;background-image:url('${a.image}');background-size:cover;background-position:center;background-repeat:no-repeat`
+    : "background:#eef4ef";
+  return `<a href="/articles/${a.slug}" style="border:1px solid #e7eae4;border-radius:16px;overflow:hidden;color:inherit;display:block">
+      <div style="height:170px;${img}"></div>
+      <div style="padding:22px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#8a978d;margin-bottom:10px">${a.cat} · ${a.date}</div><div style="font-size:18px;font-weight:600;line-height:1.4;margin-bottom:10px">${a.title}</div><p style="margin:0 0 12px;font-size:14px;line-height:1.65;color:#5c6b62">${a.excerpt}</p><span style="color:#018438;font-weight:600;font-size:14px">อ่านต่อ →</span></div>
+    </a>`;
 }
 
 // Wrap the per-article body (read from _content/articles/<slug>.html) with the

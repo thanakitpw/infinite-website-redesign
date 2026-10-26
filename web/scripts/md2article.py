@@ -55,7 +55,8 @@ def convert(md):
         l = lines[i].rstrip()
         if not l.strip():
             i += 1; continue
-        if l.startswith("# "):
+        if l.startswith("# ") or re.fullmatch(r"#+\s*", l):
+            # หัวข้อว่าง (Google Doc มีบรรทัด heading เปล่าหลุดมา) ข้ามไป ไม่งั้นวนไม่จบ
             i += 1; continue
         if l.startswith("## "):
             text = l[3:].strip()

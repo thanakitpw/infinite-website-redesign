@@ -30,4 +30,9 @@ PROMPT*.MD
 stitch_*.zip
 
 # symlink ของ Claude Code ที่ชี้ไป .agents/skills — เป็นของเฉพาะเครื่อง
-.claude/skills/
+# ยกเว้น skill ที่เขียนเองสำหรับโปรเจคนี้
+.claude/skills/*
+!.claude/skills/infinite-blog-publish/
+
+# python cache จากสคริปต์ใน web/scripts
+__pycache__/
