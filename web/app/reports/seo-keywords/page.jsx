@@ -58,6 +58,9 @@ const HTML = `
 
 #kw .note{border:1px solid var(--line); border-inline-start:3px solid var(--accent); background:var(--surface); border-radius:10px; padding:16px 20px; margin:22px 0 0; font-size:14.5px; color:var(--ink-2)}
 #kw .note b{color:var(--ink); font-weight:600}
+#kw tr.grp td{background:var(--surface-2); font-family:'Anuphan',sans-serif; font-weight:700; font-size:14px; color:var(--ink)}
+#kw td.nx{color:var(--law)}
+#kw .draft{display:inline-block; margin-inline-start:8px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:600; padding:2px 7px; border-radius:4px; background:var(--law-soft); color:var(--law); vertical-align:middle}
 #kw footer{padding:40px 0 56px; color:var(--ink-3); font-size:13px; border-top:1px solid var(--line); margin-top:48px}
 #kw footer p{margin:0 0 6px}
 @media (max-width:820px){ #kw .rules{grid-template-columns:1fr} #kw .mast h1{font-size:30px} }
@@ -65,14 +68,14 @@ const HTML = `
 
 <div id="kw">
 <div class="wrap mast">
-  <div class="eyebrow">SEO Keyword Plan · ก.ย. 2569</div>
+  <div class="eyebrow">SEO Keyword Plan · พ.ย. 2569</div>
   <h1>คีย์เวิร์ด SEO เว็บ infinitematerialtech.com</h1>
-  <p>รายการคำค้นที่วางแผนให้เว็บติดอันดับ พร้อมหน้าเป้าหมายของแต่ละคำ และคีย์เวิร์ดของบทความทั้ง 12 บทที่กำลังเขียน</p>
+  <p>รายการคำค้นที่วางแผนให้เว็บติดอันดับ พร้อมหน้าเป้าหมายของแต่ละคำ คีย์เวิร์ดของบทความทั้ง 24 บท และคีย์เวิร์ดเพิ่มเติมอีก 60 คำ</p>
   <dl class="meta">
     <div><dt>จัดทำสำหรับ</dt><dd>Infinite Material &amp; Technology</dd></div>
-    <div><dt>วันที่</dt><dd>10 ก.ย. 2569</dd></div>
-    <div><dt>คีย์เวิร์ดหลัก</dt><dd>17 คำ · 17 หน้าเป้าหมาย</dd></div>
-    <div><dt>บทความ</dt><dd>12 บท · 12 คีย์เวิร์ดหลัก</dd></div>
+    <div><dt>วันที่</dt><dd>7 พ.ย. 2569</dd></div>
+    <div><dt>คีย์เวิร์ดหลัก</dt><dd>17 คำ + เพิ่มเติม 60 คำ</dd></div>
+    <div><dt>บทความ</dt><dd>24 บท · 24 คีย์เวิร์ดหลัก</dd></div>
   </dl>
 </div>
 
@@ -121,8 +124,8 @@ const HTML = `
 </div></section>
 
 <section><div class="wrap">
-  <div class="sec-head"><h2>คีย์เวิร์ดของบทความทั้ง 12 บท</h2></div>
-  <p class="sec-lead">คีย์เวิร์ดหลักคือคำที่ชื่อเรื่องและย่อหน้าแรกของบทเขียนตอบโดยตรง คีย์เวิร์ดรองคือคำใกล้เคียงที่บทเดียวกันเก็บได้โดยไม่ต้องเขียนบทแยก</p>
+  <div class="sec-head"><h2>บทความชุดที่ 1 · 12 บท</h2></div>
+  <p class="sec-lead">คีย์เวิร์ดหลักคือคำที่ชื่อเรื่องและย่อหน้าแรกของบทเขียนตอบโดยตรง คีย์เวิร์ดรองคือคำใกล้เคียงที่บทเดียวกันเก็บได้โดยไม่ต้องเขียนบทแยก ทั้ง 12 บทเผยแพร่บนเว็บครบแล้ว</p>
   <div class="tw"><table>
     <thead><tr><th>บท</th><th>ชื่อเรื่อง</th><th>คีย์เวิร์ดหลัก</th><th>คีย์เวิร์ดรอง</th></tr></thead>
     <tbody>
@@ -145,8 +148,106 @@ const HTML = `
   </div>
 </div></section>
 
+<section><div class="wrap">
+  <div class="sec-head"><h2>บทความชุดที่ 2 · 12 บท <span class="draft">ฉบับร่าง รอรีวิว</span></h2></div>
+  <p class="sec-lead">ชุดที่ 2 ขยายจากสีกันไฟไปยังสินค้าและบริการที่ยังไม่มีบทความรองรับ ได้แก่ ซีเมนต์พ่นกันไฟ สีสะท้อนความร้อน สีรองพื้นและสีทับหน้า สีทาอาคาร และงานตรวจสอบโครงสร้าง ชื่อเรื่องอาจปรับตามการรีวิวก่อนเผยแพร่</p>
+  <div class="tw"><table>
+    <thead><tr><th>บท</th><th>ชื่อเรื่อง</th><th>คีย์เวิร์ดหลัก</th><th>คีย์เวิร์ดรอง</th></tr></thead>
+    <tbody>
+      <tr><td class="n">13</td><td class="k">ซีเมนต์พ่นกันไฟ Mandolite CP-2 กับ Fendolite M II</td><td>ซีเมนต์พ่นกันไฟ</td><td class="sub">Mandolite CP-2 · Fendolite M II · ซีเมนต์กันไฟ ภายนอก · ซีเมนต์พ่นทนไฟ</td></tr>
+      <tr><td class="n">14</td><td class="k">สีสะท้อนความร้อนหลังคาโรงงาน คำนวณปริมาณและขั้นตอนทา</td><td>สีสะท้อนความร้อนหลังคา</td><td class="sub">สีกันความร้อนหลังคาเมทัลชีท · สีเซรามิคสะท้อนความร้อน · สีสะท้อนความร้อน คุ้มไหม · ลดความร้อนหลังคาโรงงาน</td></tr>
+      <tr><td class="n">15</td><td class="k">ทาสีกันไฟทับสีเดิมบนเหล็กเก่า ต้องรู้ชนิดสีเดิมก่อน</td><td>ทาสีกันไฟทับสีเดิม</td><td class="sub">สีกันไฟ อาคารเก่า · ทาสีกันไฟ เหล็กเก่า · สีกันไฟ งานปรับปรุงอาคาร · สีกันไฟทับสีน้ำมัน</td></tr>
+      <tr><td class="n">16</td><td class="k">ซ่อมสีกันไฟที่เสียหาย ให้ความหนากลับมาเท่าที่ออกแบบ</td><td>ซ่อมสีกันไฟ</td><td class="sub">สีกันไฟ หลุด ร่อน ซ่อม · ทาสีกันไฟซ่อม จุดเชื่อม · แก้งานสีกันไฟ · touch up สีกันไฟ</td></tr>
+      <tr><td class="n">17</td><td class="k">ระยะเวลางานสีกันไฟ คำนวณจากจำนวนเที่ยวและเวลาแห้ง</td><td>ทาสีกันไฟ ใช้เวลากี่วัน</td><td class="sub">ระยะเวลางานสีกันไฟ · สีกันไฟ แห้งกี่ชั่วโมง · แผนงานสีกันไฟ · สีกันไฟ ทาทับได้เมื่อไร</td></tr>
+      <tr><td class="n">18</td><td class="k">สีกันไฟภายนอกอาคาร เลือกระบบสำหรับเหล็กที่โดนแดดฝน</td><td>สีกันไฟภายนอก</td><td class="sub">สีกันไฟ ภายนอกอาคาร · กันไฟโครงสร้างเหล็ก ภายนอก · สีกันไฟ โดนฝน · ซีเมนต์กันไฟ ภายนอก</td></tr>
+      <tr><td class="n">19</td><td class="k">สีรองพื้นกันสนิมใต้สีกันไฟ เลือกรุ่นและคำนวณจำนวนถัง</td><td>สีรองพื้นกันสนิม</td><td class="sub">สีรองพื้นกันสนิม สีกันไฟ · Neocoat Primer Grey Oxide · สีรองพื้นเทา · รองพื้นเหล็กก่อนทาสีกันไฟ</td></tr>
+      <tr><td class="n">20</td><td class="k">สีน้ำมันทาเหล็ก Neogloss สเปก ระบบสี และปริมาณที่ใช้</td><td>สีน้ำมันทาเหล็ก</td><td class="sub">สีน้ำมันเคลือบเงา · สีทาเหล็กกันสนิม · สีน้ำมัน Neogloss · สีทาเหล็ก ภายนอก</td></tr>
+      <tr><td class="n">21</td><td class="k">สีรองพื้นปูนใหม่ ต้องรอปูนบ่ม 1 เดือนและความชื้นต่ำกว่า 15%</td><td>สีรองพื้นปูนใหม่</td><td class="sub">รองพื้นปูนใหม่ ทนด่าง · สีลอก ผนังปูนใหม่ · Masonry Sealer · ปูนใหม่ทาสีได้เมื่อไร</td></tr>
+      <tr><td class="n">22</td><td class="k">สีน้ำพลาสติกทาภายนอกกับภายใน ต่างกันที่สูตรและงานที่เหมาะ</td><td>สีทาภายนอก กับ ภายใน ต่างกัน</td><td class="sub">สีน้ำพลาสติก ทาภายนอก · สีทาภายใน กันเชื้อรา · สีทาผนังโรงงาน · สีอะคริลิก 100%</td></tr>
+      <tr><td class="n">23</td><td class="k">สีกันไฟโครงหลังคาเหล็ก ความหนาขึ้นกับหน้าตัดชิ้นส่วนโครงถัก</td><td>สีกันไฟโครงหลังคาเหล็ก</td><td class="sub">สีกันไฟ โครงถัก · สีกันไฟ truss · พ่นสีกันไฟ หลังคาโรงงาน · กันไฟโครงหลังคา คลังสินค้า</td></tr>
+      <tr><td class="n">24</td><td class="k">ตรวจโครงสร้างหลังคาโรงงานก่อนติดตั้งโซลาร์เซลล์</td><td>ตรวจโครงสร้างหลังคา ติดโซลาร์</td><td class="sub">วิศวกรรับรองโครงสร้าง โซลาร์เซลล์ · โซลาร์รูฟท็อป โรงงาน โครงสร้าง · หลังคารับน้ำหนักโซลาร์ · ตรวจสอบงานออกแบบโครงสร้าง</td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+<section><div class="wrap">
+  <div class="sec-head"><h2>คีย์เวิร์ดเพิ่มเติม 60 คำ</h2></div>
+  <p class="sec-lead">คำค้นที่ไม่ซ้ำกับคีย์เวิร์ดหลักและคีย์เวิร์ดของบทความทั้ง 24 บท จัดเป็น 5 กลุ่ม แต่ละคำผูกกับหน้าที่ตอบคำค้นนั้นได้ตรงที่สุด 56 คำมีหน้ารองรับในเว็บหรือในบทความชุดที่ 2 แล้ว อีก 4 คำยังไม่มีหน้าที่ตอบตรง จึงเสนอเป็นหัวข้อของบทความชุดถัดไป</p>
+  <div class="tw"><table>
+    <thead><tr><th>#</th><th>คีย์เวิร์ด</th><th>ประเภท</th><th>หน้าเป้าหมาย</th></tr></thead>
+    <tbody>
+      <tr class="grp"><td colspan="4">สีกันไฟ · คำซื้อและคำเทียบ · 12 คำ</td></tr>
+      <tr><td class="n">1</td><td class="k">สีกันไฟ Neocoat</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/neocoat-intumescent-paint-s</td></tr>
+      <tr><td class="n">2</td><td class="k">สีกันไฟ intumescent</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/neocoat-intumescent-paint-s</td></tr>
+      <tr><td class="n">3</td><td class="k">สีกันไฟ สูตรน้ำมัน</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/neocoat-intumescent-paint-s</td></tr>
+      <tr><td class="n">4</td><td class="k">สีกันไฟ ทาเหล็ก</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/neocoat-intumescent-paint-s</td></tr>
+      <tr><td class="n">5</td><td class="k">สีกันไฟ ราคาโรงงาน</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/neocoat-intumescent-paint-s</td></tr>
+      <tr><td class="n">6</td><td class="k">สีกันไฟ ขายส่ง</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/neocoat-intumescent-paint-s</td></tr>
+      <tr><td class="n">7</td><td class="k">สีทนไฟ ราคา</td><td><span class="tag buy">ซื้อ</span></td><td class="u">บทความ 1</td></tr>
+      <tr><td class="n">8</td><td class="k">สีกันไฟ 1 ถัง ทาได้กี่ตารางเมตร</td><td><span class="tag know">ความรู้</span></td><td class="u">/articles/calculate-fireproof-paint</td></tr>
+      <tr><td class="n">9</td><td class="k">สีกันไฟ 1 ชั่วโมง</td><td><span class="tag law">กฎหมาย</span></td><td class="u">/articles/fire-rating-hours</td></tr>
+      <tr><td class="n">10</td><td class="k">สีกันไฟ 2 ชั่วโมง</td><td><span class="tag law">กฎหมาย</span></td><td class="u">/articles/fire-rating-hours</td></tr>
+      <tr><td class="n">11</td><td class="k">สีกันไฟ 3 ชั่วโมง</td><td><span class="tag law">กฎหมาย</span></td><td class="u">/articles/fire-rating-hours</td></tr>
+      <tr><td class="n">12</td><td class="k">สีกันไฟ ยี่ห้อไหนดี</td><td><span class="tag buy">ซื้อ</span></td><td class="u nx">บทความชุดถัดไป</td></tr>
+      <tr class="grp"><td colspan="4">ซีเมนต์ ผ้ากันไฟ และวัสดุกันไฟอื่น · 10 คำ</td></tr>
+      <tr><td class="n">13</td><td class="k">ซีเมนต์กันไฟ ราคา</td><td><span class="tag buy">ซื้อ</span></td><td class="u nx">บทความชุดถัดไป</td></tr>
+      <tr><td class="n">14</td><td class="k">CAFCO Mandolite</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/mandolite-cp2</td></tr>
+      <tr><td class="n">15</td><td class="k">ปิดช่องชาร์ป กันไฟลาม</td><td><span class="tag tech">บริการ</span></td><td class="u">/product/fendolite-m2</td></tr>
+      <tr><td class="n">16</td><td class="k">วัสดุกันไฟ โครงสร้างเหล็ก</td><td><span class="tag know">ความรู้</span></td><td class="u">/articles/cement-vs-fireproof-paint</td></tr>
+      <tr><td class="n">17</td><td class="k">ฉนวนกันไฟ เหล็ก</td><td><span class="tag know">ความรู้</span></td><td class="u">/articles/what-is-fireproof-paint</td></tr>
+      <tr><td class="n">18</td><td class="k">ผ้ากันไฟ 1x1 เมตร</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/fiberglass-cloth</td></tr>
+      <tr><td class="n">19</td><td class="k">ม่านกันไฟ</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/fiberglass-cloth</td></tr>
+      <tr><td class="n">20</td><td class="k">ผ้าทนความร้อน</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/fiberglass-cloth</td></tr>
+      <tr><td class="n">21</td><td class="k">ผ้าใยแก้วเคลือบซิลิโคน</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/fiberglass-cloth</td></tr>
+      <tr><td class="n">22</td><td class="k">ผ้าห่มกันไฟ</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/fiberglass-cloth</td></tr>
+      <tr class="grp"><td colspan="4">บริการวิศวกร เอกสาร และกฎหมาย · 13 คำ</td></tr>
+      <tr><td class="n">23</td><td class="k">รับรองสีกันไฟ กนอ.</td><td><span class="tag tech">บริการ</span></td><td class="u">/services/fireproof-certification</td></tr>
+      <tr><td class="n">24</td><td class="k">ตัวอย่างเอกสารรับรองสีกันไฟ</td><td><span class="tag tech">บริการ</span></td><td class="u">/services/fireproof-certification</td></tr>
+      <tr><td class="n">25</td><td class="k">น.4-5 คือ</td><td><span class="tag know">ความรู้</span></td><td class="u">/services/fireproof-supervision</td></tr>
+      <tr><td class="n">26</td><td class="k">น.4-9 คือ</td><td><span class="tag know">ความรู้</span></td><td class="u">/services/fireproof-supervision</td></tr>
+      <tr><td class="n">27</td><td class="k">ผู้ควบคุมงาน สีกันไฟ</td><td><span class="tag tech">บริการ</span></td><td class="u">/services/fireproof-supervision</td></tr>
+      <tr><td class="n">28</td><td class="k">ภาคีวิศวกรโยธา ควบคุมงาน</td><td><span class="tag tech">บริการ</span></td><td class="u">/services/fireproof-supervision</td></tr>
+      <tr><td class="n">29</td><td class="k">วิศวกรตรวจสอบแบบโครงสร้าง</td><td><span class="tag tech">บริการ</span></td><td class="u">/services/structural-design-review</td></tr>
+      <tr><td class="n">30</td><td class="k">หนังสือรับรองการตรวจสอบงานออกแบบ</td><td><span class="tag tech">บริการ</span></td><td class="u">/services/structural-design-review</td></tr>
+      <tr><td class="n">31</td><td class="k">กฎกระทรวง ออกแบบโครงสร้างอาคาร 2567</td><td><span class="tag law">กฎหมาย</span></td><td class="u nx">บทความชุดถัดไป</td></tr>
+      <tr><td class="n">32</td><td class="k">ต่อเติมโรงงาน ขออนุญาต</td><td><span class="tag law">กฎหมาย</span></td><td class="u nx">บทความชุดถัดไป</td></tr>
+      <tr><td class="n">33</td><td class="k">กฎกระทรวง ฉบับที่ 48</td><td><span class="tag law">กฎหมาย</span></td><td class="u">บทความ 2</td></tr>
+      <tr><td class="n">34</td><td class="k">กฎกระทรวง ฉบับที่ 60</td><td><span class="tag law">กฎหมาย</span></td><td class="u">บทความ 2</td></tr>
+      <tr><td class="n">35</td><td class="k">มยผ. 8208</td><td><span class="tag law">กฎหมาย</span></td><td class="u">/standards</td></tr>
+      <tr class="grp"><td colspan="4">ความรู้เทคนิค · 11 คำ</td></tr>
+      <tr><td class="n">36</td><td class="k">intumescent paint คือ</td><td><span class="tag know">ความรู้</span></td><td class="u">/articles/what-is-fireproof-paint</td></tr>
+      <tr><td class="n">37</td><td class="k">สีกันไฟ หลักการทำงาน</td><td><span class="tag know">ความรู้</span></td><td class="u">/articles/what-is-fireproof-paint</td></tr>
+      <tr><td class="n">38</td><td class="k">เหล็กเสียกำลัง อุณหภูมิ</td><td><span class="tag know">ความรู้</span></td><td class="u">/articles/what-is-fireproof-paint</td></tr>
+      <tr><td class="n">39</td><td class="k">ผลทดสอบทนไฟ สีกันไฟ</td><td><span class="tag know">ความรู้</span></td><td class="u">/standards</td></tr>
+      <tr><td class="n">40</td><td class="k">TDS สีกันไฟ</td><td><span class="tag know">ความรู้</span></td><td class="u">/standards</td></tr>
+      <tr><td class="n">41</td><td class="k">BS 476 Part 8</td><td><span class="tag know">ความรู้</span></td><td class="u">/standards</td></tr>
+      <tr><td class="n">42</td><td class="k">Standard Time-Temperature Curve</td><td><span class="tag know">ความรู้</span></td><td class="u">/articles/iso834-astm-e119</td></tr>
+      <tr><td class="n">43</td><td class="k">ความหนาฟิล์มเปียก WFT</td><td><span class="tag know">ความรู้</span></td><td class="u">บทความ 4</td></tr>
+      <tr><td class="n">44</td><td class="k">SSPC-SP 10</td><td><span class="tag know">ความรู้</span></td><td class="u">บทความ 8</td></tr>
+      <tr><td class="n">45</td><td class="k">เหล็กกล่อง สีกันไฟ</td><td><span class="tag know">ความรู้</span></td><td class="u">บทความ 3</td></tr>
+      <tr><td class="n">46</td><td class="k">ระบบสีกันไฟ อีพ็อกซี่</td><td><span class="tag know">ความรู้</span></td><td class="u">บทความ 18</td></tr>
+      <tr class="grp"><td colspan="4">สีอุตสาหกรรม ทินเนอร์ และสีอาคาร · 14 คำ</td></tr>
+      <tr><td class="n">47</td><td class="k">ทินเนอร์ AAA</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/thinner-3a-intanin</td></tr>
+      <tr><td class="n">48</td><td class="k">ทินเนอร์ 3A ราคา</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/thinner-3a-intanin</td></tr>
+      <tr><td class="n">49</td><td class="k">ทินเนอร์ 3A ถัง 150 กก.</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/thinner-3a-intanin</td></tr>
+      <tr><td class="n">50</td><td class="k">ทินเนอร์ 2K ราคา</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/thinner-2k</td></tr>
+      <tr><td class="n">51</td><td class="k">น้ำมันสน ราคา</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/turpentine-intanin</td></tr>
+      <tr><td class="n">52</td><td class="k">น้ำมันสนเชียงใหม่</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/turpentine-intanin</td></tr>
+      <tr><td class="n">53</td><td class="k">สีน้ำมันทาเหล็ก ราคา</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/neogloss-enamel</td></tr>
+      <tr><td class="n">54</td><td class="k">สีรองพื้นกันสนิม ราคา</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/neocoat-primer-grey-oxide</td></tr>
+      <tr><td class="n">55</td><td class="k">สีทาหลังคาเมทัลชีท</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/roof-shield-ceramic</td></tr>
+      <tr><td class="n">56</td><td class="k">สีทาดาดฟ้า กันร้อน</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/roof-shield-ceramic</td></tr>
+      <tr><td class="n">57</td><td class="k">สีรองพื้นปูน ราคา</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/four-plus-pro-masonry-sealer</td></tr>
+      <tr><td class="n">58</td><td class="k">สีกันตะไคร่ ผนังภายนอก</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/four-plus-exterior</td></tr>
+      <tr><td class="n">59</td><td class="k">สีทาภายใน ราคาถัง</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/product/four-plus-pro-interior</td></tr>
+      <tr><td class="n">60</td><td class="k">สีอุตสาหกรรม</td><td><span class="tag buy">ซื้อ</span></td><td class="u">/products</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note">
+    <b>ลำดับการทำงาน</b> คำที่มีหน้าเป้าหมายอยู่แล้วจะใส่เข้าไปในชื่อหน้า คำอธิบาย และเนื้อหาของหน้านั้น เพื่อให้หน้าเดิมติดอันดับได้กว้างขึ้นโดยไม่ต้องสร้างหน้าใหม่ ส่วนคำที่ระบุว่า "บทความชุดถัดไป" จะวางเป็นบทใหม่หลังชุดที่ 2 เผยแพร่ครบ ปริมาณการค้นหาของทุกคำจะยืนยันด้วย Google Keyword Planner และ Search Console ก่อนจัดลำดับ
+  </div>
+</div></section>
 <footer><div class="wrap">
-  <p>จัดทำสำหรับ Infinite Material &amp; Technology · 10 กันยายน 2569</p>
+  <p>จัดทำสำหรับ Infinite Material &amp; Technology · 10 กันยายน 2569 · ปรับปรุง 7 พฤศจิกายน 2569</p>
   <p>ปริมาณการค้นหาและอันดับปัจจุบันจะรายงานแยกหลังตั้งค่า Google Search Console เสร็จ</p>
 </div></footer>
 </div>
