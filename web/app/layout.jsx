@@ -11,7 +11,12 @@ export const metadata = {
   icons: { icon: "/images/logo.jpg" },
 };
 
+/* GTM_ID   = container เดิมของลูกค้า เก็บ Google Ads (AW-850421119) + conversion
+   GA4_TAG  = Google tag ของ GA4 property ใหม่ (G-0T6Y3TF0TR) ที่ Google เสิร์ฟผ่าน
+              gtm.js — config ของ GA4 อยู่ในตัว tag ไม่ต้องเรียก gtag('config')
+   สองตัวใช้ dataLayer ร่วมกัน event ที่ enhance.jsx ส่งจึงถึงทั้งคู่ */
 const GTM_ID = "GTM-W73HFKV";
+const GA4_TAG = "GTM-WNRS2QXV";
 
 export default function RootLayout({ children }) {
   return (
@@ -28,6 +33,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           }}
         />
         {/* End Google Tag Manager */}
+        {/* Google tag (GA4) */}
+        <script async src={`https://www.googletagmanager.com/gtm.js?id=${GA4_TAG}`} />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());`,
+          }}
+        />
+        {/* End Google tag */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link

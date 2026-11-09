@@ -289,6 +289,23 @@ function form() {
         const r = await fetch("/api/quote", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
         const j = await r.json();
         if (j.ok) {
+          /* ให้ GTM จับ conversion จาก event นี้ (trigger: Custom Event "generate_lead")
+             ไม่ใช่จากการมองเห็นกล่องสำเร็จ — trigger เดิมใน container ผูกกับ path /contact
+             ฟอร์มบนหน้าแรกกับ landing page ที่แอดยิงเข้าจึงไม่ถูกนับ
+             phone_number แบบ E.164 ไว้ให้ Enhanced Conversions ของ Google Ads */
+          const digits = payload.phone.replace(/\D/g, "");
+          const e164 = digits.startsWith("66") ? "+" + digits : digits.startsWith("0") ? "+66" + digits.slice(1) : "";
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            event: "generate_lead",
+            form_location: location.pathname,
+            job_type: payload.jobType,
+            user_data: e164 ? { phone_number: e164 } : undefined,
+          });
+          // GA4 (Google tag) อ่านเฉพาะคำสั่งแบบ gtag() ไม่อ่าน object event ของ GTM
+          if (typeof window.gtag === "function") {
+            window.gtag("event", "generate_lead", { form_location: location.pathname, job_type: payload.jobType });
+          }
           let cont = btn.parentElement;
           while (cont && !cont.querySelector('[name="name"]')) cont = cont.parentElement;
           if (cont) {
